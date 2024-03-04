@@ -15,10 +15,10 @@ interface FormData {
 
 function CreatePostPage(): JSX.Element {
     const [author, setAuthor] = useLocalStorage<string>("user", "")
-    if (typeof window !== 'undefined') {
+    useEffect(() => {
       const ls = localStorage.getItem("user");
       setAuthor(ls ? JSON.parse(ls).username : "")
-    }
+    }, [])
 
   
     // Initialize the image file as null
