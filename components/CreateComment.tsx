@@ -12,7 +12,8 @@ interface Props {
     postID: String;
 }
 
-function createComment (props: Props): JSX.Element {
+
+export default function CreateComment (props: Props): JSX.Element {
     const ls = localStorage.getItem("user");
     const author: string = ls ? JSON.parse(ls).username : "";
 
@@ -64,5 +65,3 @@ function createComment (props: Props): JSX.Element {
         </form>
     )
 }
-
-export default createComment;

@@ -2,7 +2,7 @@
 import "@/assets/css/output.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { useParams } from "react-router-dom";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Post from "@/components/Post";
 import Link from 'next/link'
@@ -27,7 +27,6 @@ interface Post {
 }
 
 function ProfilePage(): JSX.Element {
-    const params = useParams();
     const [user, setUser] = useState<User | null>(null);
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState<number>(1);
@@ -37,6 +36,8 @@ function ProfilePage(): JSX.Element {
     const [isSelf, setSelf] = useState<boolean>(false);
     const [avatar, setAvatar] = useState<string>("");
     const [userId, setUserId] = useState("");
+    const router = useRouter()
+    const { username } = router.query
 
     useEffect(() => {
         // Retrieve the user ID from localStorage
@@ -51,7 +52,6 @@ function ProfilePage(): JSX.Element {
         const fetchData = async () => {
             try {
                 // Get user from mongo-db
-                const username = params["username"];
                 const userResponse = await fetch(`/api/users/profile/${username}?userID=${userId}`);
                 const userData = await userResponse.json();
                 
