@@ -111,7 +111,7 @@ function LoginForm() {
                 </form>
 
                 <p className="mt-10 text-center text-sm text-gray-500">
-                    Don't have an account?
+                    Don&#39t have an account?
                     <Link
                         href="/accounts/create"
                         className="font-semibold leading-6 text-light-theme-green ml-3 hover:text-light-theme-green-active transition-all"

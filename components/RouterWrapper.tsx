@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-export const useRouterNavigate = () => {
+const useRouterNavigate = () => {
   const router = useRouter();
   return (to: string) => {
     router.push(to);

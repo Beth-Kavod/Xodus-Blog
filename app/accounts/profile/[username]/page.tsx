@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Post from "@/components/Post";
 import Link from 'next/link'
-
+import Image from 'next/image'
 
 interface User {
     username: string;
@@ -138,7 +138,7 @@ function ProfilePage(): JSX.Element {
                     {/* Render the users profile information */}
                     <div className="w-full h-fit p-10 flex items-center">
                         <div className="flex flex-col w-1/6">
-                            <img
+                            <Image
                                 src={
                                     user?.avatar
                                         ? avatar
