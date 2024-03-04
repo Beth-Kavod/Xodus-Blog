@@ -2,7 +2,7 @@
 import "@/assets/css/output.css";
 import useLocalStorage from "@/utils/useLocalStorage";
 import Link from "next/link";
-import { useRouter }  from 'next/router'
+import { useRouter }  from 'next/navigation'
 import { useState, useEffect } from "react";
 
 interface User {
@@ -51,7 +51,7 @@ function Navbar() {
                 onClick={toHome}
                 className="text-xl w-fit h-full p-4 hover:bg-light-border transition-all"
             >
-                Dev<span className="font-bold">Debate</span>
+                <span className="font-bold">Xodus</span>
             </button>
 
             <Link

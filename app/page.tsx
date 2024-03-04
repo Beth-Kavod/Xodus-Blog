@@ -4,7 +4,6 @@ import Navbar from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PostList from "@/components/PostList";
 import { useState, useEffect } from "react";
-// import { useLocation } from "react-router-dom";
 
 interface Post {
   title: string;

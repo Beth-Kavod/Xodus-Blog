@@ -3,7 +3,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CommentList from "@/components/CommentList";
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 import Voting from "@/components/Voting";
 import LoginError from "@/components/LoginError";
