@@ -23,6 +23,8 @@ export const POST = async (request, { params }) => {
 
     const comment = await Comment.findById(commentID)
 
+    const body = await request.json()
+
     if (user.username !== comment.author && !user.admin) {
       return NextResponse.json({
         success: false,
@@ -32,10 +34,10 @@ export const POST = async (request, { params }) => {
       })
     }
 
-    request.body.content = filter.clean(request.body.content);
+    body.content = filter.clean(body.content);
 
     await Comment
-    .findByIdAndUpdate(commentID, request.body, { new: true })
+    .findByIdAndUpdate(commentID, body, { new: true })
     .then(content => {
       return NextResponse.json({
         success: true,

@@ -20,6 +20,8 @@ export const POST = async (request, { params }) => {
     const user = await getUserWithID(userID)
   
     await isValid_id(postID, Post)
+
+    const body = await request.json()
     
     const post = await Post.findById(postID);
     
@@ -32,11 +34,11 @@ export const POST = async (request, { params }) => {
       })
     }
 
-    request.body.content = filter.clean(request.body.content);
-    request.body.title = filter.clean(request.body.title);
+    body.content = filter.clean(body.content);
+    body.title = filter.clean(body.title);
 
     await Post  
-    .findByIdAndUpdate(postID, request.body, { new: true })
+    .findByIdAndUpdate(postID, body, { new: true })
     .then(result => {
       return NextResponse.json({
         success: true,

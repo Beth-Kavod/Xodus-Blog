@@ -19,7 +19,7 @@ export const POST = async (request, { params }) => {
     const searchParams = request.nextUrl.searchParams
     const userID = searchParams.get("userID")
     
-    const { removeTags } = request.body
+    const { removeTags } = await request.json()
 
     const user = await getUserWithID(res, userID)
 

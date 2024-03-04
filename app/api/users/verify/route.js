@@ -12,7 +12,7 @@ import User from '@/models/User'
 
 export const POST = async (request) => {
   try {
-    const {username, password} = request.body
+    const {username, password} = await request.json()
 
     const foundUser = User.findOne({ username: username })
     if (!foundUser) throw new Error(`No user with name: ${username}`)

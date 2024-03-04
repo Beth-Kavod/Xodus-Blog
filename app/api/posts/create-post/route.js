@@ -10,9 +10,10 @@ import Post from '@/models/Post'
 
 export const POST = async (request) => {
   try {
-    request.body.content = filter.clean(request.body.content);
-    request.body.title = filter.clean(request.body.title);
-    const result = await Post.create(request.body);
+    const body = await request.json()
+    body.content = filter.clean(body.content);
+    body.title = filter.clean(body.title);
+    const result = await Post.create(body);
 
     return NextResponse.json({
       success: true,

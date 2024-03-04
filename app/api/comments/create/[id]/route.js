@@ -15,14 +15,15 @@ import Comment from '@/models/Comment'
 export const POST = async (request, { params }) => {
   try {
     const postID = params.id
+    const { content } = await request.json() 
 
-    request.body.content = filter.clean(request.body.content);
+    content = filter.clean(content);
     
     await isValid_id(postID, Post)
 
     await Comment
     .create({
-      ...request.body,
+      ...await request.json(),
       postID: postID
     })
     .then(result => {

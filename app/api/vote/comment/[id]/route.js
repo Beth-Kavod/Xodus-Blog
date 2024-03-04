@@ -16,7 +16,7 @@ export const POST = async (request, { params }) => {
     const searchParams = request.nextUrl.searchParams
     const userID = searchParams.get("userID")
 
-    let { author, vote } = request.body
+    let { author, vote } = await request.json()
 
     await isValid_id(commentID, Comment);
     if (await isDuplicate(request, commentID, author)) return NextResponse.json({

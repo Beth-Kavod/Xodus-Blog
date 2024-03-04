@@ -58,7 +58,7 @@ function generateUserAuthID() {
 
 async function isDuplicate(request, id, author) {
   let updatedDoc
-  let { vote } = request.body
+  let { vote } = await request.json()
 
   let newVote = { author, vote }
 

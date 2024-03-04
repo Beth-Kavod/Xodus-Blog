@@ -12,7 +12,7 @@ import User from '@/models/User'
 
 export const POST = async (request) => {
   try {
-    const { username, password, email } = request.body
+    const { username, password, email } = await request.json()
     const emailRegex = new RegExp(email, 'i')
 
     const emailCheck = await User.find({ email: { $regex: emailRegex } })

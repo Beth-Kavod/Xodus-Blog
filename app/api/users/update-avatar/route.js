@@ -12,7 +12,7 @@ import User from '@/models/User'
 
 export const POST = async (request, { params }) => {
   try {
-    const { username, url } = request.body;
+    const { username, url } = await request.json();
     
     const user = await User.findOne({ username })
 
