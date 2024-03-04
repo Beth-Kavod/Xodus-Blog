@@ -24,109 +24,79 @@ function countVotes(data) {
 
 /* ------------------------ check for duplicate vote ------------------------ */
 
-async function isDuplicate(req, res, id, author) {
-  try {
-    let updatedDoc
-    let { vote } = req.body
+async function isDuplicate(req, id, author) {
+  let updatedDoc
+  let { vote } = req.body
 
-    let newVote = { author, vote }
+  let newVote = { author, vote }
 
-    const existingVoteInPost = await postSchema.findOne(
-      { 
-        _id: id, 
-        "votes.author": author 
-      }
-    )
-
-    const existingVoteInComment = await commentSchema.findOne(
-      { 
-        _id: id, 
-        "votes.author": author 
-      }
-    )
-
-    if (existingVoteInPost) {      
-      updatedDoc = await postSchema.findOneAndUpdate(
-        { _id: id, "votes.author": author },
-        {
-          $set: {
-            'votes.$': newVote
-          },
-        },
-        {
-          new: true,
-        }
-      );
-      updatedDoc.voteCount = countVotes(updatedDoc.votes);
-      await updatedDoc.save()
-    } else if (existingVoteInComment) {
-      updatedDoc = await commentSchema.findOneAndUpdate(
-        { _id: id, "votes.author": author },
-        {
-          $set: {
-            'votes.$': newVote
-          },
-        },
-        {
-          new: true,
-        }
-      );
-      updatedDoc.voteCount = countVotes(updatedDoc.votes);
-      await updatedDoc.save()
+  const existingVoteInPost = await postSchema.findOne(
+    { 
+      _id: id, 
+      "votes.author": author 
     }
+  )
 
-    const existingVote = existingVoteInPost || existingVoteInComment
-
-    if (existingVote) {
-      res.status(200).json({
-        message: `Vote successfully updated`,
-        voteCount: updatedDoc.voteCount,
-        status: 200
-      })
-      return true
+  const existingVoteInComment = await commentSchema.findOne(
+    { 
+      _id: id, 
+      "votes.author": author 
     }
+  )
 
+  if (existingVoteInPost) {      
+    updatedDoc = await postSchema.findOneAndUpdate(
+      { _id: id, "votes.author": author },
+      {
+        $set: {
+          'votes.$': newVote
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    updatedDoc.voteCount = countVotes(updatedDoc.votes);
+    await updatedDoc.save()
+  } else if (existingVoteInComment) {
+    updatedDoc = await commentSchema.findOneAndUpdate(
+      { _id: id, "votes.author": author },
+      {
+        $set: {
+          'votes.$': newVote
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    updatedDoc.voteCount = countVotes(updatedDoc.votes);
+    await updatedDoc.save()
+  }
+
+  const existingVote = existingVoteInPost || existingVoteInComment
+
+  if (existingVote) {
+    return true
+  } else {
     return false
-  } catch (error) {
-    return res.status(500).json({
-      message: 'An error occurred in function isDuplicate',
-      error: error
-    });
   }
 }
 
-/* -------------------------- Check if post exists -------------------------- */
+/* -------------------------- Check if doc exists -------------------------- */
 
-async function isValid_id(res, id, schema) {
-  try {
-    const post = await schema.findById(id);
-    if (!post) throw new Error;
-    return true;
-  } 
-  catch (error) {
-    res.status(404).json({
-      id: id,
-      message: `Post with _id: ${id} not found`
-    });
-    return false;
-  }
+async function isValid_id(id, schema) {
+  const doc = await schema.findById(id);
+  if (!doc) throw new Error;
+  return true;
 }
 
 /* ---------------------- Get a users auth with authID ---------------------- */
 
-async function getUserWithID(res, userID) {
-  try {
-    const user = await userSchema.findOne({ userAuthID: userID })
-    if (!user) throw new Error
-    return user
-  }
-  catch (error) {
-    res.status(404).json({
-      userID: userID,
-      message: `User with userAuthID: ${userID} not found`
-    });
-    return false;
-  }
+async function getUserWithID(userID) {
+  const user = await userSchema.findOne({ userAuthID: userID })
+  if (!user) return false
+  return user
 }
 
 /* -------------------------------------------------------------------------- */

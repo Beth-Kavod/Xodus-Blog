@@ -1,12 +1,21 @@
+import { NextResponse } from 'next/server'
+
+import { getUserWithID } from '@/utils/routeMethods.js'
+
+/* ----------------------------- MongoDB Schemas ---------------------------- */
+
+const User = require('@/models/User')
+
+/* ------------------------------ Get all users ----------------------------- */
+
 /* ----------------- Send username and password through form ---------------- */
 
-router.post("/create", async (req, res, next) => {
-  const {username, password, email} = req.body
-  const emailRegex = new RegExp(email, 'i')
-
+export const POST = async (request) => {
   try {
+    const { username, password, email } = request.body
+    const emailRegex = new RegExp(email, 'i')
 
-    const emailCheck = await userSchema.find({ email: { $regex: emailRegex } })
+    const emailCheck = await User.find({ email: { $regex: emailRegex } })
 
     if (emailCheck.length > 0) {
       res.status(409).json({
@@ -31,7 +40,7 @@ router.post("/create", async (req, res, next) => {
     const data = await response.json()
     
     if (data.status === 201) {
-      await userSchema.create({
+      await User.create({
         username: username, 
         userAuthID: data.user.ID, 
         admin: false,
@@ -39,13 +48,22 @@ router.post("/create", async (req, res, next) => {
         data: data.data,
         avatar: ""
       })
-      res.status(201).json(data)
-      return true
+      return NextResponse.json({
+        success: true,
+        message: `Successfully created user`,
+        data: data
+      })
     }
-    res.status(500).json({
+    return NextResponse.json({
       message: `Something went wrong`
+    }, {
+      status: 500
     })
   } catch(err) {
-    return next(err)
+    return NextResponse.json({
+      success: false,
+      message: `Failed created user`,
+      error: error
+    })
   }
-})
+}

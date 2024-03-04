@@ -1,3 +1,12 @@
+import { NextResponse } from 'next/server'
+
+import { getUserWithID } from '@/utils/routeMethods.js'
+
+/* ----------------------------- MongoDB Schemas ---------------------------- */
+
+const User = require('@/models/User')
+
+/* -------------------------------------------------------------------------- */
 
 /* -------------------- Update users profile information -------------------- */
 // ! NOT FINISHED, UPDATING PROFILE NOT USEFUL
@@ -18,7 +27,7 @@ router.post("/update-profile/:name", async (req, res, next) => {
       return false
     }
 
-    await userSchema
+    await User
       .findOneAndUpdate(
         {username: name}, 
         {email: email},

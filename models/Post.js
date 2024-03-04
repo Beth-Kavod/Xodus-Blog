@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const postDB = require('@/connections/postDB')
 
 let postSchema = new Schema({
     author: {
@@ -28,4 +29,11 @@ let postSchema = new Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('Post', postSchema)
+const Post = postDB.model('Post', postSchema)
+
+postDB.once('open', () => {
+  console.log('Connected to userDB for Users')
+})
+
+
+module.exports = Post

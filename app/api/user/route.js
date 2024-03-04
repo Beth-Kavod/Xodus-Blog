@@ -1,24 +1,19 @@
 const express = require('express')
 const router = express.Router()
-const cloudinary = require('cloudinary')
-const filter = require('leo-profanity');
-
+import cloudinary from 'cloudinary'
+import filter from 'leo-profanity'
 import { NextResponse } from 'next/server'
-import { connectToDatabase } from '@/utils/mongoose'
 
-const { getUserWithID } = require('@/utils/routeMethods.js')
+import { getUserWithID } from '@/utils/routeMethods.js'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
-const userSchema = require('@/models/User')
-
-// All users start with /users
+const User = require('@/models/User')
 
 /* ------------------------------ Get all users ----------------------------- */
 
 export const GET = async (request) => {
   try {
-    await connectToDatabase()
     const searchParams = request.nextUrl.searchParams;
     const userID = searchParams("userID")
     let user
@@ -30,25 +25,27 @@ export const GET = async (request) => {
       user = await getUserWithID(res, userID)
     }
 
-    await userSchema
+    await User
       .find()
       .then(users => {
         if (!user.admin) {
           const usernames = users.map((user) => user.username);
   
-          res.status(200).json({
+          return NextResponse.json({
             users: usernames,
             message: `All ${usernames.length} users found`,
             userCount: usernames.length,
-            status: 200,
+          }, {
+            status: 200
           });
         } else {
           // If the user is an admin, include all user data in the response
-          res.status(200).json({
+          return NextResponse.json({
             users: users,
             message: `All ${users.length} users found`,
             userCount: users.length,
-            status: 200,
+          }, {
+            status: 200
           });
         }
       })

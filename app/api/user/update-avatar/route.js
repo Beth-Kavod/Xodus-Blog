@@ -1,13 +1,20 @@
+import { NextResponse } from 'next/server'
 
+import { getUserWithID } from '@/utils/routeMethods.js'
+
+/* ----------------------------- MongoDB Schemas ---------------------------- */
+
+const User = require('@/models/User')
+
+/* -------------------------------------------------------------------------- */
 
 /* --------------------------- Update users avatar -------------------------- */
 
-router.post("/update-avatar", async (req, res, next) => {
-  const { username, url } = req.body;
-
+export const POST = async (request, { params }) => {
   try {
-
-    const user = await userSchema.findOne({ username })
+    const { username, url } = request.body;
+    
+    const user = await User.findOne({ username })
 
     if (user.avatar) {
       const publicId = user.avatar.split('/').pop().split('.')[0];
@@ -16,17 +23,25 @@ router.post("/update-avatar", async (req, res, next) => {
           { type: 'upload', resource_type: 'image' })
     }
 
-    await userSchema.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { username }, 
       { avatar: url }, 
       { new: true }
     )
 
-    res.status(201).json({
-      message: `${username}'s avatar was updated.`,
+    return NextResponse.json({
+      success: true,
+      message: `${username}'s avatar was updated.`
+    }, {
       status: 201
-    });
-  } catch (err) {
-    return next(err);
+    })
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      errorMessage: error.message,
+      error: error
+    }, {
+      status: 500
+    })
   }
-});
+}

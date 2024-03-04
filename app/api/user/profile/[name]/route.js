@@ -1,31 +1,39 @@
 /* ----------------------- Get users profile with name ---------------------- */
 
-router.get("/profile/:name", async (req, res, next) => {
-  const name = req.params.name
-  const userID = req.query.userID
-  let request
-
-  if (!userID) {
-    request = { username: "", id: "", admin: false} 
-  } else {
-    request = await getUserWithID(res, userID)
-  }
-
+export const GET = async (request, { params }) => {
   try {
+    const searchParams = request.nextUrl.searchParams
+    const name = params.name
+    const userID = searchParams.get("userID")
 
-    await userSchema
+    let requestedUser
+    if (!userID) {
+      requestedUser = { username: "", id: "", admin: false} 
+    } else {
+      requestedUser = await getUserWithID(res, userID)
+    }
+
+    await User
       .findOne({username: name})
       .then(user => {
-        if (!user) return res.status(404).json({ message: `No user found with the username ${name}` })
+        if (!user) return NextResponse.json({
+          success: false,
+          message: `No user found with the username ${name}`,
+          data: data
+        }, {
+          status: 404
+        }) 
         
         const { username, admin, avatar, createdAt } = user
 
-        if (request.username === name || request.admin) {
-          res.status(200).json({
-            user,
+        if (requestedUser.username === name || requestedUser.admin) {
+          return NextResponse.json({
+            success: true,
             message: `User ${user.username} found`, 
+            data: user
+          }, {
+            status: 200
           })
-          return
         } else {
           res.status(200).json({
             user: {
@@ -39,7 +47,14 @@ router.get("/profile/:name", async (req, res, next) => {
           return
         }
       }) 
-  } catch(err) {
-    return next(err)
+  } catch(error) {
+    return NextResponse.json({
+      success: false,
+      message: `Failed to fetch profile`,
+      errorMessage: error.message,
+      error: error
+    }, {
+      status: 500
+    })    
   }
-})
+}

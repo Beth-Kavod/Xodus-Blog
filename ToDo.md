@@ -1,3 +1,41 @@
+COPYS
+
+import { NextResponse } from 'next/server'
+
+import { getUserWithID } from '@/utils/routeMethods.js'
+
+/* ----------------------------- MongoDB Schemas ---------------------------- */
+
+import Post from '@/models/Post'
+
+/* -------------------------------------------------------------------------- */
+
+success,
+return NextResponse.json({
+  success: true,
+  data: data
+}, {
+  status: 200
+})
+
+
+error,
+return NextResponse.json({
+  success: false,
+  message: ``,
+  errorMessage: error.message,
+  error: error
+}, {
+  status: 500
+})
+
+
+# CONVERSION
+- Fix User, Post, Comment and Vote routes
+- Make authentication server
+- finish update-profile route
+
+
 # ToDo
 - Make editPost page, API already set up
 

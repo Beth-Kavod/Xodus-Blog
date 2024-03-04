@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const commentDB = require('@/connections/commentDB')
 
 let commentSchema = new Schema({
     author: {
@@ -25,4 +26,11 @@ let commentSchema = new Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('Comment', commentSchema)
+const Comment = commentDB.model('Comment', commentSchema)
+
+commentDB.once('open', () => {
+  console.log('Connected to userDB for Users')
+})
+
+
+module.exports = Comment

@@ -51,7 +51,7 @@ function ProfilePage(): JSX.Element {
             try {
                 // Get user from mongo-db
                 const username = params["username"];
-                const userResponse = await fetch(`http://localhost:4000/users/profile/${username}?userID=${userId}`);
+                const userResponse = await fetch(`/api/users/profile/${username}?userID=${userId}`);
                 const userData = await userResponse.json();
                 
                 // Make 404 error page
@@ -63,7 +63,7 @@ function ProfilePage(): JSX.Element {
                 setUser(userData.user as User);
 
                 // Get users' posts from mongo-db
-                const postsResponse = await fetch(`http://localhost:4000/posts/user/${username}?size=${size}&page=${page}`);
+                const postsResponse = await fetch(`/api/posts/user/${username}?size=${size}&page=${page}`);
                 const postData = await postsResponse.json();
 
                 setPageCount(postData.totalPages)
@@ -119,7 +119,7 @@ function ProfilePage(): JSX.Element {
             setAvatar(url);
 
             // Update avatar in the backend mongo-db
-            fetch(`http://localhost:4000/users/update-avatar?userID=${userId}`, {
+            fetch(`/api/users/update-avatar?userID=${userId}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, url }),

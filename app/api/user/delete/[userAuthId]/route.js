@@ -1,15 +1,27 @@
+import { NextResponse } from 'next/server'
+
+import { getUserWithID } from '@/utils/routeMethods.js'
+
+/* ----------------------------- MongoDB Schemas ---------------------------- */
+
+const User = require('@/models/User')
 
 /* ------------------------------- Delete user ------------------------------ */
 
-router.post("/delete/:userAuthID", async (req, res, next) => {
-  const userAuthID = req.params.userAuthID
-  const userID = req.query.userID
+export const POST = async (request, { params }) => {
+  const searchParams = request.nextUrl.searchParams
+  const userAuthID = params.userAuthId
+  const userID = searchParams.get("userID")
 
   let user = await getUserWithID(res, userID)
 
   if (!user.admin) {
-    res.status(403).json({
-      message: `User ${user.username} not allowed to delete users`
+    return NextResponse.json({
+      success: false,
+      message: `User ${user.username} not allowed to delete users`,
+      data: data
+    }, {
+      status: 403
     })
   }
 
@@ -28,15 +40,29 @@ router.post("/delete/:userAuthID", async (req, res, next) => {
     const data = await response.json()
 
     if (data.status === 200) {
-      await userSchema.deleteOne({userAuthID: userAuthID})
-      res.status(200).json(data)
+      await User.deleteOne({userAuthID: userAuthID})
+      return NextResponse.json({
+        success: true,
+        message: ``,
+        data: data
+      }, {
+        status: 200
+      })
     } else {
       res.status(500).json({
         data,
         message: `Something went wrong`
       })
     }
-  } catch(err) {
-    next(err)
+  } catch(error) {
+    return NextResponse.json({
+      success: false,
+      message: `Failed to delete user`,
+      errorMessage: error.message,
+      error: error
+    }, {
+      status: 500
+    })
+    
   }
-})
+}

@@ -28,7 +28,7 @@ function createComment (props: Props): JSX.Element {
         setComment({ ...comment, date: new Date() });
 
         try {
-            await fetch(`http://localhost:4000/comments/create/${props.postID}`, {
+            await fetch(`/api/comments/create/${props.postID}`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

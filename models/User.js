@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const userDB = require('@/connections/userDB')
 
 let userSchema = new Schema({
     username: {
@@ -26,4 +27,10 @@ let userSchema = new Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('User', userSchema)
+const User = userDB.model('User', userSchema)
+
+userDB.once('open', () => {
+  console.log('Connected to userDB for Users')
+})
+
+module.exports = User
