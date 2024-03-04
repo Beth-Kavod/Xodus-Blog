@@ -3,9 +3,11 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CommentList from "@/components/CommentList";
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 import Link from 'next/link'
 import Voting from "@/components/Voting";
 import LoginError from "@/components/LoginError";
+import Image from 'next/image'
 
 interface Post {
     title: string;
@@ -21,7 +23,8 @@ function PostPage(): JSX.Element {
     const [error, setError] = useState<string | null>(null);
     const [post, setPost] = useState<Post>({title: "", content: "", author: "", date: null, imageUrl: "", _id: ""});
     const [editing, setEditing] = useState<boolean>(false);
-    const { id } = useParams();
+    const router = useRouter()
+    const { id } = router.query;
 
     const [userId, setUserId] = useState(null);
 
@@ -206,7 +209,7 @@ function PostPage(): JSX.Element {
 
                     {post ? (
                         post.imageUrl ? (
-                            <img src={post.imageUrl} className="w-full p-10" />
+                            <Image alt={post.imageUrl} src={post.imageUrl} className="w-full p-10" />
                         ) : (
                             ""
                         )
