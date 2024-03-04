@@ -13,14 +13,21 @@ interface FormData {
 }
 
 function CreatePostPage(): JSX.Element {
-    const ls = localStorage.getItem("user");
-    const author: string = ls ? JSON.parse(ls).username : "";
+  const author = () => {
+    if (typeof window !== 'undefined') {
+      const ls = localStorage.getItem("user");
+      return ls ? JSON.parse(ls).username : "";
+    }
+    return "";
+  }
+    /* const ls = localStorage.getItem("user");
+    const author: string = ls ? JSON.parse(ls).username : ""; */
   
     // Initialize the image file as null
     let [form, setForm] = useState<FormData>({
       title: "",
       content: "",
-      author,
+      author: author(),
       date: new Date(),
       imageUrl: "",
     });
