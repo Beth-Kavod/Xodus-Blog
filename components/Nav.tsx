@@ -1,3 +1,4 @@
+"use client"
 import "@/assets/css/output.css";
 import Link from "next/link";
 import useNavigate  from 'next/navigation'
