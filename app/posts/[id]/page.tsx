@@ -8,6 +8,7 @@ import Link from 'next/link'
 import Voting from "@/components/Voting";
 import LoginError from "@/components/LoginError";
 import Image from 'next/image'
+import useLocalStorage from "@/utils/useLocalStorage";
 
 interface Post {
     title: string;
@@ -23,10 +24,10 @@ function PostPage(): JSX.Element {
     const [error, setError] = useState<string | null>(null);
     const [post, setPost] = useState<Post>({title: "", content: "", author: "", date: null, imageUrl: "", _id: ""});
     const [editing, setEditing] = useState<boolean>(false);
+    const [userId, setUserId] = useLocalStorage<string>("user", "");
     const router = useRouter()
     const { id } = router.query;
 
-    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         // Retrieve the user ID from localStorage and store it in state.
@@ -35,7 +36,7 @@ function PostPage(): JSX.Element {
             const userId = JSON.parse(user).id;
             setUserId(userId);
         }
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         const fetchData = async () => {

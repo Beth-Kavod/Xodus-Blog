@@ -1,8 +1,9 @@
 "use client"
 import "@/assets/css/output.css";
+import useLocalStorage from "@/utils/useLocalStorage";
 import Link from "next/link";
 import { useRouter }  from 'next/router'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface User {
     username: String;
@@ -10,10 +11,14 @@ interface User {
 }
 
 function Navbar() {
-    const ls = localStorage.getItem("user");
-    const user: User = ls ? JSON.parse(ls) : null;
+    const [user, setUser] = useLocalStorage<User | null>("user", null)
     const [search, setSearch] = useState<string>("");
     const router = useRouter();
+    
+    useEffect(() => {
+        const ls = localStorage.getItem("user");
+        setUser(ls ? JSON.parse(ls) : null)
+    }, [router])
 
     const handleSubmit = (event: any) => {
         event.prevent.default()

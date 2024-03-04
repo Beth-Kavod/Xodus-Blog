@@ -18,7 +18,7 @@ function CreatePostPage(): JSX.Element {
     useEffect(() => {
       const ls = localStorage.getItem("user");
       setAuthor(ls ? JSON.parse(ls).username : "")
-    }, [])
+    }, [setAuthor])
 
   
     // Initialize the image file as null

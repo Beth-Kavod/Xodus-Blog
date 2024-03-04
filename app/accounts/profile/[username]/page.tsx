@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Post from "@/components/Post";
 import Link from 'next/link'
 import Image from 'next/image'
+import useLocalStorage from '@/utils/useLocalStorage'
 
 interface User {
     username: string;
@@ -35,7 +36,7 @@ function ProfilePage(): JSX.Element {
     const [size, setSize] = useState<number>(10)
     const [isSelf, setSelf] = useState<boolean>(false);
     const [avatar, setAvatar] = useState<string>("");
-    const [userId, setUserId] = useState("");
+    const [userId, setUserId] = useLocalStorage<string>("user", "")
     const router = useRouter()
     const { username } = router.query
 
