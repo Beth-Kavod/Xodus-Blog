@@ -26,7 +26,7 @@ export const POST = async (request) => {
       })
     }
 
-    const hashedPassword = hash(password)
+    const hashedPassword = await hash(password)
 
     const newUser = await User.create({
       username: username, 
@@ -45,7 +45,7 @@ export const POST = async (request) => {
   } catch(error) {
     return NextResponse.json({
       success: false,
-      message: `Failed created user`,
+      message: `Failed creating user`,
       error: error
     }, {
       status: 500
