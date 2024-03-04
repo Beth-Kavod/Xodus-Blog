@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { getUserWithID, isValid_id } from '@/utils/routeMethods.js'
+import { isValid_id } from '@/utils/routeMethods.js'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
@@ -13,9 +13,10 @@ import Comment from '@/models/Comment'
 export const GET = async (request, { params }) => {
   const postID = params.id
 
-  if (!await isValid_id(postID, Post)) return false
   
   try {
+    await isValid_id(postID, Post)
+    
     await Comment
     .find({
       postID: postID
