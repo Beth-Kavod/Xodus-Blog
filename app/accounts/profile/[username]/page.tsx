@@ -8,6 +8,7 @@ import Post from "@/components/Post";
 import Link from 'next/link'
 import Image from 'next/image'
 import useLocalStorage from '@/utils/useLocalStorage'
+import { Suspense } from "react";
 
 interface User {
     username: string;
@@ -133,116 +134,118 @@ function ProfilePage(): JSX.Element {
     };
 
     return (
-        <div className="h-screen">
-            <Nav />
-            <div className="w-full flex justify-center">
-                <div className="h-fit min-h-screen w-2/3 border-x border-light-border">
-                    {/* Render the users profile information */}
-                    <div className="w-full h-fit p-10 flex items-center">
-                        <div className="flex flex-col w-1/6">
-                            <Image
-                                src={
-                                    user?.avatar
-                                        ? avatar
-                                        : "https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account-thumbnail.jpg"
-                                }
-                                alt="User avatar"
-                                className="w-40 h-40 shadow-gray-400 shadow-sm rounded-md"
-                            />
-                            {isSelf ? (
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="text-xs py-3"
-                                    onChange={updateAvatar}
+        <Suspense fallback={<div>Loading...</div>}>
+            <div className="h-screen">
+                <Nav />
+                <div className="w-full flex justify-center">
+                    <div className="h-fit min-h-screen w-2/3 border-x border-light-border">
+                        {/* Render the users profile information */}
+                        <div className="w-full h-fit p-10 flex items-center">
+                            <div className="flex flex-col w-1/6">
+                                <Image
+                                    src={
+                                        user?.avatar
+                                            ? avatar
+                                            : "https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account-thumbnail.jpg"
+                                    }
+                                    alt="User avatar"
+                                    className="w-40 h-40 shadow-gray-400 shadow-sm rounded-md"
                                 />
-                            ) : (
-                                ""
-                            )}
-                        </div>
-                        <h1 className="text-2xl px-10">
-                            {user ? user.username : "Loading"}
-                            <span className="text-xs">
+                                {isSelf ? (
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="text-xs py-3"
+                                        onChange={updateAvatar}
+                                    />
+                                ) : (
+                                    ""
+                                )}
+                            </div>
+                            <h1 className="text-2xl px-10">
+                                {user ? user.username : "Loading"}
+                                <span className="text-xs">
+                                    <br />
+                                    {user
+                                        ? user._id
+                                            ? ` #${user._id}`
+                                            : ""
+                                        : ""}
+                                </span>
                                 <br />
-                                {user
-                                    ? user._id
-                                        ? ` #${user._id}`
-                                        : ""
-                                    : ""}
-                            </span>
-                            <br />
-                            <span className="text-sm">
-                                {user ? user.email : "Loading"}
-                            </span>
-                        </h1>
-                    </div>
+                                <span className="text-sm">
+                                    {user ? user.email : "Loading"}
+                                </span>
+                            </h1>
+                        </div>
 
-                    {/* Render the users posts */}
-                    <h1 className="text-2xl p-8"> {user?.username}&#39;s Posts </h1>
-                    <p className="px-8 pb-4 font-light"> {totalPosts} Posts </p>
-                    <div className="divide-y divide-light-border border-y border-light-border">
-                        {posts.map((post) => (
-                            <div className="w-full h-fit" key={post._id}>
-                                <div className="w-full flex justify-between items-center px-8 py-4">
-                                    <Link
-                                        href={"/posts/" + post._id}
-                                        title="View post"
-                                        className="text-xl text-light-theme-green hover:text-light-theme-green-active transition-all"
-                                    >
-                                        {post.title}
-                                    </Link>
-                                    <span className="text-xs px-1 font-light text-black">
-                                        {post.date.toLocaleDateString()}
-                                    </span>
+                        {/* Render the users posts */}
+                        <h1 className="text-2xl p-8"> {user?.username}&#39;s Posts </h1>
+                        <p className="px-8 pb-4 font-light"> {totalPosts} Posts </p>
+                        <div className="divide-y divide-light-border border-y border-light-border">
+                            {posts.map((post) => (
+                                <div className="w-full h-fit" key={post._id}>
+                                    <div className="w-full flex justify-between items-center px-8 py-4">
+                                        <Link
+                                            href={"/posts/" + post._id}
+                                            title="View post"
+                                            className="text-xl text-light-theme-green hover:text-light-theme-green-active transition-all"
+                                        >
+                                            {post.title}
+                                        </Link>
+                                        <span className="text-xs px-1 font-light text-black">
+                                            {post.date.toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                    <div className="flex w-full items-center justify-between px-8 pb-4">
+                                        <p className="text-sm font-light whitespace-nowrap overflow-x-hidden overflow-ellipsis">
+                                            {post.content}
+                                        </p>
+                                        <p className="text-xs font-light shrink-0 w-fit">
+                                            {post.imageUrl ? "1 attachment..." : ""}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="flex w-full items-center justify-between px-8 pb-4">
-                                    <p className="text-sm font-light whitespace-nowrap overflow-x-hidden overflow-ellipsis">
-                                        {post.content}
-                                    </p>
-                                    <p className="text-xs font-light shrink-0 w-fit">
-                                        {post.imageUrl ? "1 attachment..." : ""}
-                                    </p>
+                            ))}
+                        </div>
+                        <div className="w-full flex flex-col items-center justify-center">
+                            <div className="flex justify-between items-center text-sm w-full">
+                                <div className="w-fit text-xs px-5 py-3 flex items-center">
+                                <button
+                                    onClick={() => setPage(page - 1)}
+                                    disabled={page <= 1}
+                                    className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
+                                >
+                                    Previous page
+                                </button>
+
+                                <p className="px-2">
+                                    {page}
+                                    /
+                                    {pageCount}
+                                </p>
+
+                                <button
+                                    onClick={() => setPage(page + 1)}
+                                    disabled={page >= pageCount}
+                                    className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
+                                >
+                                    Next page
+                                </button>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="w-full flex flex-col items-center justify-center">
-                        <div className="flex justify-between items-center text-sm w-full">
-                            <div className="w-fit text-xs px-5 py-3 flex items-center">
-                            <button
-                                onClick={() => setPage(page - 1)}
-                                disabled={page <= 1}
-                                className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
-                            >
-                                Previous page
-                            </button>
 
-                            <p className="px-2">
-                                {page}
-                                /
-                                {pageCount}
-                            </p>
-
-                            <button
-                                onClick={() => setPage(page + 1)}
-                                disabled={page >= pageCount}
-                                className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
-                            >
-                                Next page
-                            </button>
-                            </div>
-
-                            <div className="text-xs px-5">
-                                <button onClick={() => setSize(10)} className={size == 10 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 10 </button>
-                                <button onClick={() => setSize(15)} className={size == 15 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 15 </button>
-                                <button onClick={() => setSize(25)} className={size == 25 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 25 </button>
+                                <div className="text-xs px-5">
+                                    <button onClick={() => setSize(10)} className={size == 10 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 10 </button>
+                                    <button onClick={() => setSize(15)} className={size == 15 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 15 </button>
+                                    <button onClick={() => setSize(25)} className={size == 25 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 25 </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <Footer />
             </div>
-            <Footer />
-        </div>
+        </Suspense>
     );
 }
 

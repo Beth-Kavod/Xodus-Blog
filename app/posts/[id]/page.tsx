@@ -9,6 +9,7 @@ import Voting from "@/components/Voting";
 import LoginError from "@/components/LoginError";
 import Image from 'next/image'
 import useLocalStorage from "@/utils/useLocalStorage";
+import { Suspense } from "react";
 
 interface Post {
     title: string;
@@ -170,79 +171,81 @@ function PostPage(): JSX.Element {
     };
 
     return (
-        <div>
-            <Nav />
-            <div className="w-full flex justify-center">
-                <div className="h-fit min-h-screen w-2/3 border-x border-light-border">
-                    <div className="w-full">
-                        <div className="flex items-center">
-                            {error && (
-                                <LoginError
-                                    styles={"mx-32"}
-                                    message={error}
-                                    onClose={() => setError(null)}
+        <Suspense fallback={<div>Loading...</div>}>
+            <div>
+                <Nav />
+                <div className="w-full flex justify-center">
+                    <div className="h-fit min-h-screen w-2/3 border-x border-light-border">
+                        <div className="w-full">
+                            <div className="flex items-center">
+                                {error && (
+                                    <LoginError
+                                        styles={"mx-32"}
+                                        message={error}
+                                        onClose={() => setError(null)}
+                                    />
+                                )}
+                                <Voting
+                                    voteCount={voteCount || 0}
+                                    addVote={addVote}
+                                    removeVote={addVote}
                                 />
-                            )}
-                            <Voting
-                                voteCount={voteCount || 0}
-                                addVote={addVote}
-                                removeVote={addVote}
-                            />
-                            <h1 className="p-20 px-10 text-4xl">
-                                {post ? post.title : "Loading..."}
-                            </h1>
-                            <div className="w-fit px-5 ml-auto flex flex-col items-center justify-center">
-                                {renderEditButton()}
-                                {renderDeleteButton()}
+                                <h1 className="p-20 px-10 text-4xl">
+                                    {post ? post.title : "Loading..."}
+                                </h1>
+                                <div className="w-fit px-5 ml-auto flex flex-col items-center justify-center">
+                                    {renderEditButton()}
+                                    {renderDeleteButton()}
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between border-b border-light-border">
+                                <Link
+                                    href={"/accounts/profile/" + post?.author}
+                                    title={"View " + post?.author + "'s profile"}
+                                    className="p-20 py-5 text-md text-light-theme-green"
+                                >
+                                    {post ? post.author : "Loading..."}
+                                </Link>
                             </div>
                         </div>
-                        <div className="flex items-center justify-between border-b border-light-border">
-                            <Link
-                                href={"/accounts/profile/" + post?.author}
-                                title={"View " + post?.author + "'s profile"}
-                                className="p-20 py-5 text-md text-light-theme-green"
-                            >
-                                {post ? post.author : "Loading..."}
-                            </Link>
-                        </div>
-                    </div>
 
-                    {post ? (
-                        post.imageUrl ? (
-                            <Image alt={post.imageUrl} src={post.imageUrl} className="w-full p-10" />
+                        {post ? (
+                            post.imageUrl ? (
+                                <Image alt={post.imageUrl} src={post.imageUrl} className="w-full p-10" />
+                            ) : (
+                                ""
+                            )
                         ) : (
                             ""
-                        )
-                    ) : (
-                        ""
-                    )}
-
-                    <div className="flex items-center justify-center w-full h-fit my-10">
-                        {editing ? (
-                            <>
-                                <textarea
-                                    onChange={updateContent}
-                                    className="p-2 border border-light-border h-[500px] w-5/6 resize-none text-lg whitespace-pre-line"
-                                    value={post ? post.content : "Loading"}
-                                />
-                                <button
-                                    onClick={editPost}
-                                    className="text-sm px-2 py-1 mx-2 rounded-lg text-green-600 hover:bg-green-200 transition-all"
-                                >
-                                    Edit Post
-                                </button>
-                            </>
-                        ) : (
-                            <p className="p-2 w-5/6 text-lg whitespace-pre-line">
-                                {post ? post.content : "Loading..."}
-                            </p>
                         )}
+
+                        <div className="flex items-center justify-center w-full h-fit my-10">
+                            {editing ? (
+                                <>
+                                    <textarea
+                                        onChange={updateContent}
+                                        className="p-2 border border-light-border h-[500px] w-5/6 resize-none text-lg whitespace-pre-line"
+                                        value={post ? post.content : "Loading"}
+                                    />
+                                    <button
+                                        onClick={editPost}
+                                        className="text-sm px-2 py-1 mx-2 rounded-lg text-green-600 hover:bg-green-200 transition-all"
+                                    >
+                                        Edit Post
+                                    </button>
+                                </>
+                            ) : (
+                                <p className="p-2 w-5/6 text-lg whitespace-pre-line">
+                                    {post ? post.content : "Loading..."}
+                                </p>
+                            )}
+                        </div>
+                        <CommentList id={post ? post._id : ""} />
                     </div>
-                    <CommentList id={post ? post._id : ""} />
                 </div>
+                <Footer />
             </div>
-            <Footer />
-        </div>
+        </Suspense>
     );
 }
 
