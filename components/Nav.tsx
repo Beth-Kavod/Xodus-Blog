@@ -42,7 +42,7 @@ function Navbar() {
     };
 
     const toHome = () => {
-        router.push("/posts")
+        router.push("/")
     };
 
     return (

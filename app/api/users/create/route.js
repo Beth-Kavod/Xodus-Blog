@@ -42,7 +42,7 @@ export const POST = async (request) => {
       message: `Successfully created user`,
       data: newUser
     })
-  } catch(err) {
+  } catch(error) {
     return NextResponse.json({
       success: false,
       message: `Failed created user`,

@@ -2,7 +2,7 @@
 import "@/assets/css/output.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Post from "@/components/Post";
 import Link from 'next/link'
@@ -37,8 +37,8 @@ function ProfilePage(): JSX.Element {
     const [isSelf, setSelf] = useState<boolean>(false);
     const [avatar, setAvatar] = useState<string>("");
     const [userId, setUserId] = useLocalStorage<string>("user", "")
-    const router = useRouter()
-    const { username } = router.query
+    const pathname = usePathname()
+    const username = pathname.split("/").pop();
 
     useEffect(() => {
         // Retrieve the user ID from localStorage
@@ -47,6 +47,7 @@ function ProfilePage(): JSX.Element {
             const requestingID = user.id;
             setUserId(requestingID);
         }
+        console.log(username)
     }, [])
 
     useEffect(() => {
