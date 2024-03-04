@@ -1,6 +1,6 @@
 "use client"
 import "@/assets/css/output.css"
-import { SyntheticEvent, useState } from "react"
+import { SyntheticEvent, useState, useEffect } from "react"
 import Navbar from "@/components/Nav";
 import Footer from "@/components/Footer";
 
@@ -13,21 +13,17 @@ interface FormData {
 }
 
 function CreatePostPage(): JSX.Element {
-  const author = () => {
-    if (typeof window !== 'undefined') {
+    const [author, setAuthor] = useState<string>("")
+    useEffect(() => {
       const ls = localStorage.getItem("user");
-      return ls ? JSON.parse(ls).username : "";
-    }
-    return "";
-  }
-    /* const ls = localStorage.getItem("user");
-    const author: string = ls ? JSON.parse(ls).username : ""; */
+      setAuthor(ls ? JSON.parse(ls).username : "")
+    }, [])
   
     // Initialize the image file as null
     let [form, setForm] = useState<FormData>({
       title: "",
       content: "",
-      author: author(),
+      author,
       date: new Date(),
       imageUrl: "",
     });
