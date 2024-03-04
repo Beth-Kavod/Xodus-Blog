@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom'
-import "../assets/css/output.css";
+import Link from 'next/link'
+import "@/assets/css/output.css";
 import Voting from "./Voting";
 import LoginError from "./LoginError";
 
@@ -98,7 +98,7 @@ function Comment(props: Props): JSX.Element {
             
             <div className="w-full">
                 <div className="flex text-xs items-center justify-between">
-                    <Link to={"/accounts/profile/" + props.comment.author} title={"View " + props.comment.author + "'s profile"}  className="text-light-theme-green py-2">
+                    <Link href={"/accounts/profile/" + props.comment.author} title={"View " + props.comment.author + "'s profile"}  className="text-light-theme-green py-2">
                         {" "}{props.comment.author} ({props.comment.date.toLocaleDateString()}){" "}
                     </Link>
                     {isEditing ? ( // Conditional rendering based on isEditing state

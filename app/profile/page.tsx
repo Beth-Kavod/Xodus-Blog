@@ -4,7 +4,8 @@ import Footer from "../components/Footer";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Post from "../components/Post";
-import { Link } from "react-router-dom";
+import Link from 'next/link'
+
 
 interface User {
     username: string;
@@ -181,7 +182,7 @@ function ProfilePage(): JSX.Element {
                             <div className="w-full h-fit" key={post._id}>
                                 <div className="w-full flex justify-between items-center px-8 py-4">
                                     <Link
-                                        to={"/posts/" + post._id}
+                                        href={"/posts/" + post._id}
                                         title="View post"
                                         className="text-xl text-light-theme-green hover:text-light-theme-green-active transition-all"
                                     >

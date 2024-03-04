@@ -1,5 +1,5 @@
 import "../assets/css/output.css";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 interface Props {
     id: string;
@@ -16,14 +16,14 @@ function Post(props: Props): JSX.Element {
         <div className="w-full h-fit">
             <div className="w-full flex justify-between items-center px-8 py-4">
                 <Link
-                    to={"/posts/" + props.id}
+                    href={"/posts/" + props.id}
                     title="View post"
                     className="text-xl text-light-theme-green hover:text-light-theme-green-active transition-all overflow-x-hidden overflow-ellipsis whitespace-nowrap"
                 >
                     {props.title}
                 </Link>
                 <p className="text-sm text-light-theme-green">
-                    <Link to={"/accounts/profile/" + props.author} title={"View " + props.author + "'s profile"}>
+                    <Link href={"/accounts/profile/" + props.author} title={"View " + props.author + "'s profile"}>
                         {props.author} 
                     </Link>
                     <span className="text-xs px-1 font-light text-black">

@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import LoginError from "./LoginError";
 
 function CreateAccountForm () {
@@ -139,7 +139,7 @@ function CreateAccountForm () {
                     
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Already have an account?
-                        <Link to="/accounts/login" className="font-semibold leading-6 text-[#0f6313] hover:text-[#0f6313] ml-3">Login</Link>
+                        <Link href="/accounts/login" className="font-semibold leading-6 text-[#0f6313] hover:text-[#0f6313] ml-3">Login</Link>
                     </p>
 
                 </div>

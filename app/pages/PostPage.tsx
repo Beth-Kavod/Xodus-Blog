@@ -1,10 +1,10 @@
-import Nav from "../components/Nav";
-import Footer from "../components/Footer";
-import CommentList from "../components/CommentList";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import CommentList from "@/components/CommentList";
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import Voting from "../components/Voting";
-import LoginError from "../components/LoginError";
+import Link from 'next/link'
+import Voting from "@/components/Voting";
+import LoginError from "@/components/LoginError";
 
 interface Post {
     title: string;
@@ -37,7 +37,7 @@ function PostPage(): JSX.Element {
         const fetchData = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:4000/posts/get-post/${id}`
+                    `/api/posts/get-post/${id}`
                 );
                 // ! FIX THIS TO SEND NO POST TO CLIENT, PAGE WILL LOAD INDEFINITELY
                 if (res.status === 404) {
@@ -60,7 +60,7 @@ function PostPage(): JSX.Element {
         }
 
         try {
-            let res = await fetch(`http://localhost:4000/votes/post/${id}?userID=${userId}`, {
+            let res = await fetch(`/api/votes/post/${id}?userID=${userId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -81,7 +81,7 @@ function PostPage(): JSX.Element {
     const deletePost = async () => {
         try {
             await fetch(
-                `http://localhost:4000/posts/delete-post/${id}?userID=${userId}`,
+                `/api/posts/delete-post/${id}?userID=${userId}`,
                 {
                     method: "POST",
                     headers: {
@@ -99,7 +99,7 @@ function PostPage(): JSX.Element {
     const editPost = async () => {
         try {
             await fetch(
-                `http://localhost:4000/posts/edit-post/${id}?userID=${userId}`,
+                `/api/posts/edit-post/${id}?userID=${userId}`,
                 {
                     method: "POST",
                     headers: {
@@ -194,7 +194,7 @@ function PostPage(): JSX.Element {
                         </div>
                         <div className="flex items-center justify-between border-b border-light-border">
                             <Link
-                                to={"/accounts/profile/" + post?.author}
+                                href={"/accounts/profile/" + post?.author}
                                 title={"View " + post?.author + "'s profile"}
                                 className="p-20 py-5 text-md text-light-theme-green"
                             >

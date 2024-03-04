@@ -1,5 +1,6 @@
 import "../assets/css/output.css";
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import useNavigate  from 'next/navigate'
 import { useState } from "react";
 
 interface User {
@@ -48,7 +49,7 @@ function Navbar() {
             </button>
 
             <Link
-                to={user ? "/posts/create" : "/accounts/login"}
+                href={user ? "/posts/create" : "/accounts/login"}
                 className="text-sm mx-2 px-3 py-1.5 rounded-lg text-light-theme-green hover:bg-green-100 hover:text-light-theme-green-active"
             >
                 New Post
@@ -81,7 +82,7 @@ function Navbar() {
                     </div>
                 ) : (
                     <Link
-                        to="/accounts/login"
+                        href="/accounts/login"
                         className="hover:underline hover:underline-offset-2 transition-all"
                     >
                         Login

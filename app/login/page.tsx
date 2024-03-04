@@ -1,6 +1,6 @@
-import Nav from "../components/Nav";
-import LoginForm from "../components/LoginForm"; 
-import "../assets/css/output.css"
+import Nav from "@/components/Nav";
+import LoginForm from "@/components/LoginForm"; 
+import "@/assets/css/output.css"
 
 function LoginPage (): JSX.Element {
     return (

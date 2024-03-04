@@ -1,5 +1,5 @@
 import "../assets/css/output.css";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useState, useMemo } from "react";
 import LoginError from "./LoginError";
 
@@ -112,7 +112,7 @@ function LoginForm() {
                 <p className="mt-10 text-center text-sm text-gray-500">
                     Don't have an account?
                     <Link
-                        to="/accounts/create"
+                        href="/accounts/create"
                         className="font-semibold leading-6 text-light-theme-green ml-3 hover:text-light-theme-green-active transition-all"
                     >
                         Create One!

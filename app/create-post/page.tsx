@@ -1,7 +1,7 @@
-import "../assets/css/output.css"
+import "@/assets/css/output.css"
 import { SyntheticEvent, useState } from "react"
-import Navbar from "../components/Nav";
-import Footer from "../components/Footer";
+import Navbar from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 interface FormData {
     title: string,
