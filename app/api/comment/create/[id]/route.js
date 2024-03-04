@@ -5,6 +5,7 @@ import { isValid_id } from '@/utils/routeMethods.js'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
+import Post from '@/models/Post'
 import Comment from '@/models/Comment'
 
 /* -------------------------------------------------------------------------- */
@@ -12,13 +13,13 @@ import Comment from '@/models/Comment'
 /* ------------------------------ Make comment ------------------------------ */
 
 export const POST = async (request, { params }) => {
-  const postID = params.id
-
-  if (!await isValid_id(postID, Post)) return false
-
-  request.body.content = filter.clean(request.body.content);
-
   try {
+    const postID = params.id
+
+    request.body.content = filter.clean(request.body.content);
+    
+    await isValid_id(postID, Post)
+
     await Comment
     .create({
       ...request.body,

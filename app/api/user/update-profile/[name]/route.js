@@ -10,21 +10,24 @@ const User = require('@/models/User')
 
 /* -------------------- Update users profile information -------------------- */
 // ! NOT FINISHED, UPDATING PROFILE NOT USEFUL
-router.post("/update-profile/:name", async (req, res, next) => {
-  const name = req.params.name
-  const userID = req.query.userID
-
-  const user = await getUserWithID(res, userID)
-  // ! ADD MORE FIELDS LATER
-  const { email } = req.body
-
+export const POST = async (request, { params }) => {
   try {
+    const name = params.name
+    const searchParams = request.nextUrl.searchParams
+    const userID = searchParams.get("userID")
+
+    const user = await getUserWithID(res, userID)
+    // ! ADD MORE FIELDS LATER
+    const { email } = req.body
+
 
     if (name !== user.username && !user.admin) {
-      res.status(403).json({
+      return NextResponse.json({
+        success: true,
         message: `User ${name}, not able to edit ${user.username}'s profile`
+      }, {
+        status: 403
       })
-      return false
     }
 
     await User
@@ -34,16 +37,29 @@ router.post("/update-profile/:name", async (req, res, next) => {
         {new: true}
       )
       .then(result => {
-        if (!result) return res.status(404).json({ 
+        if (!result) return NextResponse.json({
+          success: false,
           message: `No user found with the username ${user.username}`
+        }, {
+          status: 404
         })
-        
-        res.status(200).json({
+
+        return NextResponse.json({
+          success: true,
           message: `User ${result.username} found and updated`, 
+          data: data
+        }, {
           status: 200
         })
       }) 
-  } catch (err) {
-    return next(err)
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      message: `Failed to update profile`,
+      errorMessage: error.message,
+      error: error
+    }, {
+      status: 500
+    })
   }
-})
+}

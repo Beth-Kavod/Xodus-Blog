@@ -3,7 +3,7 @@ import { getUserWithID, countVotes, isValid_id, isDuplicate } from "@/utils/rout
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
-let Post = require("@/models/Post.js")
+import Post from "@/models/Post.js"
 
 /* ---------------------------- Post vote on post --------------------------- */
 
@@ -15,14 +15,19 @@ export const POST = async (request, { params }) => {
 
     const { author, vote } = req.body
 
-    if (!(await isValid_id(postID, Post))) return false
-    if (await isDuplicate(postID, author)) return true
-
+    await isValid_id(postID, Post)
+    if (await isDuplicate(postID, author)) return NextResponse.json({
+      success: true,
+      message: `Updated vote on post: ${postID}`
+    }, {
+      status: 200
+    })
+    
     const user = await getUserWithID(userID);
-
+    
     if (!user) {
       return NextResponse.json({
-        success: true,
+        success: false,
         message: "You must be logged in to cast a vote"
       }, {
         status: 403
@@ -60,12 +65,3 @@ export const POST = async (request, { params }) => {
     })
   }
 }
-
-
-
-
-
-
-/* -------------------------------------------------------------------------- */
-  
-module.exports = router

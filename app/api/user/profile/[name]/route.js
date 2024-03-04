@@ -35,16 +35,18 @@ export const GET = async (request, { params }) => {
             status: 200
           })
         } else {
-          res.status(200).json({
+          return NextResponse.json({
+            success: true,
             user: {
               username,
               admin, 
               avatar, 
               createdAt,
             },
-            message: `User ${user.username} found`, 
+            message: `User ${user.username} found`
+          }, {
+            status: 200
           })
-          return
         }
       }) 
   } catch(error) {

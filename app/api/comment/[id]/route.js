@@ -11,10 +11,9 @@ import Comment from '@/models/Comment'
 /* ------------------------ Get all Comments on post ------------------------ */
 
 export const GET = async (request, { params }) => {
-  const postID = params.id
-
-  
   try {
+    const postID = params.id
+  
     await isValid_id(postID, Post)
     
     await Comment
@@ -42,6 +41,5 @@ export const GET = async (request, { params }) => {
     }, {
       status: 500
     })
-    
   }
 }

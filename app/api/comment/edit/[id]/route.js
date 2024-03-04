@@ -12,15 +12,15 @@ import Comment from '@/models/Comment'
 /* ------------------------------ Edit comment ------------------------------ */
 
 export const POST = async (request, { params }) => {
-  const commentID = params.id
-  const searchParams = request.nextUrl.searchParams
-  const userID = searchParams.get("userID")
-
-  const user = await getUserWithID(userID)
-
-  if (!await isValid_id(commentID, Comment)) return false
-
   try {
+    const commentID = params.id
+    const searchParams = request.nextUrl.searchParams
+    const userID = searchParams.get("userID")
+
+    const user = await getUserWithID(userID)
+
+    await isValid_id(commentID, Comment)
+
     const comment = await Comment.findById(commentID)
 
     if (user.username !== comment.author && !user.admin) {

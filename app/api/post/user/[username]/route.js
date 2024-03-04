@@ -8,12 +8,12 @@ import Post from '@/models/Post'
 /* ------------------------ Get all of a users posts ------------------------ */
 
 export const GET = async (request, { params }) => {
-  const username = params.username;
-  const searchParams = request.nextUrl.searchParams
-  const page = parseInt(searchParams.get("page")) || 1
-  const PAGE_SIZE = parseInt(searchParams.get("size"))
-
   try {
+    const username = params.username;
+    const searchParams = request.nextUrl.searchParams
+    const page = parseInt(searchParams.get("page")) || 1
+    const PAGE_SIZE = parseInt(searchParams.get("size"))
+
     const totalResults = await Post.countDocuments({ author: username })
 
     const results = await Post

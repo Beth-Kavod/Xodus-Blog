@@ -11,11 +11,11 @@ import Post from '@/models/Post'
 /* --------------------------- Get a post with _id -------------------------- */
 
 export const GET = async (request, { params }) => {
-  const postID = params.id
-
-  if (!await isValid_id(postID, Post)) return false
-  
   try {
+    const postID = params.id
+  
+    await isValid_id(postID, Post)
+    
     await Post
     .findById(postID)
     .then((result) => {

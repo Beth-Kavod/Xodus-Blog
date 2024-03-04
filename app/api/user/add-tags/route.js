@@ -43,7 +43,7 @@ export const POST = async (request) => {
       })
     }
 
-    await userSchema
+    await User
       .findOneAndUpdate(
         { username: name },
         { $addToSet: { tags: { $each: newTags } } },

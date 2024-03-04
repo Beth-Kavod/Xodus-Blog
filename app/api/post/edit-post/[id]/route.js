@@ -12,15 +12,15 @@ import Post from '@/models/Post'
 /* --------------------------- Edit post with _id --------------------------- */
 
 export const POST = async (request, { params }) => {
-  const postID = params.id
-  const searchParams = request.nextUrl.searchParams
-  const userID = searchParams.get("userID")
-
-  const user = await getUserWithID(userID)
-
-  if (!await isValid_id(postID, Post)) return false
-
   try {
+    const postID = params.id
+    const searchParams = request.nextUrl.searchParams
+    const userID = searchParams.get("userID")
+
+    const user = await getUserWithID(userID)
+  
+    await isValid_id(postID, Post)
+    
     const post = await Post.findById(postID);
     
     if (user.username !== post.author && !user.admin) {

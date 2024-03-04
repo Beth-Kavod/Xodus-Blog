@@ -54,9 +54,9 @@ function generateUserAuthID() {
 
 /* ------------------------ check for duplicate vote ------------------------ */
 
-async function isDuplicate(req, id, author) {
+async function isDuplicate(request, id, author) {
   let updatedDoc
-  let { vote } = req.body
+  let { vote } = request.body
 
   let newVote = { author, vote }
 

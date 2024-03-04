@@ -9,51 +9,31 @@ const User = require('@/models/User')
 /* ------------------------------- Delete user ------------------------------ */
 
 export const POST = async (request, { params }) => {
-  const searchParams = request.nextUrl.searchParams
-  const userAuthID = params.userAuthId
-  const userID = searchParams.get("userID")
-
-  let user = await getUserWithID(res, userID)
-
-  if (!user.admin) {
-    return NextResponse.json({
-      success: false,
-      message: `User ${user.username} not allowed to delete users`,
-      data: data
-    }, {
-      status: 403
-    })
-  }
-
   try {
-    const response = await fetch("http://54.176.161.136:8080/users/delete", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        applicationId: appId, 
-        ID: userAuthID
-      })
-    })
+    const searchParams = request.nextUrl.searchParams
+    const userAuthID = params.userAuthId
+    const userID = searchParams.get("userID")
 
-    const data = await response.json()
+    let user = await getUserWithID(userID)
 
-    if (data.status === 200) {
-      await User.deleteOne({userAuthID: userAuthID})
+    if (!user.admin) {
       return NextResponse.json({
-        success: true,
-        message: ``,
+        success: false,
+        message: `User ${user.username} not allowed to delete users`,
         data: data
       }, {
-        status: 200
-      })
-    } else {
-      res.status(500).json({
-        data,
-        message: `Something went wrong`
+        status: 403
       })
     }
+
+    await User.deleteOne({ userAuthID: userAuthID })
+    return NextResponse.json({
+      success: true,
+      message: `Successfully deleted user`,
+      data: data
+    }, {
+      status: 200
+    })
   } catch(error) {
     return NextResponse.json({
       success: false,

@@ -18,7 +18,7 @@ export const POST = async (request, { params }) => {
 
     const user = await getUserWithID(userID)
 
-    if (!await isValid_id(commentID, Comment)) return false
+    await isValid_id(commentID, Comment)
   
     const comment = await Comment.findById(commentID)
 
