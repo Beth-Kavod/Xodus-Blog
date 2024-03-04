@@ -1,7 +1,7 @@
 "use client"
 import "@/assets/css/output.css";
 import Link from "next/link";
-import useNavigate  from 'next/navigation'
+import { useRouter }  from 'next/router'
 import { useState } from "react";
 
 interface User {
@@ -13,11 +13,11 @@ function Navbar() {
     const ls = localStorage.getItem("user");
     const user: User = ls ? JSON.parse(ls) : null;
     const [search, setSearch] = useState<string>("");
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const handleSubmit = (event: any) => {
         event.prevent.default()
-        navigate(`/posts/search=${search}`);
+        router.push(`/posts/search=${search}`);
     };
 
     const handleInputChange = (event: any) => {
@@ -28,16 +28,16 @@ function Navbar() {
     const viewProfile = () => {
         const user = JSON.parse(localStorage.getItem("user") || '{ "username": "", id: "" }');
         const url = `/accounts/profile/${user.username}`;
-        navigate(url);
+        router.push(url);
     };
 
     const logout = () => {
         localStorage.removeItem("user");
-        navigate("/accounts/login")
+        router.push("/accounts/login")
     };
 
     const toHome = () => {
-        navigate("/posts")
+        router.push("/posts")
     };
 
     return (

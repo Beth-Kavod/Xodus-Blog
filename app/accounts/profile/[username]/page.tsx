@@ -103,7 +103,7 @@ function ProfilePage(): JSX.Element {
         formData.append("upload_preset", "Avatars");
 
         const response = await fetch(
-            `https://api.cloudinary.com/v1_1/dhh4hjypo/image/upload`,
+            `https://api.cloudinary.com/v1_1/djez6nvh7/image/upload`,
             {
                 method: "POST",
                 body: formData,
