@@ -118,7 +118,6 @@ async function isDuplicate(req, id, author) {
 async function isValid_id(id, schema) {
   const doc = await schema.findById(id);
   if (!doc) throw new Error;
-  return true;
 }
 
 /* ---------------------- Get a users auth with authID ---------------------- */
