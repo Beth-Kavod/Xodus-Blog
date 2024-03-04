@@ -1,3 +1,4 @@
+"use client"
 import { SyntheticEvent, useState } from "react";
 
 interface CommentObject {

@@ -1,3 +1,4 @@
+"use client"
 import "@/assets/css/output.css";
 import Link from "next/link";
 import { useState, useMemo } from "react";

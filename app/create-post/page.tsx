@@ -1,3 +1,4 @@
+"use client"
 import "@/assets/css/output.css"
 import { SyntheticEvent, useState } from "react"
 import Navbar from "@/components/Nav";

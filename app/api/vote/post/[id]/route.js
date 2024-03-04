@@ -1,7 +1,5 @@
-const express = require('express')
-const router = express.Router()
-
-let { getUserWithID, countVotes, isValid_id, isDuplicate } = require("./routeMethods.js")
+import { NextResponse } from 'next/server'
+import { getUserWithID, countVotes, isValid_id, isDuplicate } from "@/utils/routeMethods.js"
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
@@ -18,9 +16,9 @@ export const POST = async (request, { params }) => {
     const { author, vote } = req.body
 
     if (!(await isValid_id(postID, Post))) return false
-    if (await isDuplicate(req, postID, author)) return true
+    if (await isDuplicate(postID, author)) return true
 
-    const user = await getUserWithID(res, userID);
+    const user = await getUserWithID(userID);
 
     if (!user) {
       return NextResponse.json({

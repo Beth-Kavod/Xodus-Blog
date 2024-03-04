@@ -21,7 +21,7 @@ export const POST = async (request, { params }) => {
     if (!await isValid_id(commentID, Comment)) return false;
     if (await isDuplicate(req, commentID, author)) return true;
 
-    const user = await getUserWithID(res, userID)
+    const user = await getUserWithID(userID)
 
     if (!user) {
       return NextResponse.json({
