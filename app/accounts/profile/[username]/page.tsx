@@ -176,7 +176,7 @@ function ProfilePage(): JSX.Element {
                     </div>
 
                     {/* Render the users posts */}
-                    <h1 className="text-2xl p-8"> {user?.username}'s Posts </h1>
+                    <h1 className="text-2xl p-8"> {user?.username}&#39;s Posts </h1>
                     <p className="px-8 pb-4 font-light"> {totalPosts} Posts </p>
                     <div className="divide-y divide-light-border border-y border-light-border">
                         {posts.map((post) => (
