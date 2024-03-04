@@ -47,6 +47,8 @@ export const POST = async (request) => {
       success: false,
       message: `Failed created user`,
       error: error
+    }, {
+      status: 500
     })
   }
 }

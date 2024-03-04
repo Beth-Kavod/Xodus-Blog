@@ -1,3 +1,5 @@
+import bcrypt from "bcryptjs"
+
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
 import Post from '@/models/Post'

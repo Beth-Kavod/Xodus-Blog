@@ -3,7 +3,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CommentList from "@/components/CommentList";
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link'
 import Voting from "@/components/Voting";
 import LoginError from "@/components/LoginError";
@@ -25,9 +25,8 @@ function PostPage(): JSX.Element {
     const [post, setPost] = useState<Post>({title: "", content: "", author: "", date: null, imageUrl: "", _id: ""});
     const [editing, setEditing] = useState<boolean>(false);
     const [userId, setUserId] = useLocalStorage<string>("user", "");
-    const router = useRouter()
-    const { id } = router.query;
-
+    const pathname = usePathname()
+    const id = pathname.split("/").pop();
 
     useEffect(() => {
         // Retrieve the user ID from localStorage and store it in state.
