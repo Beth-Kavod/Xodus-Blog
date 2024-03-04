@@ -4,7 +4,7 @@ import { getUserWithID } from '@/utils/routeMethods.js'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
-const User = require('@/models/User')
+import User from '@/models/User'
 
 /* -------------------------------------------------------------------------- */
 

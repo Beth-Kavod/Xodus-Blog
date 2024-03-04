@@ -1,11 +1,11 @@
-const availableTags = require('@/data/tags')
+import availableTags from '@/data/tags'
 import { NextResponse } from 'next/server'
 
 import { getUserWithID } from '@/utils/routeMethods.js'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
-const User = require('@/models/User')
+import User from '@/models/User'
 
 /* ------------------------------ Get all users ----------------------------- */
 

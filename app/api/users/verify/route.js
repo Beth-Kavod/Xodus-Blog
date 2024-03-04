@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
-const User = require('@/models/User')
+import User from '@/models/User'
 
 /* -------------------------------------------------------------------------- */
 
