@@ -4,25 +4,32 @@ const postDB = require('@/connections/postDB')
 
 let postSchema = new Schema({
     author: {
-      type: String
+      type: String,
+      required: true
     }, 
     title: {
-      type: String
+      type: String,
+      required: true
     },
     content: {
-      type: String
+      type: String,
+      required: true
     },
     votes: {
-      type: Array
+      type: Array,
+      required: false
     },
     voteCount: {
-      type: Number
+      type: Number,
+      required: false
     },
     date: {
-      type: Date
+      type: Date,
+      required: true
     },
     imageUrl: {
-      type: String
+      type: String,
+      required: false
     }
 },{
     collection: 'posts',

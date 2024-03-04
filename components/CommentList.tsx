@@ -1,4 +1,4 @@
-import "../assets/css/output.css"
+import "@/assets/css/output.css"
 import Comment from "./Comment";
 import CreateComment from "./CreateComment";
 import { useEffect, useState } from "react";

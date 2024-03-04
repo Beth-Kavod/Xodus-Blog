@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-
-import { getUserWithID } from '@/utils/routeMethods.js'
+import bcrypt from 'bcryptjs'
+// import { hash } from '@/utils/routeMethods.js'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
@@ -13,23 +13,18 @@ const User = require('@/models/User')
 export const POST = async (request) => {
   try {
     const {username, password} = request.body
-    const response = await fetch("http://54.176.161.136:8080/users/verify", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        applicationId: appId, 
-        username: username, 
-        password: password
-      })
-    })
-    const data = await response.json()
-    // ! FIX HTTP STATUS CODE
+
+    const foundUser = User.find({ username: username })
+    if (!foundUser) throw new Error(`No user with name: ${username}`)
+
+    const passwordMatch = await bcrypt.compare(password, foundUser.password)
+
+    if (!passwordMatch) throw new Error("Wrong credentials")
+
     return NextResponse.json({
       success: true,
       message: `Successfully created user`,
-      data: data
+      data: foundUser
     }, {
       status: 200
     })

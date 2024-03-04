@@ -1,9 +1,9 @@
-import "../assets/css/output.css";
-import Nav from "../components/Nav";
-import Footer from "../components/Footer";
+import "@/assets/css/output.css";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Post from "../components/Post";
+import Post from "@/components/Post";
 import Link from 'next/link'
 
 

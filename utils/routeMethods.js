@@ -1,9 +1,9 @@
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
-// const voteSchema = require('../models/Vote')
-const postSchema = require('../models/Post')
-const commentSchema = require('../models/Comment')
-const userSchema = require('../models/User')
+// const voteSchema = require('@/models/Vote')
+const postSchema = require('@/models/Post')
+const commentSchema = require('@/models/Comment')
+const userSchema = require('@/models/User')
 
 /* ------------------------------- Count votes ------------------------------ */
 
@@ -20,6 +20,37 @@ function countVotes(data) {
   }
 
   return trueVotes - falseVotes;
+}
+
+/* ----------------------- Hash strings with bcryptjs ----------------------- */
+
+async function hash(input) {
+  const salt = await bcrypt.genSalt(10)
+
+  // Hash the input using the generated salt
+  const hashedOutput = await bcrypt.hash(input, salt)
+
+  return hashedOutput
+}
+
+/* ------------------- Generate users id for verification ------------------- */
+
+function generateUserAuthID() {
+  const getRandomChar = () => {
+    const characters = '0123456789ABCDEF'
+    const randomIndex = Math.floor(Math.random() * characters.length)
+    return characters[randomIndex]
+  }
+
+  const generateBlock = () => {
+    let block = ''
+    for (let i = 0; i < 6; i++) {
+      block += getRandomChar()
+    }
+    return block
+  }
+
+  return `${generateBlock()}-${generateBlock()}-${generateBlock()}-${generateBlock()}-${generateBlock()}-${generateBlock()}`
 }
 
 /* ------------------------ check for duplicate vote ------------------------ */
@@ -101,4 +132,4 @@ async function getUserWithID(userID) {
 
 /* -------------------------------------------------------------------------- */
 
-module.exports = { countVotes, isValid_id, isDuplicate, getUserWithID }
+module.exports = { countVotes, isValid_id, isDuplicate, getUserWithID, generateUserAuthID, hash }

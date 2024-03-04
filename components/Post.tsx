@@ -1,4 +1,4 @@
-import "../assets/css/output.css";
+import "@/assets/css/output.css";
 import Link from "next/link";
 
 interface Props {

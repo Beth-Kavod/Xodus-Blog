@@ -1,5 +1,5 @@
-import "../assets/css/main.css"
-import Navbar from "../components/Nav";
+import "@/assets/css/main.css"
+import Navbar from "@/components/Nav";
 
 function NotFoundPage (): JSX.Element {
     return (

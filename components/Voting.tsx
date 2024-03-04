@@ -1,6 +1,6 @@
 import UpvoteButton from "./UpvoteIcon";
 import DownvoteButton from "./DownvoteIcon";
-import "../assets/css/output.css";
+import "@/assets/css/output.css";
 
 interface Props {
   voteCount: number;

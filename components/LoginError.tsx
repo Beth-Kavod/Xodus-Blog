@@ -1,4 +1,4 @@
-import "../assets/css/output.css"
+import "@/assets/css/output.css"
 
 interface Props {
     message: String,

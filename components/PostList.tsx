@@ -1,4 +1,4 @@
-import "../assets/css/output.css"
+import "@/assets/css/output.css"
 import Post from "./Post";
 
 interface Post {

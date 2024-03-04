@@ -8,19 +8,28 @@ let userSchema = new Schema({
       required: true
     },
     userAuthID: {
-      type: String
+      type: String,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
     },
     email: {
-      type: String
+      type: String,
+      required: true
     },
     admin: {
-      type: Boolean
+      type: Boolean,
+      required: true
     },
     avatar: {
-      type: String
+      type: String,
+      required: false
     },
     tags: {
-      type: Array
+      type: Array,
+      required: false
     }
 },{
     collection: 'users',
