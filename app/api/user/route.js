@@ -1,28 +1,24 @@
-const express = require('express')
-const router = express.Router()
-import cloudinary from 'cloudinary'
-import filter from 'leo-profanity'
 import { NextResponse } from 'next/server'
 
 import { getUserWithID } from '@/utils/routeMethods.js'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
-const User = require('@/models/User')
+import User from '@/models/User'
 
 /* ------------------------------ Get all users ----------------------------- */
 
 export const GET = async (request) => {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const userID = searchParams("userID")
+    const userID = searchParams.get("userID")
+    
     let user
-  
     if (!userID) {
       user = { username: "newUser", id: "", admin: false }
     } else {
   
-      user = await getUserWithID(res, userID)
+      user = await getUserWithID(userID)
     }
 
     await User
@@ -49,7 +45,14 @@ export const GET = async (request) => {
           });
         }
       })
-  } catch (err) {
-    return next(err)
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      message: `Failed to get all users`,
+      errorMessage: error.message,
+      error: error
+    }, {
+      status: 500
+    })
   }
 }
