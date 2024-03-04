@@ -1,4 +1,4 @@
-"use client"
+/* "use client"
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -20,4 +20,4 @@ const RouterWrapper: React.FC = (children) => {
   return <>{children}</>;
 };
 
-export default RouterWrapper;
+export default RouterWrapper; */
