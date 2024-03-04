@@ -65,8 +65,7 @@ function CreateAccountForm () {
                 } else if (response.status === 409) {
                     setError(data.message)
                 } else {
-                    // window.alert("Could not create user!");
-                    setError(data.error);
+                    setError(data.errorMessage);
                 }
             } catch (err) {
                 console.error(err);

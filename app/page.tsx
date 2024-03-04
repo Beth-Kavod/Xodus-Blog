@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import PostList from "@/components/PostList";
 import { useState, useEffect } from "react";
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react'
 
 interface Post {
   title: string;
@@ -51,52 +52,54 @@ function ViewPosts(): JSX.Element {
   }, [search, page, size])
 
   return (
-    <div>
-      <Navbar />
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>
+        <Navbar />
 
-      <div className="w-full flex flex-col items-center justify-center">
-        <PostList posts={posts} data={data} search={search}/>
+        <div className="w-full flex flex-col items-center justify-center">
+          <PostList posts={posts} data={data} search={search}/>
 
-      <div className="flex justify-between items-center text-sm w-2/3 border-x border-t border-x-light-border">
-        <div className="w-fit text-xs px-5 py-3 flex items-center">
-          <button
-            onClick={() => setPage(page - 1)}
-            disabled={page <= 1}
-            className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
-          >
-            Previous page
-          </button>
+        <div className="flex justify-between items-center text-sm w-2/3 border-x border-t border-x-light-border">
+          <div className="w-fit text-xs px-5 py-3 flex items-center">
+            <button
+              onClick={() => setPage(page - 1)}
+              disabled={page <= 1}
+              className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
+            >
+              Previous page
+            </button>
 
-          <p className="px-2">
-            {page}
-              /
-            {pageCount}
-          </p>
+            <p className="px-2">
+              {page}
+                /
+              {pageCount}
+            </p>
 
-          <button
-            onClick={() => setPage(page + 1)}
-            disabled={page >= pageCount}
-            className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
-          >
-            Next page
-          </button>
-        </div>
-
-
-
-          <div className="text-xs px-5">
-            <button onClick={() => setSize(10)} className={size == 10 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 10 </button>
-            <button onClick={() => setSize(15)} className={size == 15 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 15 </button>
-            <button onClick={() => setSize(25)} className={size == 25 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 25 </button>
+            <button
+              onClick={() => setPage(page + 1)}
+              disabled={page >= pageCount}
+              className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
+            >
+              Next page
+            </button>
           </div>
+
+
+
+            <div className="text-xs px-5">
+              <button onClick={() => setSize(10)} className={size == 10 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 10 </button>
+              <button onClick={() => setSize(15)} className={size == 15 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 15 </button>
+              <button onClick={() => setSize(25)} className={size == 25 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 25 </button>
+            </div>
+          </div>
+
+          {/* /\ Buttons /\ */}
+
         </div>
 
-        {/* /\ Buttons /\ */}
-
+        <Footer />
       </div>
-
-      <Footer />
-    </div>
+    </Suspense>
   );
 }
 
