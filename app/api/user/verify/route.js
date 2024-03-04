@@ -14,7 +14,7 @@ export const POST = async (request) => {
   try {
     const {username, password} = request.body
 
-    const foundUser = User.find({ username: username })
+    const foundUser = User.findOne({ username: username })
     if (!foundUser) throw new Error(`No user with name: ${username}`)
 
     const passwordMatch = await bcrypt.compare(password, foundUser.password)

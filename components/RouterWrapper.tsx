@@ -9,7 +9,7 @@ export const useRouterNavigate = () => {
   };
 };
 
-const RouterWrapper: React.FC = ({ children }) => {
+const RouterWrapper: React.FC = (children) => {
   useEffect(() => {
     (window as any).useNavigate = useRouterNavigate();
     return () => {
