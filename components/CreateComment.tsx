@@ -1,5 +1,6 @@
 "use client"
 import { SyntheticEvent, useState } from "react";
+import { useRouter } from 'next/navigation'
 
 interface CommentObject {
     author: String;
@@ -14,6 +15,7 @@ interface Props {
 
 
 export default function CreateComment (props: Props): JSX.Element {
+    const router = useRouter()
     const ls = localStorage.getItem("user");
     const author: string = ls ? JSON.parse(ls).username : "";
 
@@ -38,7 +40,7 @@ export default function CreateComment (props: Props): JSX.Element {
                 body: JSON.stringify(comment)
             })
 
-            window.location.href = `/posts/${props.postID}`;
+            router.push(`/posts/${props.postID}`)
         } catch (err) {
             console.error(err);
         }

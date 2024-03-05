@@ -24,6 +24,7 @@ function LoginForm() {
             });
 
             const data = await response.json();
+            console.log(data)
 
             if (data.success) {
                 localStorage.setItem(
@@ -35,7 +36,7 @@ function LoginForm() {
                 );
                 console.log(data)
 
-                router.push("/posts");
+                router.push("/");
             } else if (data.errorMessage) {
                 setError(data.errorMessage);
             } else {

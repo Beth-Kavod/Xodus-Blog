@@ -3,7 +3,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CommentList from "@/components/CommentList";
 import { useState, useEffect } from "react";
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link'
 import Voting from "@/components/Voting";
 import LoginError from "@/components/LoginError";
@@ -26,6 +26,7 @@ function PostPage(): JSX.Element {
     const [post, setPost] = useState<Post>({title: "", content: "", author: "", date: null, imageUrl: "", _id: ""});
     const [editing, setEditing] = useState<boolean>(false);
     const [userId, setUserId] = useLocalStorage<string>("user", "");
+    const router = useRouter()
     const pathname = usePathname()
     const id = pathname.split("/").pop();
 
@@ -41,9 +42,7 @@ function PostPage(): JSX.Element {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch(
-                    `/api/posts/get-post/${id}`
-                );
+                const res = await fetch(`/api/posts/get-post/${id}`);
                 // ! FIX THIS TO SEND NO POST TO CLIENT, PAGE WILL LOAD INDEFINITELY
                 if (res.status === 404) {
                     throw new Error("No post found");
@@ -95,7 +94,7 @@ function PostPage(): JSX.Element {
                 }
             );
 
-            window.location.href = "/posts";
+            router.push("/")
         } catch (err) {
             console.error(err);
         }
