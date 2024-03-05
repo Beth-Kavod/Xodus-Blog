@@ -75,9 +75,7 @@ function PostPage(): JSX.Element {
 
     const deletePost = async () => {
         try {
-            await fetch(
-                `/api/posts/delete-post/${id}?userID=${user.id}`,
-                {
+            const deletePost = await fetch(`/api/posts/delete-post/${id}?userID=${user.id}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -85,7 +83,13 @@ function PostPage(): JSX.Element {
                 }
             );
 
-            router.push("/")
+            const response = await deletePost.json()
+            if (response.success) {
+                router.push("/")
+            } else {
+                setError(response.errorMessage)
+            }
+
         } catch (err) {
             console.error(err);
         }

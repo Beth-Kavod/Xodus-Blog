@@ -16,17 +16,15 @@ export const GET = async (request, { params }) => {
   
     await isValid_id(postID, Post)
     
-    await Post
-    .findById(postID)
-    .then((result) => {
-      return NextResponse.json({
-        success: true,
-        voteCount: result.voteCount,
-        message: "Post successfully fetched",
-        data: result
-      }, {
-        status: 200
-      })
+    const result = await Post.findById(postID)
+    
+    return NextResponse.json({
+      success: true,
+      voteCount: result.voteCount,
+      message: "Post successfully fetched",
+      data: result
+    }, {
+      status: 200
     })
   } catch(error) {
     return NextResponse.json({
