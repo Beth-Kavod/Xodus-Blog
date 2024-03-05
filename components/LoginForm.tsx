@@ -3,11 +3,13 @@ import "@/assets/css/output.css";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import LoginError from "./LoginError";
+import { useRouter } from 'next/navigation'
 
 function LoginForm() {
     const [username, setUsername] = useState<String>("");
     const [password, setPassword] = useState<String>("");
     const [error, setError] = useState<String | null>(null);
+    const router = useRouter()
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -27,16 +29,17 @@ function LoginForm() {
                 localStorage.setItem(
                     "user",
                     JSON.stringify({
-                        id: data.user.ID,
-                        username: data.user.username,
+                        id: data._id,
+                        username: data.username,
                     })
                 );
+                console.log(data)
 
-                window.location.href = "/posts";
-            } else if (data.status === 401) {
+                router.push("/posts");
+            } else if (data.errorMessage) {
                 setError(data.errorMessage);
             } else {
-                window.alert(data.errorMessage);
+                setError("Something went wrong, please try again")
             }
         } catch (err) {
             console.error(err);
