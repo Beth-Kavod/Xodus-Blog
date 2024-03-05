@@ -12,7 +12,7 @@ import { Suspense } from "react";
 
 interface User {
     username: string;
-    userAuthID: string;
+    userAuthId: string;
     _id: string;
     email: string;
     admin: boolean;
@@ -148,6 +148,8 @@ function ProfilePage(): JSX.Element {
                                             ? avatar
                                             : "https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account-thumbnail.jpg"
                                     }
+                                    width={84}
+                                    height={84}
                                     alt="User avatar"
                                     className="w-40 h-40 shadow-gray-400 shadow-sm rounded-md"
                                 />

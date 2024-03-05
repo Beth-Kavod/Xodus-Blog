@@ -4,6 +4,7 @@ import useLocalStorage from "@/utils/useLocalStorage";
 import Link from "next/link";
 import { useRouter }  from 'next/navigation'
 import { useState, useEffect } from "react";
+import { useUser } from '@/components/UserContext'
 
 interface User {
     username: String;
@@ -11,14 +12,10 @@ interface User {
 }
 
 function Navbar() {
-    const [user, setUser] = useLocalStorage<User | null>("user", null)
+    // const [user, setUser] = useLocalStorage<User>("user", {"username":"","id":""} as User);
     const [search, setSearch] = useState<string>("");
     const router = useRouter();
-    
-    useEffect(() => {
-        const ls = localStorage.getItem("user");
-        setUser(ls ? JSON.parse(ls) : null)
-    }, [router])
+    const { user, logout } = useUser()
 
     const handleSubmit = (event: any) => {
         event.prevent.default()
@@ -31,14 +28,9 @@ function Navbar() {
     };
 
     const viewProfile = () => {
-        const user = JSON.parse(localStorage.getItem("user") || '{ "username": "", id: "" }');
+        // const user = JSON.parse(localStorage.getItem("user") || '{ "username": "", id: "" }');
         const url = `/accounts/profile/${user.username}`;
         router.push(url);
-    };
-
-    const logout = () => {
-        localStorage.removeItem("user");
-        router.push("/accounts/login")
     };
 
     const toHome = () => {
@@ -73,7 +65,7 @@ function Navbar() {
             </form>
 
             <div className="px-4 text-md">
-                {user ? (
+                {user.username ? (
                     <div className="flex items-center">
                         <h1
                             onClick={viewProfile}
@@ -82,7 +74,7 @@ function Navbar() {
                         >
                             {user.username}
                         </h1>
-                        <button onClick={logout} className="mx-2 px-3 py-1.5 text-sm text-red-500 hover:bg-red-100 rounded-lg" title="Logout">
+                        <button onClick={() => logout()} className="mx-2 px-3 py-1.5 text-sm text-red-500 hover:bg-red-100 rounded-lg" title="Logout">
                             Logout
                         </button>
                     </div>

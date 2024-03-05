@@ -7,7 +7,7 @@ let userSchema = new Schema({
       type: String,
       required: true
     },
-    userAuthID: {
+    userAuthId: {
       type: String,
       required: true
     },

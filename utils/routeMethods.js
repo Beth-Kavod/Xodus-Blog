@@ -125,7 +125,7 @@ async function isValid_id(id, schema) {
 /* ---------------------- Get a users auth with authID ---------------------- */
 
 async function getUserWithID(userID) {
-  const user = await User.findOne({ userAuthID: userID })
+  const user = await User.findOne({ userAuthId: userID })
   if (!user) return false
   return user
 }

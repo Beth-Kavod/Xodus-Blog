@@ -21,13 +21,13 @@ export const POST = async (request) => {
 
     if (!passwordMatch) throw new Error("Wrong credentials")
 
-    const { userAuthId, email, admin, tags } = foundUser
+    const { _id, userAuthId, email, admin, tags } = foundUser
 
     return NextResponse.json({
       success: true,
       message: `Successfully verified user`,
       data: {
-        username, userAuthId, email, admin, tags
+        _id, username, userAuthId, email, admin, tags
       }
     }, {
       status: 200

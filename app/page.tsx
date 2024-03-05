@@ -4,7 +4,7 @@ import Navbar from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PostList from "@/components/PostList";
 import { useState, useEffect } from "react";
-import useSearchParamsAsync from '@/utils/useSearchParamsAsync'
+import { useSearchParams } from "next/navigation";
 import { Suspense } from 'react'
 
 interface Post {
@@ -30,7 +30,7 @@ function ViewPosts(): JSX.Element {
   const [pageCount, setPageCount] = useState<number>(5);
   const [data, setData] = useState<Data>({ search: "", totalPages: pageCount, totalPosts: 0, message: ""})
   const [size, setSize] = useState<number>(10)
-  const searchParams = useSearchParamsAsync()
+  const searchParams = useSearchParams()
   const [search, setSearch] = useState<string | null>("")
 
   useEffect(() => {

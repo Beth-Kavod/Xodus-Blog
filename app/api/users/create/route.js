@@ -30,7 +30,7 @@ export const POST = async (request) => {
 
     const newUser = await User.create({
       username: username, 
-      userAuthID: generateUserAuthID(), 
+      userAuthId: generateUserAuthID(), 
       password: hashedPassword,
       admin: false,
       email: email,

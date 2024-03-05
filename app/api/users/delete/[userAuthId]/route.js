@@ -11,7 +11,7 @@ import User from '@/models/User'
 export const POST = async (request, { params }) => {
   try {
     const searchParams = request.nextUrl.searchParams
-    const userAuthID = params.userAuthId
+    const userAuthId = params.userAuthId
     const userID = searchParams.get("userID")
 
     let user = await getUserWithID(userID)
@@ -26,7 +26,7 @@ export const POST = async (request, { params }) => {
       })
     }
 
-    await User.deleteOne({ userAuthID: userAuthID })
+    await User.deleteOne({ userAuthId: userAuthId })
     return NextResponse.json({
       success: true,
       message: `Successfully deleted user`,

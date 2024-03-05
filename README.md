@@ -34,14 +34,14 @@ Routes begin with /posts
 
 - **Method**: POST
 - **Route**: `/edit-post/:id`
-- **Querys**:  `userID=userAuthID`
+- **Querys**:  `userID=userAuthId`
 - **Details**: if the userID is an admin or the userID is the same as the one that created the post
 
 ### Delete Post
 
 - **Method**: POST
 - **Route**: `/delete-post/:id`
-- **Querys**:  `userID=userAuthID`
+- **Querys**:  `userID=userAuthId`
 - **Details**: if the userID is an admin or the userID is the same as the one that created the post
 </details>
 
@@ -68,14 +68,14 @@ Routes begin with /comments
 
 - **Method**: POST
 - **Route**: `/edit/:comment_id`
-- **Querys**:  `userID=userAuthID`
+- **Querys**:  `userID=userAuthId`
 - **Details**: if the userID is an admin or the userID is the same as the one that created the comment
 
 ### Delete Comment
 
 - **Method**: POST
 - **Route**: `/delete/:comment_id`
-- **Querys**:  `userID=userAuthID`
+- **Querys**:  `userID=userAuthId`
 - **Details**: if the userID is an admin or the userID is the same as the one that created the comment
 </details>
 
@@ -113,14 +113,14 @@ Routes begin with /users
 
 - **Method**: GET
 - **Route**: `/`
-- **Querys**: `userID=userAuthID`
+- **Querys**: `userID=userAuthId`
 - **Details**: userID is optional, if omitted will only return the names of all users
 
 ### Get Users Profile
 
 - **Method**: GET
 - **Route**: `/profile/:name`
-- **Querys**: `userID=userAuthID`
+- **Querys**: `userID=userAuthId`
 - **Details**: userID is optional, if omitted or user is not an admin it will only return the username, avatar, createdAt and admin status of user.  If userID is admin or the owner of the account will return whole user object. 
 
 </details>
@@ -132,7 +132,7 @@ Routes begin with /users
 
 - **Method**: POST
 - **Route**: `/update-profile/:name`
-- **Querys**:  `userID=userAuthID`
+- **Querys**:  `userID=userAuthId`
 - **Details**: if the userID is the same as the account or the userID is an admin it will update with req.body
 ### Update users profile image
 
@@ -149,7 +149,7 @@ Routes begin with /users
 
 - **Method**: POST
 - **Route**: `/make-admin/:user_id`
-- **Querys**:  `userID=userAuthID` and `admin=Boolean` 
+- **Querys**:  `userID=userAuthId` and `admin=Boolean` 
 
 ### Verify User
 
@@ -159,8 +159,8 @@ Routes begin with /users
 ### Delete User
 
 - **Method**: POST
-- **Route**: `/delete/:userAuthID`
-- **Querys**:  `userID=userAuthID` 
+- **Route**: `/delete/:userAuthId`
+- **Querys**:  `userID=userAuthId` 
 - **Details**: if the userID is an admin or the userID is the same as the one that created the account
 
 </details>

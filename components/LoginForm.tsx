@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useState, useMemo } from "react";
 import LoginError from "./LoginError";
 import { useRouter } from 'next/navigation'
+import { useUser } from '@/components/UserContext'
 
 function LoginForm() {
     const [username, setUsername] = useState<String>("");
     const [password, setPassword] = useState<String>("");
     const [error, setError] = useState<String | null>(null);
+    const { user, login } = useUser()
     const router = useRouter()
 
     const handleSubmit = async (event: React.FormEvent) => {
@@ -23,22 +25,16 @@ function LoginForm() {
                 body: JSON.stringify({ username, password }),
             });
 
-            const data = await response.json();
-            console.log(data)
+            const responseData = await response.json();
 
-            if (data.success) {
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify({
-                        id: data._id,
-                        username: data.username,
-                    })
-                );
-                console.log(data)
-
+            if (responseData.success) {
+                login({
+                    username: responseData.data.username,
+                    id: responseData.data.userAuthId,
+                })
                 router.push("/");
-            } else if (data.errorMessage) {
-                setError(data.errorMessage);
+            } else if (responseData.errorMessage) {
+                setError(responseData.errorMessage);
             } else {
                 setError("Something went wrong, please try again")
             }
