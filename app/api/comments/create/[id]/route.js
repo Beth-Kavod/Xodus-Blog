@@ -15,7 +15,7 @@ import Comment from '@/models/Comment'
 export const POST = async (request, { params }) => {
   try {
     const postID = params.id
-    const { content } = await request.json() 
+    let { content } = await request.json() 
 
     content = filter.clean(content);
     

@@ -12,19 +12,23 @@ import User from '@/models/User'
 
 export const POST = async (request) => {
   try {
-    const {username, password} = await request.json()
+    const { username, password } = await request.json()
 
-    const foundUser = User.findOne({ username: username })
-    if (!foundUser) throw new Error(`No user with name: ${username}`)
+    const foundUser = await User.findOne({ username: username })
+    if (!foundUser.username) throw new Error(`No user with name: ${username}`)
 
     const passwordMatch = await bcrypt.compare(password, foundUser.password)
 
     if (!passwordMatch) throw new Error("Wrong credentials")
 
+    const { userAuthId, email, admin, tags } = foundUser
+
     return NextResponse.json({
       success: true,
-      message: `Successfully created user`,
-      data: foundUser
+      message: `Successfully verified user`,
+      data: {
+        username, userAuthId, email, admin, tags
+      }
     }, {
       status: 200
     })

@@ -23,7 +23,7 @@ function LoginForm() {
 
             const data = await response.json();
 
-            if (data.status === 200) {
+            if (data.success) {
                 localStorage.setItem(
                     "user",
                     JSON.stringify({
@@ -34,9 +34,9 @@ function LoginForm() {
 
                 window.location.href = "/posts";
             } else if (data.status === 401) {
-                setError(data.error);
+                setError(data.errorMessage);
             } else {
-                window.alert(data.error);
+                window.alert(data.errorMessage);
             }
         } catch (err) {
             console.error(err);
