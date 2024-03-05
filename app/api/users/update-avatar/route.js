@@ -5,6 +5,7 @@ import { getUserWithID } from '@/utils/routeMethods.js'
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
 import User from '@/models/User'
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
 /* -------------------------------------------------------------------------- */
 
@@ -12,18 +13,28 @@ import User from '@/models/User'
 
 export const POST = async (request, { params }) => {
   try {
-    const { username, url } = await request.json();
+    const { username, image } = await request.json();
     
     const user = await User.findOne({ username })
-
-    if (user.avatar) {
+    console.log(image)
+    /* if (user.avatar) {
       const publicId = user.avatar.split('/').pop().split('.')[0];
       cloudinary.v2.api
         .delete_resources([`Avatars/${publicId}`], 
           { type: 'upload', resource_type: 'image' })
-    }
+    } */
+    return NextResponse.json({ data: image})
 
-    await User.findOneAndUpdate(
+    const uploadImage = await fetch(`/api/images/upload`, {
+      method: 'POST',
+      body: {
+        image
+      }
+    })
+
+
+
+    const updatedUser = await User.findOneAndUpdate(
       { username }, 
       { avatar: url }, 
       { new: true }
@@ -31,7 +42,8 @@ export const POST = async (request, { params }) => {
 
     return NextResponse.json({
       success: true,
-      message: `${username}'s avatar was updated.`
+      message: `${username}'s avatar was updated.`,
+      data: updatedUser.avatar
     }, {
       status: 201
     })

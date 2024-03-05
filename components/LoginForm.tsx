@@ -10,7 +10,7 @@ function LoginForm() {
     const [username, setUsername] = useState<String>("");
     const [password, setPassword] = useState<String>("");
     const [error, setError] = useState<String | null>(null);
-    const { user, login } = useUser()
+    const { login } = useUser()
     const router = useRouter()
 
     const handleSubmit = async (event: React.FormEvent) => {

@@ -16,9 +16,15 @@ export const useUser = () => useContext(UserContext);
 
 // UserProvider component manages user authentication state
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    username: "",
-    id: ""
+  const [user, setUser] = useState(() => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      console.log(storedUser)
+      return storedUser ? JSON.parse(storedUser) : { username: "", id: "" };
+    } catch (error) {
+      console.error("Error parsing user data from localStorage:", error);
+      return { username: "", id: "" };
+    }
   });
 
   console.log(user)

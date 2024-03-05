@@ -8,7 +8,7 @@ import Link from 'next/link'
 import Voting from "@/components/Voting";
 import LoginError from "@/components/LoginError";
 import Image from 'next/image'
-import useLocalStorage from "@/utils/useLocalStorage";
+import { useUser } from '@/components/UserContext'
 import { Suspense } from "react";
 
 interface Post {
@@ -25,19 +25,10 @@ function PostPage(): JSX.Element {
     const [error, setError] = useState<string | null>(null);
     const [post, setPost] = useState<Post>({title: "", content: "", author: "", date: null, imageUrl: "", _id: ""});
     const [editing, setEditing] = useState<boolean>(false);
-    const [userId, setUserId] = useLocalStorage<string>("user", "");
     const router = useRouter()
     const pathname = usePathname()
     const id = pathname.split("/").pop();
-
-    useEffect(() => {
-        // Retrieve the user ID from localStorage and store it in state.
-        const user = localStorage.getItem("user");
-        if (user) {
-            const userId = JSON.parse(user).id;
-            setUserId(userId);
-        }
-    }, [id]);
+    const { user } = useUser()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -58,20 +49,20 @@ function PostPage(): JSX.Element {
     }, []);
 
     const addVote = async (isUpvote: boolean) => {
-        if (!userId) {
+        if (!user.id) {
             setError("You must be signed in to vote.");
             return;
         }
 
         try {
-            let res = await fetch(`/api/votes/post/${id}?userID=${userId}`, {
+            let res = await fetch(`/api/votes/post/${id}?userID=${user.id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     date: new Date(),
-                    author: JSON.parse(localStorage.getItem("user") || '{"username": ""}').username,
+                    author: user.username,
                     vote: isUpvote,
                 }),
             });
@@ -85,7 +76,7 @@ function PostPage(): JSX.Element {
     const deletePost = async () => {
         try {
             await fetch(
-                `/api/posts/delete-post/${id}?userID=${userId}`,
+                `/api/posts/delete-post/${id}?userID=${user.id}`,
                 {
                     method: "POST",
                     headers: {
@@ -103,7 +94,7 @@ function PostPage(): JSX.Element {
     const editPost = async () => {
         try {
             await fetch(
-                `/api/posts/edit-post/${id}?userID=${userId}`,
+                `/api/posts/edit-post/${id}?userID=${user.id}`,
                 {
                     method: "POST",
                     headers: {
@@ -127,8 +118,7 @@ function PostPage(): JSX.Element {
     const renderDeleteButton = () => {
         if (post) {
             if (
-                localStorage.getItem("user") &&
-                JSON.parse(localStorage.getItem("user") || '{"username": ""}').username === post.author
+                user.username === post.author
             ) {
                 return (
                     <button
@@ -148,9 +138,7 @@ function PostPage(): JSX.Element {
     const renderEditButton = () => {
         if (post) {
             if (
-                localStorage.getItem("user") &&
-                JSON.parse(localStorage.getItem("user") || '{"username": ""}').username ===
-                    post.author
+                user.username === post.author
             ) {
                 return (
                     <button

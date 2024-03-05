@@ -1,3 +1,11 @@
+import { NextResponse } from 'next/server'
+
+import { getUserWithID } from '@/utils/routeMethods.js'
+
+/* ----------------------------- MongoDB Schemas ---------------------------- */
+
+import User from '@/models/User'
+
 /* ----------------------- Get users profile with name ---------------------- */
 
 export const GET = async (request, { params }) => {
@@ -10,7 +18,7 @@ export const GET = async (request, { params }) => {
     if (!userID) {
       requestedUser = { username: "", id: "", admin: false} 
     } else {
-      requestedUser = await getUserWithID(res, userID)
+      requestedUser = await getUserWithID(userID)
     }
 
     await User

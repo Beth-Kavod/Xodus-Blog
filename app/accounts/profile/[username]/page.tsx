@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Post from "@/components/Post";
 import Link from 'next/link'
 import Image from 'next/image'
-import useLocalStorage from '@/utils/useLocalStorage'
+import { useUser } from '@/components/UserContext'
 import { Suspense } from "react";
 
 interface User {
@@ -17,6 +17,15 @@ interface User {
     email: string;
     admin: boolean;
     avatar: string;
+}
+
+const defaultUser = {
+    username: "",
+    avatar: "",
+    admin: false,
+    email: "",
+    userAuthId: "",
+    _id: ""
 }
 
 interface Post {
@@ -29,33 +38,24 @@ interface Post {
 }
 
 function ProfilePage(): JSX.Element {
-    const [user, setUser] = useState<User | null>(null);
+    const { user } = useUser()
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState<number>(1);
     const [pageCount, setPageCount] = useState<number>(5);
     const [totalPosts, setTotalPosts] = useState<number>(0);
     const [size, setSize] = useState<number>(10)
-    const [isSelf, setSelf] = useState<boolean>(false);
     const [avatar, setAvatar] = useState<string>("");
-    const [userId, setUserId] = useLocalStorage<string>("user", "")
     const pathname = usePathname()
     const username = pathname.split("/").pop();
+    const [userProfile, setUserProfile] = useState<User>({...defaultUser} as User);
 
-    useEffect(() => {
-        // Retrieve the user ID from localStorage
-        const user = JSON.parse(localStorage.getItem('user') || "");
-        if (user) {
-            const requestingID = user.id;
-            setUserId(requestingID);
-        }
-        console.log(username)
-    }, [])
+    let isSelf = user.username === username ? true : false
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // Get user from mongo-db
-                const userResponse = await fetch(`/api/users/profile/${username}?userID=${userId}`);
+                const userResponse = await fetch(`/api/users/profile/${username}?userID=${user.id}`);
                 const userData = await userResponse.json();
                 
                 // Make 404 error page
@@ -64,7 +64,7 @@ function ProfilePage(): JSX.Element {
                     return false
                 }
 
-                setUser(userData.user as User);
+                setUserProfile(userData.data as User);
 
                 // Get users' posts from mongo-db
                 const postsResponse = await fetch(`/api/posts/user/${username}?size=${size}&page=${page}`);
@@ -75,8 +75,8 @@ function ProfilePage(): JSX.Element {
 
                 // Fix dates from MongoDB date to JS date object
                 const postsWithDates: Post[] = postData.data.map((post: Post) => ({
-                ...post,
-                date: new Date(post.date),
+                    ...post,
+                    date: new Date(post.date),
                 }));
                 setPosts(postsWithDates as Post[]);
             } catch (err) {
@@ -85,19 +85,10 @@ function ProfilePage(): JSX.Element {
         };
 
         fetchData();
-    }, [userId, page, size, username]);
+    }, [user.id, page, size, username]);
 
     // Update the users avatar display every time the user object is updated
-    useEffect(() => setAvatar(user ? user.avatar : ""), [user]);
-
-    // Determine if the user is viewing their own profile
-    useEffect(() => {
-        const loggedUser: { username: string; id: string } =
-            JSON.parse(localStorage.getItem("user") || "{}") || null;
-        loggedUser
-            ? setSelf(loggedUser.username === user?.username)
-            : setSelf(false);
-    }, [posts, user]);
+    useEffect(() => setAvatar(userProfile ? userProfile.avatar : ""), [userProfile]);
 
     const updateAvatar = async (event: any) => {
         const imageFile = event.target.files[0];
@@ -105,29 +96,18 @@ function ProfilePage(): JSX.Element {
         formData.append("file", imageFile);
         formData.append("upload_preset", "Avatars");
 
-        const response = await fetch(
-            `https://api.cloudinary.com/v1_1/djez6nvh7/image/upload`,
-            {
-                method: "POST",
-                body: formData,
-            }
-        );
+        const response = await fetch(`/api/users/update-avatar?userID=${user.id}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: user.username, image: formData }),
+        });
 
-        const data = await response.json();
+        const responseData = await response.json();
 
         // Ensure success
-        if (response.status === 200) {
-            const url = data.secure_url;
-            const username = user?.username;
-
+        if (responseData.success) {
+            const url = responseData.data;
             setAvatar(url);
-
-            // Update avatar in the backend mongo-db
-            fetch(`/api/users/update-avatar?userID=${userId}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, url }),
-            });
         } else {
             console.error("Image response or user does not exist.");
         }
@@ -144,7 +124,7 @@ function ProfilePage(): JSX.Element {
                             <div className="flex flex-col w-1/6">
                                 <Image
                                     src={
-                                        user?.avatar
+                                        userProfile?.avatar
                                             ? avatar
                                             : "https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account-thumbnail.jpg"
                                     }
@@ -169,14 +149,14 @@ function ProfilePage(): JSX.Element {
                                 <span className="text-xs">
                                     <br />
                                     {user
-                                        ? user._id
-                                            ? ` #${user._id}`
+                                        ? userProfile._id
+                                            ? ` #${userProfile._id}`
                                             : ""
                                         : ""}
                                 </span>
                                 <br />
                                 <span className="text-sm">
-                                    {user ? user.email : "Loading"}
+                                    {userProfile ? userProfile.email : "Loading"}
                                 </span>
                             </h1>
                         </div>

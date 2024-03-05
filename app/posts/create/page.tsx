@@ -2,7 +2,7 @@
 import "@/assets/css/output.css"
 import { SyntheticEvent, useState, useEffect } from "react"
 import { useRouter } from  'next/navigation'
-import useLocalStorage from '@/utils/useLocalStorage'
+import { useUser } from '@/components/UserContext'
 import Navbar from "@/components/Nav";
 import Footer from "@/components/Footer";
 
@@ -15,19 +15,14 @@ interface FormData {
 }
 
 function CreatePostPage(): JSX.Element {
-    const [author, setAuthor] = useLocalStorage<string>("user", "")
+    const { user } = useUser()
     const router = useRouter()
-    useEffect(() => {
-      const ls = localStorage.getItem("user");
-      setAuthor(ls ? JSON.parse(ls).username : "")
-    }, [setAuthor])
-
   
     // Initialize the image file as null
     let [form, setForm] = useState<FormData>({
       title: "",
       content: "",
-      author,
+      author: user.username,
       date: new Date(),
       imageUrl: "",
     });
