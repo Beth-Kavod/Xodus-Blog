@@ -162,7 +162,7 @@ function PostPage(): JSX.Element {
     };
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        // <Suspense fallback={<div>Loading...</div>}>
             <div>
                 <Nav />
                 <div className="w-full flex justify-center">
@@ -236,7 +236,7 @@ function PostPage(): JSX.Element {
                 </div>
                 <Footer />
             </div>
-        </Suspense>
+        // </Suspense>
     );
 }
 

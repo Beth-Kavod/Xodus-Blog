@@ -52,7 +52,6 @@ function ViewPosts(): JSX.Element {
   }, [search, page, size])
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
       <div>
         <Navbar />
 
@@ -99,7 +98,6 @@ function ViewPosts(): JSX.Element {
 
         <Footer />
       </div>
-    </Suspense>
   );
 }
 

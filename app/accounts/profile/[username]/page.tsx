@@ -114,7 +114,7 @@ function ProfilePage(): JSX.Element {
     };
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        // <Suspense fallback={<div>Loading...</div>}>
             <div className="h-screen">
                 <Nav />
                 <div className="w-full flex justify-center">
@@ -227,7 +227,7 @@ function ProfilePage(): JSX.Element {
                 </div>
                 <Footer />
             </div>
-        </Suspense>
+        // </Suspense>
     );
 }
 
