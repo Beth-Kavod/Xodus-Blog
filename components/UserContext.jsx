@@ -18,28 +18,36 @@ export const useUser = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     try {
-      const storedUser = localStorage.getItem('user');
-      console.log(storedUser)
-      return storedUser ? JSON.parse(storedUser) : { username: "", id: "" };
+      // Check if localStorage is available in the browser environment
+      if (typeof window !== 'undefined') {
+        const storedUser = localStorage.getItem('user');
+        return storedUser ? JSON.parse(storedUser) : { username: "", id: "" };
+      } else {
+        return { username: "", id: "" };
+      }
     } catch (error) {
       console.error("Error parsing user data from localStorage:", error);
       return { username: "", id: "" };
     }
   });
 
-  console.log(user)
-
   // Load user data from localStorage when component mounts
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    // Check if localStorage is available in the browser environment
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
     }
   }, []);
 
   // Save user data to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('user', JSON.stringify(user));
+    // Check if localStorage is available in the browser environment
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('user', JSON.stringify(user));
+    }
   }, [user]);
 
   // Function to log in a user
