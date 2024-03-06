@@ -56,34 +56,34 @@ function ViewPosts(): JSX.Element {
         <Navbar />
 
         <div className="w-full flex flex-col items-center justify-center">
-          <PostList posts={posts} data={data} search={search}/>
+          <Suspense fallback={<div>Loading...</div>}>
+            <PostList posts={posts} data={data} search={search}/>
+          </Suspense>
 
-        <div className="flex justify-between items-center text-sm w-2/3 border-x border-t border-x-light-border">
-          <div className="w-fit text-xs px-5 py-3 flex items-center">
-            <button
-              onClick={() => setPage(page - 1)}
-              disabled={page <= 1}
-              className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
-            >
-              Previous page
-            </button>
+          <div className="flex justify-between items-center text-sm w-2/3 border-x border-t border-x-light-border">
+            <div className="w-fit text-xs px-5 py-3 flex items-center">
+              <button
+                onClick={() => setPage(page - 1)}
+                disabled={page <= 1}
+                className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
+              >
+                Previous page
+              </button>
 
-            <p className="px-2">
-              {page}
-                /
-              {pageCount}
-            </p>
+              <p className="px-2">
+                {page}
+                  /
+                {pageCount}
+              </p>
 
-            <button
-              onClick={() => setPage(page + 1)}
-              disabled={page >= pageCount}
-              className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
-            >
-              Next page
-            </button>
-          </div>
-
-
+              <button
+                onClick={() => setPage(page + 1)}
+                disabled={page >= pageCount}
+                className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
+              >
+                Next page
+              </button>
+            </div>
 
             <div className="text-xs px-5">
               <button onClick={() => setSize(10)} className={size == 10 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 10 </button>
