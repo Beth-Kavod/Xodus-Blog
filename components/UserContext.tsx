@@ -1,6 +1,11 @@
 "use client"
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+interface User {
+  username: String;
+  id: String;
+}
+
 // Define the shape of the user object
 const UserContext = createContext({
   user: {
@@ -10,6 +15,8 @@ const UserContext = createContext({
   login: (userData) => {},
   logout: () => {}
 });
+
+
 
 // Custom hook to access the user context
 export const useUser = () => useContext(UserContext);

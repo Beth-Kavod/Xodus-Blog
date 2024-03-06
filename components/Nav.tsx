@@ -28,7 +28,6 @@ function Navbar() {
     };
 
     const viewProfile = () => {
-        // const user = JSON.parse(localStorage.getItem("user") || '{ "username": "", id: "" }');
         const url = `/accounts/profile/${user.username}`;
         router.push(url);
     };

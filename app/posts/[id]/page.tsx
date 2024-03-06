@@ -46,7 +46,7 @@ function PostPage(): JSX.Element {
             }
         };
         fetchData(); // Call the async function inside the effect
-    }, []);
+    }, [id]);
 
     const addVote = async (isUpvote: boolean) => {
         if (!user.id) {

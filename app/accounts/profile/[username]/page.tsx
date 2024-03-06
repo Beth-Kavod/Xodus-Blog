@@ -4,7 +4,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import Post from "@/components/Post";
+import Post from "@/components/posts/Post";
 import Link from 'next/link'
 import Image from 'next/image'
 import { useUser } from '@/components/UserContext'

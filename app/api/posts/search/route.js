@@ -15,8 +15,8 @@ export const GET = async (request) => {
     const searchParams = request.nextUrl.searchParams
     const page = parseInt(searchParams.get("page")) || 1
     const PAGE_SIZE = parseInt(searchParams.get("size"));
+    const query = searchParams.get("query") || ""
 
-    let query = searchParams.get("query") || ""
     const keywords = query.split(/\s+/); // Split the query at space characters
 
     const regexArray = keywords.map(keyword => new RegExp(keyword, 'i'));

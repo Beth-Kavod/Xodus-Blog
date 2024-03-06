@@ -27,10 +27,15 @@ let postSchema = new Schema({
       type: Date,
       required: true
     },
+    // Will remove soon
     imageUrl: {
       type: String,
       required: false
-    }
+    },
+    imageUrls: {
+      type: Array,
+      required: false
+    },
 },{
     collection: 'posts',
     timestamps: true
