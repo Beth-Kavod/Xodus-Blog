@@ -9,7 +9,7 @@ import Voting from "@/components/Voting";
 import LoginError from "@/components/LoginError";
 import Image from 'next/image'
 import { useUser } from '@/components/UserContext'
-import { Suspense } from "react";
+// import { Suspense } from "react";
 
 interface Post {
     title: string;

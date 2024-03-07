@@ -4,6 +4,7 @@ import { isValid_id } from '@/utils/routeMethods.js'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
+import Post from '@/models/Post'
 import Comment from '@/models/Comment'
 
 /* -------------------------------------------------------------------------- */
