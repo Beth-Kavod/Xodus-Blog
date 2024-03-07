@@ -16,7 +16,7 @@ export const GET = async (request, { params }) => {
   
     await isValid_id(postID, Post)
     
-    const result = await Post.findById(postID)
+    const result = await Post.findById(postID).populate('comments')
 
     console.log(result)
     if (!result) {

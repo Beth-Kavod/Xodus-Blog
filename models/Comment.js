@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-import commentDB from '@/connections/commentDB'
+import commentDB from '@/connections/blogDB'
 const Schema = mongoose.Schema;
 
 let commentSchema = new Schema({
