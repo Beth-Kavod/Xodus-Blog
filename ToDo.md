@@ -8,6 +8,8 @@
 
 
 # ToDo
+- Fix image upload route to change upload_preset based on formData 
+- Finish Postman routes for testing
 - Make editPost page, API already set up // something like this is already there, not completely necessary
 
 - Make profile page not display if res.status === 404

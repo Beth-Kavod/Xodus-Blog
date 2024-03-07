@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const mongoose = require("mongoose")
 import postDB from '@/connections/postDB'
 const Schema = mongoose.Schema;
 

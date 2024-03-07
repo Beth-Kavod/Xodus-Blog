@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const mongoose = require("mongoose")
 const { MONGO_URL_POSTS } = process.env
 
 const postDB = mongoose.createConnection(MONGO_URL_POSTS);

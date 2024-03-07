@@ -1,12 +1,11 @@
 "use client"
 import { SyntheticEvent, useState } from "react";
 import { useRouter } from 'next/navigation'
+import { useUser } from '@/components/UserContext'
 
 interface CommentObject {
     author: String;
     content: String;
-    votes: Array<{ author: string, vote: boolean, date: Date}>;
-    date: Date;
 }
 
 interface Props {
@@ -16,20 +15,15 @@ interface Props {
 
 export default function CreateComment (props: Props): JSX.Element {
     const router = useRouter()
-    const ls = localStorage.getItem("user");
-    const author: string = ls ? JSON.parse(ls).username : "";
+    const { user } = useUser();
+    const author = user ? user.username : "";
 
-    let [comment, setComment] = useState<CommentObject>({author, content: "", votes: [],date: new Date() });
+    const [comment, setComment] = useState<CommentObject>({ author, content: ""});
 
     const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
         event.preventDefault();
         
-        if (localStorage.getItem("user") == null) {
-            window.location.href = "/accounts/login"; 
-            return;
-        }
-
-        setComment({ ...comment, date: new Date() });
+        if (!author) router.push("/accounts/login") 
 
         try {
             await fetch(`/api/comments/create/${props.postID}`, {
@@ -48,7 +42,7 @@ export default function CreateComment (props: Props): JSX.Element {
 
     const handleInputChange = (event: any) => {
         const { name, value } = event.target;
-        setComment({ ...comment, date: new Date(), [name]: value })
+        setComment({ ...comment, [name]: value })
     };
 
     const textareaStyles: any = {
@@ -61,7 +55,7 @@ export default function CreateComment (props: Props): JSX.Element {
             <div className="h-fit w-full my-5 rounded-md p-6 bg-white border border-light-border">
                 <h1 className="text-lg py-2"> Post Comment </h1>
                 <p className="text-xs"> Write comment here: </p>
-                <textarea onChange={handleInputChange} style={textareaStyles} className="text-sm w-full my-2 px-2 py-1 border border-light-border rounded-md outline-none focus:ring-1 focus:ring-green-500 resize-none" name="content" placeholder="eg. You're opinion is objectively bad" required />
+                <textarea onChange={handleInputChange} style={textareaStyles} className="text-sm w-full my-2 px-2 py-1 border border-light-border rounded-md outline-none focus:ring-1 focus:ring-green-500 resize-none" name="content" placeholder="eg. I love this post" required />
                 <button type="submit" className="bg-light-theme-green text-white rounded-lg px-4 py-1.5 hover:bg-light-theme-green-active"> Create Comment </button>
             </div>
         </form>

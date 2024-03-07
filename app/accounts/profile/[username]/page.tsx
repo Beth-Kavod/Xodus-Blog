@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import Post from "@/components/posts/Post";
 import Link from 'next/link'
 import Image from 'next/image'
-import { useUser } from '@/components/UserContext'
-import { uploadImages } from "@/utils/routeMethods"
+import { useUser } from '@/components/UserContext';
+import Methods from "@/utils/routeMethods";
 
 interface User {
     username: string;
@@ -34,7 +34,7 @@ interface Post {
     author: string;
     date: Date;
     _id: string;
-    imageUrl: string;
+    imageUrls: Array<string>;
 }
 
 function ProfilePage(): JSX.Element {
@@ -98,7 +98,7 @@ function ProfilePage(): JSX.Element {
             formData.append("file", imageFile);
             formData.append("upload_preset", "Avatars");
 
-            const imageResponse = await uploadImages(formData);
+            const imageResponse = await Methods.uploadImages(formData);
             console.log(imageResponse)
             if (!imageResponse.success) {
                 throw new Error("Failed to upload image to Cloudinary.");
@@ -195,7 +195,7 @@ function ProfilePage(): JSX.Element {
                                         {post.content}
                                     </p>
                                     <p className="text-xs font-light shrink-0 w-fit">
-                                        {post.imageUrl ? "1 attachment..." : ""}
+                                        {post.imageUrls ? `${post.imageUrls.length} attachments...` : ""}
                                     </p>
                                 </div>
                             </div>

@@ -1,6 +1,5 @@
 "use client"
 import "@/assets/css/output.css";
-import useLocalStorage from "@/utils/useLocalStorage";
 import Link from "next/link";
 import { useRouter }  from 'next/navigation'
 import { useState, useEffect } from "react";
@@ -12,7 +11,6 @@ interface User {
 }
 
 function Navbar() {
-    // const [user, setUser] = useLocalStorage<User>("user", {"username":"","id":""} as User);
     const [search, setSearch] = useState<string>("");
     const router = useRouter();
     const { user, logout } = useUser()

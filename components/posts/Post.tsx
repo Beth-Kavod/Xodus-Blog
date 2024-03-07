@@ -8,7 +8,7 @@ interface Props {
     content: string;
     votes: Array<{ author: string, vote: boolean, date: Date }>;
     date: Date;
-    imageUrl: string;
+    imageUrls: Array<string>;
 }
 
 function Post(props: Props): JSX.Element {
@@ -36,7 +36,7 @@ function Post(props: Props): JSX.Element {
                     {props.content}
                 </p>
                 <p className="text-xs font-light shrink-0 w-fit">
-                    {props.imageUrl ? "1 attachment..." : ""}
+                    {props.imageUrls ? `${props.imageUrls.length} attachments...` : ""}
                 </p>
             </div>
         </div>

@@ -181,4 +181,15 @@ async function deleteImages(imageArray) {
 
 /* -------------------------------------------------------------------------- */
 
-module.exports = { countVotes, isValid_id, isDuplicate, getUserWithID, generateUserAuthID, hash, deleteImages, uploadImages }
+const Methods = { 
+  countVotes, 
+  isValid_id, 
+  isDuplicate, 
+  getUserWithID, 
+  generateUserAuthID, 
+  hash, 
+  uploadImages,
+  deleteImages,
+}
+
+export default Methods 
