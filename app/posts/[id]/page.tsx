@@ -218,7 +218,7 @@ function PostPage(): JSX.Element {
                         {post ? (
                             post.imageUrls.length ? (
                                 post.imageUrls.map((imageUrl) => (
-                                    <Image alt={imageUrl} src={imageUrl} className="w-full p-10" />
+                                    <Image alt={imageUrl} src={imageUrl} className="w-full p-10" key={imageUrl} />
                                 ))
                             ) : (
                                 ""

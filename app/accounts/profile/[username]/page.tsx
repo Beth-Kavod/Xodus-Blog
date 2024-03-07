@@ -104,7 +104,7 @@ function ProfilePage(): JSX.Element {
             }
         }
         fetchData()
-    }, [username])
+    }, [username, user.id])
 
     // Fetch the users posts
     useEffect(() => {
@@ -122,13 +122,14 @@ function ProfilePage(): JSX.Element {
                 ...post,
                 date: new Date(post.date),
             }));
-            // setPosts(postsWithDates as Post[]);
+
             const { pageCount, totalPosts } = postData
+
             setPostsData((prev) => ({
                 ...prev,
                 pageCount, 
                 totalPosts, 
-                posts: postsWithDates
+                posts: postsWithDates as Post[]
             }))
         } catch (error) {
             console.error(error);
@@ -140,7 +141,7 @@ function ProfilePage(): JSX.Element {
 
     const updateAvatar = async (event: any) => {
         try {
-            // Fix uploadImages function to work TSX
+            // ! Fix uploadImages function to work TSX
             /* const imageFile = event.target.files[0];
             const formData = new FormData();
             formData.append("file", imageFile);
