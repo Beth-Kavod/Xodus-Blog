@@ -8,7 +8,8 @@ import Post from "@/components/posts/Post";
 import Link from 'next/link'
 import Image from 'next/image'
 import { useUser } from '@/components/UserContext';
-import Methods from "@/utils/routeMethods";
+// This needs to be fixed to work in tsx
+// import { uploadImages } from "@/utils/routeMethods";
 
 interface User {
     username: string;
@@ -93,22 +94,25 @@ function ProfilePage(): JSX.Element {
 
     const updateAvatar = async (event: any) => {
         try {
-            const imageFile = event.target.files[0];
+            // Fix uploadImages function to work TSX
+            /* const imageFile = event.target.files[0];
             const formData = new FormData();
             formData.append("file", imageFile);
             formData.append("upload_preset", "Avatars");
 
-            const imageResponse = await Methods.uploadImages(formData);
+            const imageResponse = await uploadImages(formData);
             console.log(imageResponse)
             if (!imageResponse.success) {
                 throw new Error("Failed to upload image to Cloudinary.");
             }
-            return
+            const imageUrl = imageResponse.data.secure_url;
+            */
+
 
             const response = await fetch(`/api/users/update-avatar?userID=${user.id}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: user.username, image: formData }),
+                body: JSON.stringify({ username: user.username/* , image: imageUrl */}),
             });
 
             const responseData = await response.json();

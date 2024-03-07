@@ -19,7 +19,8 @@ interface Post {
     imageUrls: Array<string>;
     voteCount: number;
     comments: Array<string>,
-    votes: Array<{ author: string, vote: boolean, date: Date}>
+    // i don's think i need this
+    // votes: Array<{ author: string, vote: boolean, date: Date}>
     _id: string;
 }
 
@@ -41,8 +42,16 @@ function PostPage(): JSX.Element {
                     throw new Error("No post found");
                 }
                 const postData = await postResponse.json();
+                const { title, content, author, date, imageUrls, _id, voteCount, comments } = postData.data
                 setPost(() => ({
-                    ...postData.data
+                    _id, 
+                    title, 
+                    content, 
+                    author, 
+                    date, 
+                    imageUrls, 
+                    voteCount, 
+                    comments 
                 }));
             } catch (err) {
                 console.error(err);
