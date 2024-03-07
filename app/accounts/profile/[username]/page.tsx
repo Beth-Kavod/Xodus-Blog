@@ -38,24 +38,55 @@ interface Post {
     imageUrls: Array<string>;
 }
 
+interface QueryData {
+    size: number;
+    page: number;
+}
+
+interface PostData {
+    pageCount: number;
+    totalPosts: number;
+    posts: Post[];
+}
+
+const defaultPostData = {
+    pageCount: 0,
+    totalPosts: 0,
+    posts: []
+}
+
 function ProfilePage(): JSX.Element {
-    const { user } = useUser()
-    const [posts, setPosts] = useState<Post[]>([]);
-    const [page, setPage] = useState<number>(1);
-    const [pageCount, setPageCount] = useState<number>(5);
-    const [totalPosts, setTotalPosts] = useState<number>(0);
-    const [size, setSize] = useState<number>(10)
+    const { user } = useUser()    
     const [avatar, setAvatar] = useState<string>("");
     const pathname = usePathname()
     const username = pathname.split("/").pop();
     const [userProfile, setUserProfile] = useState<User>({...defaultUser} as User);
+    const isSelf = user.username === username ? true : false
+    
+    // Post states
+    const [postsData, setPostsData] = useState<PostData>({ ...defaultPostData })
+    const [queryParams, setQueryParams] = useState<QueryData>({
+        size: 10,
+        page: 1
+    })
+    
 
-    let isSelf = user.username === username ? true : false
+    const { pageCount, totalPosts, posts } = postsData
+    const { size, page } = queryParams
 
+    const updateQuery = (event: any) => {
+        event.preventDefault()
+        const { name, value } = event.target
+        setQueryParams(prev => ({ 
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    // Fetch the users profile
     useEffect(() => {
-        
         const fetchData = async () => {
-            try {
+            try {            
                 // Get user from mongo-db
                 const userResponse = await fetch(`/api/users/profile/${username}?userID=${user.id}`);
                 const userData = await userResponse.json();
@@ -65,29 +96,44 @@ function ProfilePage(): JSX.Element {
                     console.log(userData.message)
                     return false
                 }
-
+                
                 setUserProfile(userData.data as User);
+            } catch (error) {
+                console.error(error);
 
-                // Get users' posts from mongo-db
-                const postsResponse = await fetch(`/api/posts/user/${username}?size=${size}&page=${page}`);
-                const postData = await postsResponse.json();
-
-                setPageCount(postData.totalPages)
-                setTotalPosts(postData.totalPosts)
-
-                // Fix dates from MongoDB date to JS date object
-                const postsWithDates: Post[] = postData.data.map((post: Post) => ({
-                    ...post,
-                    date: new Date(post.date),
-                }));
-                setPosts(postsWithDates as Post[]);
-            } catch (err) {
-                console.error(err);
             }
-        };
+        }
+        fetchData()
+    }, [username])
 
-        fetchData();
-    }, [user.id, page, size, username]);
+    // Fetch the users posts
+    useEffect(() => {
+        fetchPosts()
+    }, [user.id, queryParams.page, queryParams.size, username]);
+
+    async function fetchPosts() {
+        try {
+            // Get users' posts from mongo-db
+            const postsResponse = await fetch(`/api/posts/user/${username}?size=${size}&page=${page}`);
+            const postData = await postsResponse.json();
+            
+            // Fix dates from MongoDB date to JS date object
+            const postsWithDates: Post[] = postData.data.map((post: Post) => ({
+                ...post,
+                date: new Date(post.date),
+            }));
+            // setPosts(postsWithDates as Post[]);
+            const { pageCount, totalPosts } = postData
+            setPostsData((prev) => ({
+                ...prev,
+                pageCount, 
+                totalPosts, 
+                posts: postsWithDates
+            }))
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     // Update the users avatar display every time the user object is updated
     useEffect(() => setAvatar(userProfile ? userProfile.avatar : ""), [userProfile]);
@@ -199,7 +245,7 @@ function ProfilePage(): JSX.Element {
                                         {post.content}
                                     </p>
                                     <p className="text-xs font-light shrink-0 w-fit">
-                                        {post.imageUrls ? `${post.imageUrls.length} attachments...` : ""}
+                                        {post.imageUrls.length ? `${post.imageUrls.length} attachments...` : ""}
                                     </p>
                                 </div>
                             </div>
@@ -209,7 +255,8 @@ function ProfilePage(): JSX.Element {
                         <div className="flex justify-between items-center text-sm w-full">
                             <div className="w-fit text-xs px-5 py-3 flex items-center">
                             <button
-                                onClick={() => setPage(page - 1)}
+                                onClick={(event) => updateQuery(event)}
+                                value={page - 1}
                                 disabled={page <= 1}
                                 className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
                             >
@@ -223,7 +270,8 @@ function ProfilePage(): JSX.Element {
                             </p>
 
                             <button
-                                onClick={() => setPage(page + 1)}
+                                onClick={(event) => updateQuery(event)}
+                                value={page + 1}
                                 disabled={page >= pageCount}
                                 className="px-2 h-6 mx-1 border rounded-md border-light-border hover:bg-light-theme-green hover:text-white"
                             >
@@ -232,9 +280,9 @@ function ProfilePage(): JSX.Element {
                             </div>
 
                             <div className="text-xs px-5">
-                                <button onClick={() => setSize(10)} className={size == 10 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 10 </button>
-                                <button onClick={() => setSize(15)} className={size == 15 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 15 </button>
-                                <button onClick={() => setSize(25)} className={size == 25 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 25 </button>
+                                <button onClick={(event) => updateQuery(event)} name="size"value={10} className={size == 10 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 10 </button>
+                                <button onClick={(event) => updateQuery(event)} name="size"value={15} className={size == 15 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 15 </button>
+                                <button onClick={(event) => updateQuery(event)} name="size"value={25} className={size == 25 ? `w-6 h-6 mx-1 border rounded-md border-light-border bg-light-theme-green text-white` : `w-6 h-6 mx-1 border rounded-md border-light-border`}> 25 </button>
                             </div>
                         </div>
                     </div>

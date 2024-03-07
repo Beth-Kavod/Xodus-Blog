@@ -1,4 +1,5 @@
 import { isValid_id, getUserWithID } from "@/utils/routeMethods.js"
+import { NextResponse } from 'next/server'
 
 /* ----------------------------- MongoDB schemas ---------------------------- */
 
@@ -12,7 +13,7 @@ export const GET = async (request, { params }) => {
     const username = params.username;
     const searchParams = request.nextUrl.searchParams
     const page = parseInt(searchParams.get("page")) || 1
-    const PAGE_SIZE = parseInt(searchParams.get("size"))
+    const PAGE_SIZE = parseInt(searchParams.get("size")) || 10
 
     const totalResults = await Post.countDocuments({ author: username })
 
@@ -21,7 +22,7 @@ export const GET = async (request, { params }) => {
       .skip((page - 1) * PAGE_SIZE) // Calculate how many documents to skip based on the page number
       .sort({ createdAt: -1 }) // Sort by date
       .limit(PAGE_SIZE) // Limit the number of documents per page
-
+    console.log(results)
     let message = results.length === 0 ? 'No posts found from search' : 'Search results successfully fetched';
 
     return NextResponse.json({
