@@ -16,14 +16,16 @@ interface Post {
     content: string;
     author: string;
     date: Date | null;
-    imageUrl: string;
+    imageUrls: Array<string>;
+    voteCount: number;
+    comments: Array<string>,
+    votes: Array<{ author: string, vote: boolean, date: Date}>
     _id: string;
 }
 
 function PostPage(): JSX.Element {
-    const [voteCount, setVoteCount] = useState<number | null>(null); // Initialize voteCount stat
     const [error, setError] = useState<string | null>(null);
-    const [post, setPost] = useState<Post>({title: "", content: "", author: "", date: null, imageUrl: "", _id: ""});
+    const [post, setPost] = useState<Post>({ title: "", content: "", author: "", date: null, imageUrls: [], _id: "", voteCount: 0, comments: [] });
     const [editing, setEditing] = useState<boolean>(false);
     const router = useRouter()
     const pathname = usePathname()
@@ -33,14 +35,15 @@ function PostPage(): JSX.Element {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch(`/api/posts/get-post/${id}`);
+                const postResponse = await fetch(`/api/posts/get-post/${id}`);
                 // ! FIX THIS TO SEND NO POST TO CLIENT, PAGE WILL LOAD INDEFINITELY
-                if (res.status === 404) {
+                if (postResponse.status === 404) {
                     throw new Error("No post found");
                 }
-                const data = await res.json();
-                setPost(data.data as Post);
-                setVoteCount(data.voteCount)
+                const postData = await postResponse.json();
+                setPost(() => ({
+                    ...postData.data
+                }));
             } catch (err) {
                 console.error(err);
             }
@@ -67,7 +70,9 @@ function PostPage(): JSX.Element {
                 }),
             });
             let data = await res.json();
-            setVoteCount(data.voteCount)
+            setPost(() => ({
+                ...data.data
+            }));
         } catch (err) {
             console.error(err);
         }
@@ -114,6 +119,7 @@ function PostPage(): JSX.Element {
         }
     };
 
+    // Fix to actually update content
     const updateContent = (e: any) => {
         const newContent: string = e.target.value || "";
         setPost({ ...post, content: newContent });
@@ -177,7 +183,7 @@ function PostPage(): JSX.Element {
                                     />
                                 )}
                                 <Voting
-                                    voteCount={voteCount || 0}
+                                    voteCount={post.voteCount || 0}
                                     addVote={addVote}
                                     removeVote={addVote}
                                 />
@@ -201,8 +207,10 @@ function PostPage(): JSX.Element {
                         </div>
 
                         {post ? (
-                            post.imageUrl ? (
-                                <Image alt={post.imageUrl} src={post.imageUrl} className="w-full p-10" />
+                            post.imageUrls.length ? (
+                                post.imageUrls.map((imageUrl) => (
+                                    <Image alt={imageUrl} src={imageUrl} className="w-full p-10" />
+                                ))
                             ) : (
                                 ""
                             )

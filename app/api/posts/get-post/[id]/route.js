@@ -17,6 +17,16 @@ export const GET = async (request, { params }) => {
     await isValid_id(postID, Post)
     
     const result = await Post.findById(postID)
+
+    console.log(result)
+    if (!result) {
+      return NextResponse.json({
+        success: false,
+        message: "Post not found"
+      }, {
+        status: 404
+      })
+    }
     
     return NextResponse.json({
       success: true,

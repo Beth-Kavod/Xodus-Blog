@@ -4,6 +4,8 @@ import Link from 'next/link'
 import "@/assets/css/output.css";
 import Voting from "./Voting";
 import LoginError from "./LoginError";
+import { useUser } from '@/components/UserContext';
+import { useRouter } from 'next/navigation'
 
 import EditComment from "./EditComment"
 
@@ -24,22 +26,13 @@ function Comment(props: Props): JSX.Element {
     const [isEditing, setIsEditing] = useState(false)
     const [voteCount, setVoteCount] = useState<number | null>(props.comment.voteCount); // Initialize voteCount stat
     const [error, setError] = useState<String | null>(null);
-
-    const [userId, setUserId] = useState<String | null>("");
-
-    useEffect(() => {
-        // Retrieve the user ID from localStorage and store it in state.
-        const user = localStorage.getItem('user');
-        if (user) {
-            const userID = JSON.parse(user).id;
-            setUserId(userID);
-        }
-    }, []);
+    const { user } = useUser()
+    const router = useRouter()
 
     const deleteComment = async () => {
         try {
             await fetch(
-                `/api/comments/delete/${props.comment._id}?userID=${userId}`,
+                `/api/comments/delete/${props.comment._id}?userID=${user.id}`,
                 {
                     method: "POST",
                     headers: {
@@ -47,19 +40,19 @@ function Comment(props: Props): JSX.Element {
                     },
                 }
             );
-            window.location.href = window.location.href;
+            // window.location.href = window.location.href;
         } catch (err) {
             console.error(err);
         }
     };
 
     const addVote = async (isUpvote: boolean) => {
-        if (!userId) {
+        if (!user.id) {
             setError("You must be logged in to vote.");
             return;
         }
         try {
-            let res = await fetch(`/api/votes/comment/${props.comment._id}?userID=${userId}`, {
+            let res = await fetch(`/api/votes/comment/${props.comment._id}?userID=${user.id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -107,35 +100,27 @@ function Comment(props: Props): JSX.Element {
                             commentData={props.comment}
                             postID={props.comment.postID}
                             commentID={props.comment._id}
-                            userId={userId || ""}
+                            userId={user.id || ""}
                             onCancel={handleCancelEdit}
                         />
                     ) : (
                         <div>
-                            {props.comment ? (
-                                JSON.parse(localStorage.getItem("user") || '{"username":""}') ? (   
-                                    props.comment.author ===
-                                    JSON.parse(localStorage.getItem("user") || '{"username":""}').username ? (
-                                        <div>
-                                            <button
-                                                onClick={handleEditClick}
-                                                className="text-green-600 transition-all hover:bg-green-200 px-2 py-1 rounded-lg mr-2"
-                                            >
-                                                Edit
-                                            </button>
+                            { user.username === props.comment.author &&
+                                <div>
+                                <button
+                                    onClick={handleEditClick}
+                                    className="text-green-600 transition-all hover:bg-green-200 px-2 py-1 rounded-lg mr-2"
+                                >
+                                    Edit
+                                </button>
 
-                                            <button
-                                                onClick={deleteComment}
-                                                className="text-red-600 transition-all hover:bg-red-200 px-2 py-1 rounded-lg ml-2"
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    ) : null
-                                ) : null
-                            ) : (
-                                "Loading..."
-                            )}
+                                <button
+                                    onClick={deleteComment}
+                                    className="text-red-600 transition-all hover:bg-red-200 px-2 py-1 rounded-lg ml-2"
+                                >
+                                    Delete
+                                </button>
+                            </div>}
                         </div>
                     )}
                 </div>

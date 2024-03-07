@@ -36,7 +36,7 @@ function Post(props: Props): JSX.Element {
                     {props.content}
                 </p>
                 <p className="text-xs font-light shrink-0 w-fit">
-                    {props.imageUrls ? `${props.imageUrls.length} attachments...` : ""}
+                    {props.imageUrls.length ? `${props.imageUrls.length} attachments...` : ""}
                 </p>
             </div>
         </div>

@@ -27,8 +27,7 @@ let postSchema = new Schema({
       type: Date,
       required: true
     },
-    // Will remove soon
-    imageUrl: {
+    location: {
       type: String,
       required: false
     },

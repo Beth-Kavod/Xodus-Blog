@@ -17,7 +17,7 @@ export const POST = async (request, { params }) => {
     const postID = params.id
     let { author, content } = await request.json() 
 
-    content = filter.clean(content);
+    // content = filter.clean(content);
     
     await isValid_id(postID, Post)
 
@@ -30,19 +30,24 @@ export const POST = async (request, { params }) => {
         postID: postID
       })
 
-    const commentResponse = await newComment.json()
-    
-    if (newComment.ok) {
-      return NextResponse.json({
-        success: true,
-        message: "Comment successfully created",
-        data: commentResponse
-      }, {
-        status: 200
+    const post = await Post
+      .findByIdAndUpdate(postID, {
+        $push: { 
+          comments: newComment._id 
+        },
+        new: true 
       })
-    } else {
-      throw new Error('Failed to create comment document')
-    }
+
+    if (!post) throw new Error("Failed to update post") 
+     
+    return NextResponse.json({
+      success: true,
+      message: "Comment successfully created",
+      data: newComment
+    }, {
+      status: 200
+    })
+
   } catch(error) {
     return NextResponse.json({
       success: false,

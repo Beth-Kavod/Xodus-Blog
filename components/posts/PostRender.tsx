@@ -11,8 +11,9 @@ interface Post {
   author: string;
   date: Date;
   _id: string;
+  comments: Array<string>;
   votes: Array<{ author: string, vote: boolean, date: Date }>;
-  imageUrl: string;
+  imageUrls: Array<string>;
 }
 
 interface Data {
@@ -39,7 +40,7 @@ export default function PostRender() {
   }, [router]) */
   /* console.log(search)
   console.log(searchTerms) */
-  // ! TEMPORARY FIX TO REMOVE ERROR
+  // ! TEMPORARY FIX TO REMOVE ERROR WITH useSearchParams()
   const search = ""
   const searchTerms = ""
 
