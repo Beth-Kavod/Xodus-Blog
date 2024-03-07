@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose'
+import postDB from '@/connections/postDB'
 const Schema = mongoose.Schema;
-const postDB = require('@/connections/postDB')
 
 let postSchema = new Schema({
     author: {
@@ -36,6 +36,11 @@ let postSchema = new Schema({
       type: Array,
       required: false
     },
+    comments: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Comment',
+      required: false
+    }
 },{
     collection: 'posts',
     timestamps: true

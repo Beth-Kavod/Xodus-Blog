@@ -65,7 +65,7 @@ export default function PostRender() {
   return (
     <div className="w-full flex flex-col items-center justify-center">
       {/* <Suspense fallback={<div>Loading...</div>}> */}
-        <PostList posts={posts} data={data} searchTerms={searchTerms} />
+        { posts.length ? <PostList posts={posts} data={data} searchTerms={searchTerms} /> : <div>Loading...</div>}
       {/* </Suspense> */}
 
       <div className="flex justify-between items-center text-sm w-2/3 border-x border-t border-x-light-border">

@@ -130,6 +130,55 @@ async function getUserWithID(userID) {
   return user
 }
 
+/* ----------------------- Upload Image to Cloudinary ----------------------- */
+
+async function uploadImages(request) {
+  const formData = await request.formData()
+    
+  /* const imageUpload = await fetch(`https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/image/upload`, {
+      method: 'POST',
+      body: formData,
+  }); */ 
+  const imageUpload = await fetch(`/api/images/upload`, {
+      method: 'POST',
+      body: formData,
+  }); 
+
+  if (!imageUpload.ok) {
+    throw new Error(`Failed to upload images to Cloudinary: ${imageUpload.status} - ${imageUpload.statusText}`);
+  }
+
+  const imageResponse = await imageUpload.json();
+  return imageResponse
+}
+
+/* --------------------- Delete an image from Cloudinary -------------------- */
+
+async function deleteImages(imageArray) {
+  try {
+    const returnedData = []
+    const promises = imageArray.map(async image => {
+      const response = await fetch(`/api/image/delete`, {
+        method: 'POST',
+        body: JSON.stringify({ imageUrl: image })
+      })
+
+      returnedData.push(await response.json())
+    })
+
+    await Promise.all(promises)
+
+    return {
+      success: true,
+      message: "Deleted all images on event from Cloudinary",
+      data: returnedData
+    }
+  } catch (error) {
+    console.error('Error occurred while deleting image:', error);
+    throw new Error(error.message)
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 
-module.exports = { countVotes, isValid_id, isDuplicate, getUserWithID, generateUserAuthID, hash }
+module.exports = { countVotes, isValid_id, isDuplicate, getUserWithID, generateUserAuthID, hash, deleteImages, uploadImages }

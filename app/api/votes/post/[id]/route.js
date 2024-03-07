@@ -13,9 +13,10 @@ export const POST = async (request, { params }) => {
     const searchParams = request.nextUrl.searchParams
     const userID = searchParams.get("userID")
 
-    const { author, vote } = req.body
+    const { author, vote } = await request.json()
 
     await isValid_id(postID, Post)
+
     if (await isDuplicate(postID, author)) return NextResponse.json({
       success: true,
       message: `Updated vote on post: ${postID}`

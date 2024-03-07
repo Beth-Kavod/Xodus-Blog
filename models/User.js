@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
+import userDB from '@/connections/userDB'
 const Schema = mongoose.Schema;
-const userDB = require('@/connections/userDB')
 
 let userSchema = new Schema({
     username: {

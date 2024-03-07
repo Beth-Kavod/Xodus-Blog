@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose'
+import commentDB from '@/connections/commentDB'
 const Schema = mongoose.Schema;
-const commentDB = require('@/connections/commentDB')
 
 let commentSchema = new Schema({
     author: {

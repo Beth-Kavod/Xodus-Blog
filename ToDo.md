@@ -4,10 +4,11 @@
 - finish update-avatar route
 - Fix create posts images not working
 - Fix suspense error
+- Rework comment API
 
 
 # ToDo
-- Make editPost page, API already set up
+- Make editPost page, API already set up // something like this is already there, not completely necessary
 
 - Make profile page not display if res.status === 404
 - Make create post button disabled until image is uploaded into cloudinary (image doesent upload if done to fast)

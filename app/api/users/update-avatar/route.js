@@ -10,20 +10,14 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 /* -------------------------------------------------------------------------- */
 
 /* --------------------------- Update users avatar -------------------------- */
-
+// ! Fix this to upload to Cloudinary
 export const POST = async (request, { params }) => {
   try {
     const { username, image } = await request.json();
     
     const user = await User.findOne({ username })
+    if (!user) throw new Error(`No user with name: ${username}`)
     console.log(image)
-    /* if (user.avatar) {
-      const publicId = user.avatar.split('/').pop().split('.')[0];
-      cloudinary.v2.api
-        .delete_resources([`Avatars/${publicId}`], 
-          { type: 'upload', resource_type: 'image' })
-    } */
-    return NextResponse.json({ data: image})
 
     const uploadImage = await fetch(`/api/images/upload`, {
       method: 'POST',
@@ -32,7 +26,7 @@ export const POST = async (request, { params }) => {
       }
     })
 
-
+    const { url } = await uploadImage.json()
 
     const updatedUser = await User.findOneAndUpdate(
       { username }, 
