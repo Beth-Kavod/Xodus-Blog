@@ -1,8 +1,9 @@
 "use client"
-import { useState, useEffect, lazy, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+// import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic';
 
-const PostList  = lazy(() => import('./PostList'))
+const PostList  = dynamic(() => import('./PostList'), { suspense: true })
 
 interface Post {
   title: string;
@@ -26,11 +27,21 @@ export default function PostRender() {
   const [size, setSize] = useState<number>(10)
   const [pageCount, setPageCount] = useState<number>(0)
   const [data, setData] = useState<Data>({ search: "", totalPages: pageCount, totalPosts: 0, message: ""})
-  const [posts, setPosts] = useState<Post[]>([]);        
+  const [posts, setPosts] = useState<Post[]>([]);
+  /* const [search, setSearch] = useState<string>("")        
+  const searchTerms = search.split(" ").join(", ") */
+  /* const router = useRouter()
   
-  const searchParams = useSearchParams()
-  const search = searchParams.get("search") || ""
-  const searchTerms = search?.split(" ").join(", ")
+  useEffect(() => {
+    const { query } = router
+    setSearch(query ? query.search?.toString() || "" : "")
+    console.log(router)
+  }, [router]) */
+  /* console.log(search)
+  console.log(searchTerms) */
+  // ! TEMPORARY FIX TO REMOVE ERROR
+  const search = ""
+  const searchTerms = ""
 
   useEffect(() => {
     const queryString = `?page=${page}&query=${search}&size=${size}`
@@ -39,11 +50,12 @@ export default function PostRender() {
       fetch(`/api/posts/search${queryString}`)
         .then((res) => res.json())
         .then((data) => {
+          console.log(data)
+          if (!data.data) return
           data.data.forEach((post: Post) => (post.date = new Date(post.date)));
           setPosts(data.data);
           setPageCount(data.totalPages);
           setData(data)
-          console.log(data)
         });
     } catch (err) {
       console.error(err);
@@ -52,9 +64,9 @@ export default function PostRender() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      <Suspense fallback={<div>Loading...</div>}>
+      {/* <Suspense fallback={<div>Loading...</div>}> */}
         <PostList posts={posts} data={data} searchTerms={searchTerms} />
-      </Suspense>
+      {/* </Suspense> */}
 
       <div className="flex justify-between items-center text-sm w-2/3 border-x border-t border-x-light-border">
         <div className="w-fit text-xs px-5 py-3 flex items-center">

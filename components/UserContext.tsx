@@ -12,7 +12,7 @@ const UserContext = createContext({
     username: "",
     id: ""
   },
-  login: (userData) => {},
+  login: (userData: User) => {},
   logout: () => {}
 });
 
@@ -22,7 +22,7 @@ const UserContext = createContext({
 export const useUser = () => useContext(UserContext);
 
 // UserProvider component manages user authentication state
-export const UserProvider = ({ children }) => {
+export const UserProvider = ({ children }: any) => {
   const [user, setUser] = useState(() => {
     try {
       // Check if localStorage is available in the browser environment
@@ -58,7 +58,7 @@ export const UserProvider = ({ children }) => {
   }, [user]);
 
   // Function to log in a user
-  const login = (userData) => {
+  const login = (userData: User) => {
     setUser(userData);
   };
 

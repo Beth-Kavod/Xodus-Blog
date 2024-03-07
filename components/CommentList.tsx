@@ -27,6 +27,7 @@ function CommentList(props: Props): JSX.Element {
                 fetch(`/api/comments/${props.id}`)
                 .then(res => res.json())
                 .then(data => {
+                    if (!data.data) return
                     data.data.forEach((comment: CommentObject) => comment.date = new Date(comment.date));
                     setComments(data.data as CommentObject[]);
                 })

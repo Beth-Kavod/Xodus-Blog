@@ -3,6 +3,7 @@
 - finish update-profile route
 - finish update-avatar route
 - Fix create posts images not working
+- Fix suspense error
 
 
 # ToDo
