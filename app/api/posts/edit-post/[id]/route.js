@@ -19,11 +19,9 @@ export const POST = async (request, { params }) => {
 
     const user = await getUserWithID(userID)
   
-    await isValid_id(postID, Post)
-
-    const body = await request.json()
+    const post = await isValid_id(postID, Post)
     
-    const post = await Post.findById(postID);
+    const body = await request.json()
     
     if (user.username !== post.author && !user.admin) {
       return NextResponse.json({
@@ -37,18 +35,15 @@ export const POST = async (request, { params }) => {
     body.content = filter.clean(body.content);
     body.title = filter.clean(body.title);
 
-    await Post  
-    .findByIdAndUpdate(postID, body, { new: true })
-    .then(result => {
-      return NextResponse.json({
-        success: true,
-        voteCount: result.voteCount,
-        message: "Data successfully updated",
-        data: result
-      }, {
-        status: 200
-      })
-      
+    const updatedPost = await Post.findByIdAndUpdate(postID, body, { new: true })
+    
+    return NextResponse.json({
+      success: true,
+      voteCount: updatedPost.voteCount,
+      message: "Data successfully updated",
+      data: updatedPost
+    }, {
+      status: 200
     })
   } catch(error) {
     return NextResponse.json({

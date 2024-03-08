@@ -120,6 +120,7 @@ async function isDuplicate(request, id, author) {
 async function isValid_id(id, schema) {
   const doc = await schema.findById(id);
   if (!doc) throw new Error;
+  return doc
 }
 
 /* ---------------------- Get a users auth with authID ---------------------- */
@@ -134,14 +135,10 @@ async function getUserWithID(userID) {
 
 async function uploadImages(request) {
   const formData = await request.formData()
-    
-  /* const imageUpload = await fetch(`https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/image/upload`, {
-      method: 'POST',
-      body: formData,
-  }); */ 
   const imageUpload = await fetch(`/api/images/upload`, {
       method: 'POST',
       body: formData,
+      duplex: true
   }); 
 
   if (!imageUpload.ok) {
@@ -181,7 +178,7 @@ async function deleteImages(imageArray) {
 
 /* -------------------------------------------------------------------------- */
 
-module.exports = { 
+module.exports = Methods = { 
   countVotes, 
   isValid_id, 
   isDuplicate, 
