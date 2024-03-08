@@ -1,9 +1,9 @@
 "use client"
-import { useEffect, useState } from "react";
-import Link from 'next/link'
 import "@/assets/css/output.css";
+import { useState } from "react";
+import Link from 'next/link'
 import Voting from "./Voting";
-import LoginError from "./LoginError";
+import ErrorMessage from "./ErrorMessage";
 import { useUser } from '@/components/UserContext';
 import { useRouter } from 'next/navigation'
 import CommentType from '@/types/Comment'
@@ -16,7 +16,6 @@ interface Props {
 
 function Comment(props: Props): JSX.Element {
     const [isEditing, setIsEditing] = useState(false)
-    // const [voteCount, setVoteCount] = useState<number | null>(props.comment.voteCount); // Initialize voteCount stat
     const [error, setError] = useState<String | null>(null);
     const { comment } = props
     const { voteCount } = comment
@@ -76,7 +75,7 @@ function Comment(props: Props): JSX.Element {
     return (
         <div className="px-16 py-4 flex w-full items-center justify-center">
             {error && (
-                <LoginError
+                <ErrorMessage
                     styles={""}
                     message={error}
                     onClose={() => setError(null)}

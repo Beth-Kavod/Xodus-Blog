@@ -2,7 +2,7 @@
 import "@/assets/css/output.css";
 import Link from "next/link";
 import { useState, useMemo } from "react";
-import LoginError from "./LoginError";
+import ErrorMessage from "./ErrorMessage";
 import { useRouter } from 'next/navigation'
 import { useUser } from '@/components/UserContext'
 
@@ -50,7 +50,7 @@ function LoginForm() {
     return (
         <div className="h-full flex flex-col items-center justify-center px-6 py-12 lg:px-8">
             {error && (
-                <LoginError
+                <ErrorMessage
                     styles=""
                     message={error}
                     onClose={() => setError(null)}

@@ -6,7 +6,7 @@ interface Props {
     onClose: any
 }
 
-function LoginError (props: Props): JSX.Element {
+function ErrorMessage (props: Props): JSX.Element {
     return (
         <div className={`absolute flex bg-red-600 text-gray-200 w-fit h-fit p-5 rounded-lg border-2 border-gray-200 shadow-gray-200 shadow-sm ${props.styles}`}>
             <h1 className="text-xl">
@@ -19,4 +19,4 @@ function LoginError (props: Props): JSX.Element {
     );
 }
 
-export default LoginError;
+export default ErrorMessage;

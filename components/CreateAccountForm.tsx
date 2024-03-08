@@ -1,7 +1,7 @@
 "use client"
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import LoginError from "./LoginError";
+import ErrorMessage from "./ErrorMessage";
 
 function CreateAccountForm () {
     const [username, setUsername] = useState("");
@@ -76,7 +76,7 @@ function CreateAccountForm () {
     return (
             <div className="flex h-full flex-col items-center justify-center px-6 py-12 lg:px-8">
                 {error && (
-                    <LoginError
+                    <ErrorMessage
                         message={error}
                         onClose={() => setError(null)}
                         styles=""

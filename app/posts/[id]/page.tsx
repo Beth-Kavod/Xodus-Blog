@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link'
 import Voting from "@/components/Voting";
-import LoginError from "@/components/LoginError";
+import ErrorMessage from "@/components/ErrorMessage";
 import Image from 'next/image'
 import { useUser } from '@/components/UserContext'
 
@@ -17,6 +17,7 @@ function PostPage(): JSX.Element {
     const [error, setError] = useState<string | null>(null);
     const [post, setPost] = useState<PostType>({ title: "", content: "", author: "", date: null, imageUrls: [], _id: "", voteCount: 0, comments: [] as CommentType[] });
     const [editing, setEditing] = useState<boolean>(false);
+    
     const router = useRouter()
     const pathname = usePathname()
     const id = pathname.split("/").pop();
@@ -182,7 +183,7 @@ function PostPage(): JSX.Element {
                         <div className="w-full">
                             <div className="flex items-center">
                                 {error && (
-                                    <LoginError
+                                    <ErrorMessage
                                         styles={"mx-32"}
                                         message={error}
                                         onClose={() => setError(null)}
