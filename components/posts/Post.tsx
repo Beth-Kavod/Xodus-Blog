@@ -1,22 +1,14 @@
 import "@/assets/css/output.css";
 import Link from "next/link";
+import Post from "@/types/Post";
 
-interface Props {
-    id: string;
-    author: string;
-    title: string;
-    content: string;
-    votes: Array<{ author: string, vote: boolean, date: Date }>;
-    date: Date;
-    imageUrls: Array<string>;
-}
-
-function Post(props: Props): JSX.Element {
+function Post(props: Post): JSX.Element {
     return (
         <div className="w-full h-fit">
+            <p>{props.voteCount}</p>
             <div className="w-full flex justify-between items-center px-8 py-4">
                 <Link
-                    href={"/posts/" + props.id}
+                    href={"/posts/" + props._id}
                     title="View post"
                     className="text-xl text-light-theme-green hover:text-light-theme-green-active transition-all overflow-x-hidden overflow-ellipsis whitespace-nowrap"
                 >
@@ -24,10 +16,10 @@ function Post(props: Props): JSX.Element {
                 </Link>
                 <p className="text-sm text-light-theme-green">
                     <Link href={"/accounts/profile/" + props.author} title={`View ${props.author}'s profile`}>
-                        {props.author} 
+                        {props.author.username} 
                     </Link>
                     <span className="text-xs px-1 font-light text-black">
-                        {props.date ? props.date.toLocaleDateString() : ""}
+                        {props.createdAt ? props.createdAt.toLocaleDateString() : ""}
                     </span>
                 </p>
             </div>

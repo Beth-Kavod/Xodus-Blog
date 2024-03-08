@@ -23,9 +23,9 @@ export const POST = async (request, { params }) => {
       status: 200
     }) */
     
-    const user = await getUserWithID(userID);
+    const isUser = await getUserWithID(userID);
     
-    if (!user) {
+    if (!isUser) {
       return NextResponse.json({
         success: false,
         message: "You must be logged in to cast a vote"
@@ -42,12 +42,11 @@ export const POST = async (request, { params }) => {
         status: 400
       })
     }
-    // const countVotes = (votes) => votes.length
 
     const updatedPost = await Post.findByIdAndUpdate(
       postID,
       { 
-        $push: { votes: { ...newVote, date: new Date } },
+        $push: { votes: { ...newVote, date: new Date() } },
         $set: { voteCount: countVotes([...originalPost.votes, newVote]) }
       },
       { new: true }

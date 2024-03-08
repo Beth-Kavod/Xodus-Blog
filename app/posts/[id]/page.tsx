@@ -152,7 +152,7 @@ function PostPage(): JSX.Element {
     const renderDeleteButton = () => {
         if (post) {
             if (
-                user.username === post.author.name
+                user.username === post.author.username
             ) {
                 return (
                     <button
@@ -172,7 +172,7 @@ function PostPage(): JSX.Element {
     const renderEditButton = () => {
         if (post) {
             if (
-                user.username === post.author.name
+                user.username === post.author.username
             ) {
                 return (
                     <button
@@ -221,11 +221,11 @@ function PostPage(): JSX.Element {
                             </div>
                             <div className="flex items-center justify-between border-b border-light-border">
                                 <Link
-                                    href={"/accounts/profile/" + post?.author.name}
-                                    title={"View " + post?.author.name + "'s profile"}
+                                    href={"/accounts/profile/" + post?.author.username}
+                                    title={"View " + post?.author.username + "'s profile"}
                                     className="p-20 py-5 text-md text-light-theme-green"
                                 >
-                                    {post ? post.author.name : "Loading..."}
+                                    {post ? post.author.username : "Loading..."}
                                 </Link>
                             </div>
                         </div>

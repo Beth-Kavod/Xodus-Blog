@@ -24,10 +24,10 @@ export const POST = async (request, { params }) => {
     
     const post = await Post.findById(postID)
 
-    if (user.username !== post.author.name && !user.admin) {
+    if (user.username !== post.author.username && !user.admin) {
       return NextResponse.json({
         success: true,
-        message: `User ${user.username} not authorized to delete ${post.author.name}'s post`
+        message: `User ${user.username} not authorized to delete ${post.author.username}'s post`
       }, {
         status: 403
       })
