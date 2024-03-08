@@ -3,8 +3,14 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 import User from '@/types/User'
 
+interface UserContextType {
+  user: User;
+  login: (userData: User) => void;
+  logout: () => void;
+}
+
 // Define the shape of the user object
-const UserContext = createContext({
+const UserContext = createContext<UserContextType>({
   user: {
     username: "",
     id: ""

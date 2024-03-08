@@ -24,7 +24,7 @@ function CreatePostPage(): JSX.Element {
   const [form, setForm] = useState<PostForm>({
     title: "",
     content: "",
-    author: user.username,
+    author: user,
     addresses: [],
     tags: [],
     imageUrls: [],
