@@ -8,12 +8,13 @@ let postSchema = new Schema({
     author: {
       name: {
         type: String,
+        required: true
       },
       id: {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        required: true
       },
-      required: true
     }, 
     title: {
       type: String,

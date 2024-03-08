@@ -7,12 +7,13 @@ let commentSchema = new Schema({
     author: {
       name: {
         type: String,
+        required: true
       },
       id: {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        required: true
       },
-      required: true
     }, 
     content: {
       type: String,
