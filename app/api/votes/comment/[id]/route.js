@@ -19,12 +19,15 @@ export const POST = async (request, { params }) => {
     let { author, vote } = await request.json()
 
     await isValid_id(commentID, Comment);
-    if (await isDuplicate(request, commentID, author)) return NextResponse.json({
-      success: true,
-      message: `Updated vote on comment: ${commentID}`
-    }, {
-      status: 200
-    }) 
+
+    if (await isDuplicate(request, commentID, author)) {
+      return NextResponse.json({
+        success: true,
+        message: `Updated vote on comment: ${commentID}`
+      }, {
+        status: 200
+      })
+    } 
 
     const user = await getUserWithID(userID)
 

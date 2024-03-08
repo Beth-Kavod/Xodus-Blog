@@ -50,7 +50,7 @@ interface PostData {
 }
 
 const defaultPostData = {
-    pageCount: 0,
+    pageCount: 1,
     totalPosts: 0,
     posts: []
 }
@@ -109,6 +109,7 @@ function ProfilePage(): JSX.Element {
     // Fetch the users posts
     useEffect(() => {
         fetchPosts()
+        console.log(postsData)
     }, [user.id, queryParams.page, queryParams.size, username]);
 
     async function fetchPosts() {

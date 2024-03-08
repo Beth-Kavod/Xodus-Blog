@@ -13,6 +13,8 @@ export const POST = async (request, { params }) => {
     const searchParams = request.nextUrl.searchParams
     const userID = searchParams.get("userID")
 
+    console.log(request.json)
+
     const { author, vote } = await request.json()
 
     await isValid_id(postID, Post)
