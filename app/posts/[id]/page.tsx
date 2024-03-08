@@ -244,6 +244,19 @@ function PostPage(): JSX.Element {
                             ""
                         )}
 
+                        {
+                            post.videoLinks.length && (
+                                post.videoLinks.map(videoLink => {
+                                    return (
+                                        <>
+                                            <p>{videoLink.name}</p>
+                                            <Link href={videoLink.link} target="_blank" />
+                                        </>
+                                    )
+                                })
+                            )
+                        }
+
                         <div className="flex items-center justify-center w-full h-fit my-10">
                             {/* Make separate page at some point */}
                             {editing ? (

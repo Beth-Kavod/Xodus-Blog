@@ -1,11 +1,13 @@
 "use client"
 import { SyntheticEvent, useState } from "react";
 import { useRouter } from 'next/navigation'
+import { useUser } from "./UserContext";
+
+import User from "@/types/User"
 
 interface CommentObject {
-    author: string;
+    author: User;
     content: string;
-    date: Date;
 }
 
 interface Props {
@@ -18,13 +20,11 @@ interface Props {
 
 function CreateComment(props: Props): JSX.Element {
     const router = useRouter()
-    const ls = localStorage.getItem("user");
-    const author: string = ls ? JSON.parse(ls).username : "";
+    const { user } = useUser()
 
     const [comment, setComment] = useState<CommentObject>({
-        author,
+        author: user,
         content: props.commentData.content, // Use props.commentData.content as initial content
-        date: new Date(),
     });
 
     const handleCancelClick = () => {
@@ -38,8 +38,6 @@ function CreateComment(props: Props): JSX.Element {
             window.location.href = "/accounts/login";
             return;
         }
-
-        setComment({ ...comment, date: new Date() });
 
         try {
             await fetch(`/api/comments/edit/${props.commentID}?userID=${props.userId}`, {
@@ -58,7 +56,7 @@ function CreateComment(props: Props): JSX.Element {
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = event.target;
-        setComment({ ...comment, date: new Date(), [name]: value });
+        setComment({ ...comment, [name]: value });
     };
 
     return (

@@ -1,17 +1,8 @@
 "use client"
 import "@/assets/css/output.css"
-import Post from "./Post";
+import Post from "./Post"
 
-
-interface Post {
-    title: string;
-    content: string;
-    author: string;
-    date: Date;
-    _id: string;
-    votes: Array<{ author: string, vote: boolean, date: Date }>;
-    imageUrls: Array<string>;
-}
+import PostType from '@/types/Post'
 
 interface Data {
     search: string;
@@ -21,7 +12,7 @@ interface Data {
 }
 
 interface Props {
-    posts: Post[];
+    posts: PostType[];
     data: Data;
     searchTerms: string;
 }
@@ -36,7 +27,7 @@ function PostList (props: Props): JSX.Element {
             {/* Message for the user */}
             {props.data.totalPosts ? "" : props.data.message}
             {props.posts.map(post => (
-                <Post id={post._id} key={post._id} imageUrls={post.imageUrls} author={post.author.username} title={post.title} content={post.content} votes={post.votes} date={post.date} />
+                <Post _id={post._id} key={post._id} imageUrls={post.imageUrls} author={post.author} title={post.title} content={post.content} createdAt={post.createdAt} voteCount={post.voteCount} videoLinks={post.videoLinks} />
             ))}
 
         </div>

@@ -10,6 +10,7 @@ import Image from 'next/image'
 import { useUser } from '@/components/UserContext';
 // This needs to be fixed to work in tsx
 // import { uploadImages } from "@/utils/routeMethods";
+import ViewPost from '@/types/Post'
 
 interface User {
     username: string;
@@ -29,15 +30,6 @@ const defaultUser = {
     _id: ""
 }
 
-interface Post {
-    title: string;
-    content: string;
-    author: string;
-    date: Date;
-    _id: string;
-    imageUrls: Array<string>;
-}
-
 interface QueryData {
     size: number;
     page: number;
@@ -46,7 +38,7 @@ interface QueryData {
 interface PostData {
     pageCount: number;
     totalPosts: number;
-    posts: Post[];
+    posts: ViewPost[];
 }
 
 const defaultPostData = {
@@ -118,9 +110,9 @@ function ProfilePage(): JSX.Element {
             const postData = await postsResponse.json();
             
             // Fix dates from MongoDB date to JS date object
-            const postsWithDates: Post[] = postData.data.map((post: Post) => ({
+            postData.data.forEach((post: ViewPost) => ({
                 ...post,
-                date: new Date(post.date),
+                createdAt: new Date(post.createdAt)
             }));
 
             const { pageCount, totalPosts } = postData
@@ -129,7 +121,7 @@ function ProfilePage(): JSX.Element {
                 ...prev,
                 pageCount, 
                 totalPosts, 
-                posts: postsWithDates as Post[]
+                posts: postData.data
             }))
         } catch (error) {
             console.error(error);
@@ -238,7 +230,7 @@ function ProfilePage(): JSX.Element {
                                         {post.title}
                                     </Link>
                                     <span className="text-xs px-1 font-light text-black">
-                                        {post.date.toLocaleDateString()}
+                                        {post.createdAt.toLocaleDateString()}
                                     </span>
                                 </div>
                                 <div className="flex w-full items-center justify-between px-8 pb-4">
