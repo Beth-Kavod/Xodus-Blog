@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 import blogDB from '@/connections/blogDB'
+import { countVotes } from '@/utils/routeMethods'
 const Schema = mongoose.Schema;
 
 let commentSchema = new Schema({
@@ -32,11 +33,17 @@ let commentSchema = new Schema({
     timestamps: true
 })
 
+commentSchema.pre('save', function(next) {
+  const votes = this.votes || []
+  const countedVotes = countVotes(votes)
+  this.voteCount = countedVotes
+  next()
+});
+
 const Comment = blogDB.model('Comment', commentSchema)
 
 blogDB.once('open', () => {
   console.log('Connected to blogDB for Comments')
 })
-
 
 module.exports = Comment

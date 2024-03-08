@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 import blogDB from '@/connections/blogDB'
+import { countVotes } from '@/utils/routeMethods'
 const Schema = mongoose.Schema;
 
 let postSchema = new Schema({
@@ -16,7 +17,11 @@ let postSchema = new Schema({
       required: true
     },
     votes: {
-      type: Array,
+      type: [{
+        date: Date,
+        author: String,
+        vote: Boolean
+      }],
       required: false
     },
     voteCount: {
@@ -54,17 +59,17 @@ let postSchema = new Schema({
     timestamps: true
 })
 
+postSchema.pre('save', function(next) {
+  const votes = this.votes || []
+  const countedVotes = countVotes(votes)
+  this.voteCount = countedVotes
+  next()
+});
+
 const Post = blogDB.model('Post', postSchema)
-/* 
-postSchema.pre('save', () => {
-  this.
-}) */
 
 blogDB.once('open', () => {
   console.log('Connected to blogDB for Posts')
 })
-
-
-
 
 module.exports = Post
