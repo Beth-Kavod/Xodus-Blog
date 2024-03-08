@@ -3,7 +3,7 @@ import { useRouter } from  'next/navigation'
 import { useUser } from '@/components/UserContext'
 
 import ImageUpload from '@/components/ImageUpload'
-import Carousel from '@/components/Carousel'
+import CarouselEditImages from '@/components/carousel/CarouselEditImages'
 
 import Image from '@/types/Image'
 import PostForm from '@/types/PostForm'
@@ -138,12 +138,9 @@ const BlogPostForm = ({ formInputs, imageInputs }: BlogPostParams) => {
           />
           {
             images && images.length && 
-            <Carousel params={{ 
-              imagePreviews, 
-              images, 
-              setImages, 
-              edit: true 
-            }}
+            <CarouselEditImages 
+              images={images}
+              setImages={setImages}
             />
           }
       </div>

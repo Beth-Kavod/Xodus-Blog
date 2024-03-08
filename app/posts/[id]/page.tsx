@@ -9,7 +9,7 @@ import Voting from "@/components/Voting";
 import ErrorMessage from "@/components/ErrorMessage";
 import Image from 'next/image'
 import { useUser } from '@/components/UserContext'
-import Carousel from "@/components/Carousel";
+import CarouselDisplayImages from "@/components/carousel/CarouselDisplayImages";
 
 import PostType from "@/types/Post";
 import CommentType from "@/types/Comment";
@@ -32,6 +32,7 @@ function PostPage(): JSX.Element {
         comments: [] as CommentType[],
         createdAt: new Date() 
     });
+
     const [editing, setEditing] = useState<boolean>(false);
     
     const router = useRouter()
@@ -232,11 +233,7 @@ function PostPage(): JSX.Element {
 
                         {post ? (
                             post.imageUrls.length ? (
-                                post.imageUrls.map((imageUrl) => (
-                                    
-                                    // <Image alt={imageUrl} src={imageUrl} className="w-full p-10" key={imageUrl} />
-                                    <Carousel params={{ imagePreviews: post.imageUrls }} key={imageUrl} />
-                                ))
+                                <CarouselDisplayImages images={post.imageUrls} />
                             ) : (
                                 ""
                             )
