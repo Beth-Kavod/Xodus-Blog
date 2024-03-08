@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-import commentDB from '@/connections/blogDB'
+import blogDB from '@/connections/blogDB'
 const Schema = mongoose.Schema;
 
 let commentSchema = new Schema({
@@ -24,7 +24,7 @@ let commentSchema = new Schema({
       required: true
     },
     postID: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true
     }
 },{
@@ -32,10 +32,10 @@ let commentSchema = new Schema({
     timestamps: true
 })
 
-const Comment = commentDB.model('Comment', commentSchema)
+const Comment = blogDB.model('Comment', commentSchema)
 
-commentDB.once('open', () => {
-  console.log('Connected to userDB for Users')
+blogDB.once('open', () => {
+  console.log('Connected to blogDB for Comments')
 })
 
 

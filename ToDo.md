@@ -19,6 +19,7 @@ As you check the pages check each of the components to make sure there is no was
 
 
 # ToDo
+- Add auth headers to all post requests to replace userID query
 - FIX CREATE POST BACK BEING WHITE??
 - Fix image upload route to change upload_preset based on formData 
 - Finish Postman routes for testing

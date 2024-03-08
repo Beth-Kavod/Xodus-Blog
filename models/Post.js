@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-import postDB from '@/connections/blogDB'
+import blogDB from '@/connections/blogDB'
 const Schema = mongoose.Schema;
 
 let postSchema = new Schema({
@@ -45,10 +45,10 @@ let postSchema = new Schema({
     timestamps: true
 })
 
-const Post = postDB.model('Post', postSchema)
+const Post = blogDB.model('Post', postSchema)
 
-postDB.once('open', () => {
-  console.log('Connected to userDB for Users')
+blogDB.once('open', () => {
+  console.log('Connected to blogDB for Posts')
 })
 
 

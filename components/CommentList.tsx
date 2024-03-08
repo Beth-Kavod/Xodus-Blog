@@ -2,40 +2,17 @@
 import "@/assets/css/output.css"
 import Comment from "./Comment";
 import CreateComment from "./CreateComment";
-import { useEffect, useState } from "react";
 
-interface CommentObject {
-    author: string;
-    content: string;
-    votes: Array<{ author: string, vote: boolean, date: Date}>;
-    voteCount: number;
-    date: Date;
-    postID: string;
-    _id: string;
-}
+// types
+import CommentType from "@/types/Comment";
 
 interface Props {
-    id: String;
+    comments: Array<CommentType>;
+    id: string;
 }
 
 function CommentList(props: Props): JSX.Element {
-    const [comments, setComments] = useState<CommentObject[]>([]);
-
-    useEffect(() => {
-        if (props.id) {
-            try {
-                fetch(`/api/comments/${props.id}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (!data.data) return
-                    data.data.forEach((comment: CommentObject) => comment.date = new Date(comment.date));
-                    setComments(data.data as CommentObject[]);
-                })
-            } catch (err) {
-                console.error(err);
-            }
-        }
-    }, [props]);
+    const { comments, id } = props
 
     return (
         <div className="border-t border-light-border py-4">
@@ -44,13 +21,13 @@ function CommentList(props: Props): JSX.Element {
             </h1>
             <div className="w-full divide-y divide-light-border">
                 {
-                    comments.map((cmt: CommentObject) => (
+                    comments.map((cmt: CommentType) => (
                         <Comment comment={cmt} key={cmt._id}/>
                     ))
                 }
 
             </div>
-            <CreateComment postID={props.id}/>
+            <CreateComment postID={id}/>
         </div>
     );
 }

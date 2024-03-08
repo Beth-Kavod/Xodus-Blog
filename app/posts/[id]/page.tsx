@@ -9,24 +9,13 @@ import Voting from "@/components/Voting";
 import LoginError from "@/components/LoginError";
 import Image from 'next/image'
 import { useUser } from '@/components/UserContext'
-// import { Suspense } from "react";
 
-interface Post {
-    title: string;
-    content: string;
-    author: string;
-    date: Date | null;
-    imageUrls: Array<string>;
-    voteCount: number;
-    comments: Array<string>,
-    // i don's think i need this
-    // votes: Array<{ author: string, vote: boolean, date: Date}>
-    _id: string;
-}
+import PostType from "@/types/Post";
+import CommentType from "@/types/Comment";
 
 function PostPage(): JSX.Element {
     const [error, setError] = useState<string | null>(null);
-    const [post, setPost] = useState<Post>({ title: "", content: "", author: "", date: null, imageUrls: [], _id: "", voteCount: 0, comments: [] });
+    const [post, setPost] = useState<PostType>({ title: "", content: "", author: "", date: null, imageUrls: [], _id: "", voteCount: 0, comments: [] as CommentType[] });
     const [editing, setEditing] = useState<boolean>(false);
     const router = useRouter()
     const pathname = usePathname()
@@ -67,7 +56,7 @@ function PostPage(): JSX.Element {
         }
 
         try {
-            let res = await fetch(`/api/votes/post/${id}?userID=${user.id}`, {
+            const res = await fetch(`/api/votes/post/${id}?userID=${user.id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,9 +67,17 @@ function PostPage(): JSX.Element {
                     vote: isUpvote,
                 }),
             });
-            let data = await res.json();
-            setPost(() => ({
-                ...data.data
+
+            const data = await res.json();
+
+            if (!data.success) {
+                setError(data.errorMessage)
+                return 
+            }
+            
+            setPost(prev => ({
+                ...prev,
+                voteCount: data.voteCount
             }));
         } catch (err) {
             console.error(err);
@@ -128,7 +125,7 @@ function PostPage(): JSX.Element {
         }
     };
 
-    // Fix to actually update content
+    // ! Fix to actually update content on the backend
     const updateContent = (e: any) => {
         const newContent: string = e.target.value || "";
         setPost({ ...post, content: newContent });
@@ -248,7 +245,7 @@ function PostPage(): JSX.Element {
                                 </p>
                             )}
                         </div>
-                        <CommentList id={post ? post._id : ""} />
+                        <CommentList comments={post.comments as CommentType[]} id={post._id} />
                     </div>
                 </div>
                 <Footer />
