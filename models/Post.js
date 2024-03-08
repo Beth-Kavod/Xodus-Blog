@@ -23,15 +23,15 @@ let postSchema = new Schema({
       type: Number,
       required: false
     },
+    tags: {
+      type: [String],
+    },
     addresses: {
       type: [{
         name: String,
         address: String
       }],
       required: false
-    },
-    tags: {
-      type: [String],
     },
     videoLinks: {
       type: [{

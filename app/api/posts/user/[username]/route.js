@@ -1,4 +1,3 @@
-import { isValid_id, getUserWithID } from "@/utils/routeMethods.js"
 import { NextResponse } from 'next/server'
 
 /* ----------------------------- MongoDB schemas ---------------------------- */

@@ -128,7 +128,10 @@ async function isValid_id(id, schema) {
 async function getUserWithID(userID) {
   const user = await User.findOne({ userAuthId: userID })
   if (!user) throw new Error("Invalid user id")
-  return user
+  const { _id, username, admin, } = user
+  return {
+    _id, username, admin
+  }
 }
 
 /* ----------------------- Upload Image to Cloudinary ----------------------- */

@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server'
 
-import { getUserWithID } from '@/utils/routeMethods.js'
-
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
 import User from '@/models/User'

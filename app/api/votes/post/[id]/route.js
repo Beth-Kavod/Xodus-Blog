@@ -14,17 +14,14 @@ export const POST = async (request, { params }) => {
     const userID = searchParams.get("userID")
 
     console.log(request.json)
+    const originalPost = await isValid_id(postID, Post)
 
-    const { author, vote } = await request.json()
-
-    await isValid_id(postID, Post)
-
-    if (await isDuplicate(postID, author)) return NextResponse.json({
+    /* if (await isDuplicate(postID, author)) return NextResponse.json({
       success: true,
       message: `Updated vote on post: ${postID}`
     }, {
       status: 200
-    })
+    }) */
     
     const user = await getUserWithID(userID);
     
@@ -36,10 +33,16 @@ export const POST = async (request, { params }) => {
         status: 403
       })
     }
-
-    const newVote = { author, vote }
-
-    const originalPost = await Post.findById(postID);
+    const newVote =  { user, vote } = await request.json()
+    if (!newVote) {
+      return NextResponse.json({
+        success: false,
+        message: "No vote data provided"
+      }, {
+        status: 400
+      })
+    }
+    // const countVotes = (votes) => votes.length
 
     const updatedPost = await Post.findByIdAndUpdate(
       postID,
