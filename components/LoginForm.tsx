@@ -6,17 +6,31 @@ import ErrorMessage from "./ErrorMessage";
 import { useRouter } from 'next/navigation'
 import { useUser } from '@/components/UserContext'
 
+import CredentialForm from "@/types/CredentialForm";
+
 function LoginForm() {
-    const [username, setUsername] = useState<String>("");
-    const [password, setPassword] = useState<String>("");
     const [error, setError] = useState<String | null>(null);
+    const [credentials, setCredentials] = useState<CredentialForm>({
+        username: "",
+        password: ""
+    })
     const { login } = useUser()
     const router = useRouter()
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target
+
+        setCredentials(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    }
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         try {
+            const { username, password } = credentials
             const response = await fetch("/api/users/verify", {
                 method: "POST",
                 headers: {
@@ -44,8 +58,8 @@ function LoginForm() {
     };
 
     const isDisabled = useMemo(() => {
-        return username.length < 3 || password.length < 3;
-    }, [username, password])
+        return credentials.username.length < 3 || credentials.password.length < 3;
+    }, [credentials.username, credentials.password])
 
     return (
         <div className="h-full flex flex-col items-center justify-center px-6 py-12 lg:px-8">
@@ -70,7 +84,7 @@ function LoginForm() {
                         </label>
                         <div className="mt-2">
                             <input
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={(event) => handleInputChange(event)}
                                 name="username"
                                 type="text"
                                 required
@@ -87,7 +101,7 @@ function LoginForm() {
                         </div>
                         <div className="mt-2">
                             <input
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(event) => handleInputChange(event)}
                                 name="password"
                                 type="password"
                                 required
