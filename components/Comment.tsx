@@ -86,7 +86,7 @@ function Comment(props: Props): JSX.Element {
             <div className="w-full">
                 <div className="flex text-xs items-center justify-between">
                     <Link href={"/accounts/profile/" + comment.author} title={"View " + comment.author + "'s profile"}  className="text-light-theme-green py-2">
-                        {" "}{comment.author} {new Date(comment.date).toLocaleDateString()}-{new Date(comment.date).toLocaleTimeString()}{" "}
+                        {" "}{comment.author.username} {new Date(comment.createdAt).toLocaleDateString()}-{new Date(comment.createdAt).toLocaleTimeString()}{" "}
                     </Link>
                     {isEditing ? ( // Conditional rendering based on isEditing state
                         <EditComment
@@ -98,7 +98,7 @@ function Comment(props: Props): JSX.Element {
                         />
                     ) : (
                         <div>
-                            { user.username === comment.author &&
+                            { user.username === comment.author.username &&
                                 <div>
                                 <button
                                     onClick={handleEditClick}

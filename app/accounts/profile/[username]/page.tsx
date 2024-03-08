@@ -101,7 +101,7 @@ function ProfilePage(): JSX.Element {
     // Fetch the users posts
     useEffect(() => {
         fetchPosts()
-    }, [user.id, queryParams.page, queryParams.size, username]);
+    }, [user.id, queryParams.page, queryParams.size, username, fetchPosts]);
 
     async function fetchPosts() {
         try {
