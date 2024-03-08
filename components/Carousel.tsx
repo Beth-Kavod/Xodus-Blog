@@ -6,7 +6,7 @@ interface CarouselProps {
   params: {
     imagePreviews: string[];
     images?: ImagePreview[];
-    setImages?: React.Dispatch<React.SetStateAction<ImagePreview[] | undefined>>;
+    setImages: React.Dispatch<React.SetStateAction<ImagePreview[] | undefined>>;
     edit?: boolean;
   };
 }

@@ -23,12 +23,21 @@ let postSchema = new Schema({
       type: Number,
       required: false
     },
-    date: {
-      type: Date,
-      required: true
+    addresses: {
+      type: [{
+        name: String,
+        address: String
+      }],
+      required: false
     },
-    location: {
-      type: String,
+    tags: {
+      type: [String],
+    },
+    videoLinks: {
+      type: [{
+        name: String,
+        link: String
+      }],
       required: false
     },
     imageUrls: {
@@ -46,10 +55,16 @@ let postSchema = new Schema({
 })
 
 const Post = blogDB.model('Post', postSchema)
+/* 
+postSchema.pre('save', () => {
+  this.
+}) */
 
 blogDB.once('open', () => {
   console.log('Connected to blogDB for Posts')
 })
+
+
 
 
 module.exports = Post

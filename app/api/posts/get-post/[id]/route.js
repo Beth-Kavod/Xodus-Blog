@@ -14,9 +14,9 @@ export const GET = async (request, { params }) => {
   try {
     const postID = params.id
   
-    await isValid_id(postID, Post)
+    const result = await isValid_id(postID, Post)
     
-    const result = await Post.findById(postID).populate('comments')
+    await result.populate('comments')
 
     console.log(result)
     if (!result) {

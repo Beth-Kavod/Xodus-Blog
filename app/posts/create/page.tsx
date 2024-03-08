@@ -12,6 +12,11 @@ import BlogPostForm from '@/components/forms/BlogPostForm'
 import PostForm from '@/types/PostForm'
 import Image from '@/types/Image'
 
+interface ImageInput {
+  images: Image[],
+  setImages: React.Dispatch<React.SetStateAction<Image[]>>
+}
+
 function CreatePostPage(): JSX.Element {
   const { user } = useUser() 
   const [images, setImages] = useState<Image[]>([])
@@ -20,16 +25,17 @@ function CreatePostPage(): JSX.Element {
     title: "",
     content: "",
     author: user.username,
-    date: new Date(),
     addresses: [],
+    tags: [],
     imageUrls: [],
+    videoLinks: []
   });  
 
   return (
     <div className="w-full h-fit bg-dark-background">
       <Navbar />
 
-      <BlogPostForm formInputs={{form, setForm}} imageInputs={{images, setImages}} />
+      <BlogPostForm formInputs={{form, setForm}} imageInputs={{images, setImages} as ImageInput} />
 
       <Footer />
     </div>

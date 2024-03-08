@@ -15,7 +15,18 @@ import CommentType from "@/types/Comment";
 
 function PostPage(): JSX.Element {
     const [error, setError] = useState<string | null>(null);
-    const [post, setPost] = useState<PostType>({ title: "", content: "", author: "", date: null, imageUrls: [], _id: "", voteCount: 0, comments: [] as CommentType[] });
+    const [post, setPost] = useState<PostType>({ 
+        title: "", 
+        content: "", 
+        author: "", 
+        imageUrls: [], 
+        _id: "", 
+        voteCount: 0, 
+        videoLinks: [],
+        tags: [],
+        comments: [] as CommentType[],
+        createdAt: new Date() 
+    });
     const [editing, setEditing] = useState<boolean>(false);
     
     const router = useRouter()
@@ -32,16 +43,19 @@ function PostPage(): JSX.Element {
                     throw new Error("No post found");
                 }
                 const postData = await postResponse.json();
-                const { title, content, author, date, imageUrls, _id, voteCount, comments } = postData.data
+                const { title, content, author, imageUrls, _id, voteCount, videoLinks, comments, tags } = postData.data
+                const { createdAt } = postData
                 setPost(() => ({
                     _id, 
                     title, 
                     content, 
-                    author, 
-                    date, 
-                    imageUrls, 
+                    author,  
                     voteCount, 
-                    comments 
+                    comments,
+                    videoLinks,
+                    imageUrls, 
+                    createdAt,
+                    tags
                 }));
             } catch (err) {
                 console.error(err);

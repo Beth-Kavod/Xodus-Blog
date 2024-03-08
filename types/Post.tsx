@@ -1,13 +1,16 @@
 import CommentType from './Comment'
+import VideoLinkSchema from './VideoLinkSchema'
 
 interface Post {
   title: string;
   content: string;
   author: string;
-  date: Date | null;
   imageUrls: Array<string>;
+  videoLinks: Array<VideoLinkSchema>;
   voteCount: number;
   comments: Array<CommentType> | string,
+  createdAt: Date;
+  tags: Array<string>,
   _id: string;
 }
 

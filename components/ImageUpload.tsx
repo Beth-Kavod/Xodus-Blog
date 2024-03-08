@@ -3,7 +3,7 @@ import Image from '@/types/Image';
 
 interface ImageUploadProps {
   params: {
-    setImages: React.Dispatch<React.SetStateAction<Image[] | undefined>>;
+    setImages: React.Dispatch<React.SetStateAction<Image[]>>;
   };
 }
 

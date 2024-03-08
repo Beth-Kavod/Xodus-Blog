@@ -63,7 +63,7 @@ interface BlogPostParams {
   }
   imageInputs: {
     images: Image[];
-    setImages: React.Dispatch<React.SetStateAction<Image[] | undefined>>;
+    setImages: React.Dispatch<React.SetStateAction<Image[]>>;
   }
 }
 
@@ -85,8 +85,6 @@ const BlogPostForm = ({ formInputs, imageInputs }: BlogPostParams) => {
 
   const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
-
-    setForm({ ...form, date: new Date() });
 
     try {
       await fetch("/api/posts/create-post", {

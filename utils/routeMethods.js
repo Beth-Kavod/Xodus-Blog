@@ -119,7 +119,7 @@ async function isDuplicate(request, id, author) {
 
 async function isValid_id(id, schema) {
   const doc = await schema.findById(id);
-  if (!doc) throw new Error;
+  if (!doc) throw new Error(`Invalid id, ${id} does not exist in schema ${schema}`);
   return doc
 }
 
@@ -178,7 +178,7 @@ async function deleteImages(imageArray) {
 
 /* -------------------------------------------------------------------------- */
 
-module.exports = Methods = { 
+module.exports = { 
   countVotes, 
   isValid_id, 
   isDuplicate, 
