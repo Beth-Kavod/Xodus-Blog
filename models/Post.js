@@ -1,11 +1,18 @@
 const mongoose = require("mongoose")
 import blogDB from '@/connections/blogDB'
 import { countVotes } from '@/utils/routeMethods'
+console.log(countVotes)
 const Schema = mongoose.Schema;
 
 let postSchema = new Schema({
     author: {
-      type: String,
+      name: {
+        type: String,
+      },
+      id: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
       required: true
     }, 
     title: {
@@ -19,7 +26,8 @@ let postSchema = new Schema({
     votes: {
       type: [{
         date: Date,
-        author: String,
+        user: Schema.Types.ObjectId,
+        ref: 'User',
         vote: Boolean
       }],
       required: false

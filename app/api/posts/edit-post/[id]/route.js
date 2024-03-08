@@ -23,10 +23,10 @@ export const POST = async (request, { params }) => {
     
     const body = await request.json()
     
-    if (user.username !== post.author && !user.admin) {
+    if (user.username !== post.author.name && !user.admin) {
       return NextResponse.json({
         success: true,
-        message: `User ${user.username} not authorized to edit ${post.author}'s post`
+        message: `User ${user.username} not authorized to edit ${post.author.name}'s post`
       }, {
         status: 403
       })

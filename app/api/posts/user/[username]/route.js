@@ -21,8 +21,8 @@ export const GET = async (request, { params }) => {
       .skip((page - 1) * PAGE_SIZE) // Calculate how many documents to skip based on the page number
       .sort({ createdAt: -1 }) // Sort by date
       .limit(PAGE_SIZE) // Limit the number of documents per page
-    console.log(results)
-    let message = results.length === 0 ? 'No posts found from search' : 'Search results successfully fetched';
+
+    const message = results.length === 0 ? 'No posts found from search' : 'Search results successfully fetched';
 
     return NextResponse.json({
       success: true,

@@ -1,9 +1,11 @@
+import User from './User'
+
 interface Comment {
-  author: string;
+  author: User;
   content: string;
-  votes: Array<{ author: string, vote: boolean, date: Date}>;
+  // votes: Array<{ author: string, vote: boolean, date: Date}>;
   voteCount: number;
-  date: Date;
+  createdAt: Date;
   postID: string;
   _id: string;
 }

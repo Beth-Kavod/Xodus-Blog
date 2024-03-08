@@ -47,7 +47,7 @@ export const POST = async (request, { params }) => {
     const updatedPost = await Post.findByIdAndUpdate(
       postID,
       { 
-        $push: { votes: newVote },
+        $push: { votes: { ...newVote, date: new Date } },
         $set: { voteCount: countVotes([...originalPost.votes, newVote]) }
       },
       { new: true }

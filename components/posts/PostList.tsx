@@ -36,7 +36,7 @@ function PostList (props: Props): JSX.Element {
             {/* Message for the user */}
             {props.data.totalPosts ? "" : props.data.message}
             {props.posts.map(post => (
-                <Post id={post._id} key={post._id} imageUrls={post.imageUrls} author={post.author} title={post.title} content={post.content} votes={post.votes} date={post.date} />
+                <Post id={post._id} key={post._id} imageUrls={post.imageUrls} author={post.author.name} title={post.title} content={post.content} votes={post.votes} date={post.date} />
             ))}
 
         </div>

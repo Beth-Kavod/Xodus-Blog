@@ -5,7 +5,13 @@ const Schema = mongoose.Schema;
 
 let commentSchema = new Schema({
     author: {
-      type: String,
+      name: {
+        type: String,
+      },
+      id: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
       required: true
     }, 
     content: {
@@ -13,7 +19,11 @@ let commentSchema = new Schema({
       required: true
     },
     votes: {
-      type: Array,
+      type: [{
+        date: Date,
+        user: Schema.Types.ObjectId,
+        vote: Boolean
+      }],
       required: false
     },
     voteCount: {

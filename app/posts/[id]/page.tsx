@@ -9,16 +9,21 @@ import Voting from "@/components/Voting";
 import ErrorMessage from "@/components/ErrorMessage";
 import Image from 'next/image'
 import { useUser } from '@/components/UserContext'
+import Carousel from "@/components/Carousel";
 
 import PostType from "@/types/Post";
 import CommentType from "@/types/Comment";
 
 function PostPage(): JSX.Element {
+    const { user } = useUser()
     const [error, setError] = useState<string | null>(null);
     const [post, setPost] = useState<PostType>({ 
         title: "", 
         content: "", 
-        author: "", 
+        author: {
+            username: user.username,
+            id: user.id
+        }, 
         imageUrls: [], 
         _id: "", 
         voteCount: 0, 
@@ -32,7 +37,6 @@ function PostPage(): JSX.Element {
     const router = useRouter()
     const pathname = usePathname()
     const id = pathname.split("/").pop();
-    const { user } = useUser()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -77,8 +81,7 @@ function PostPage(): JSX.Element {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    date: new Date(),
-                    author: user.username,
+                    user: user.id,
                     vote: isUpvote,
                 }),
             });
@@ -149,7 +152,7 @@ function PostPage(): JSX.Element {
     const renderDeleteButton = () => {
         if (post) {
             if (
-                user.username === post.author
+                user.username === post.author.name
             ) {
                 return (
                     <button
@@ -169,7 +172,7 @@ function PostPage(): JSX.Element {
     const renderEditButton = () => {
         if (post) {
             if (
-                user.username === post.author
+                user.username === post.author.name
             ) {
                 return (
                     <button
@@ -218,11 +221,11 @@ function PostPage(): JSX.Element {
                             </div>
                             <div className="flex items-center justify-between border-b border-light-border">
                                 <Link
-                                    href={"/accounts/profile/" + post?.author}
-                                    title={"View " + post?.author + "'s profile"}
+                                    href={"/accounts/profile/" + post?.author.name}
+                                    title={"View " + post?.author.name + "'s profile"}
                                     className="p-20 py-5 text-md text-light-theme-green"
                                 >
-                                    {post ? post.author : "Loading..."}
+                                    {post ? post.author.name : "Loading..."}
                                 </Link>
                             </div>
                         </div>
@@ -230,7 +233,9 @@ function PostPage(): JSX.Element {
                         {post ? (
                             post.imageUrls.length ? (
                                 post.imageUrls.map((imageUrl) => (
-                                    <Image alt={imageUrl} src={imageUrl} className="w-full p-10" key={imageUrl} />
+                                    
+                                    // <Image alt={imageUrl} src={imageUrl} className="w-full p-10" key={imageUrl} />
+                                    <Carousel params={{ imagePreviews: post.imageUrls }} key={imageUrl} />
                                 ))
                             ) : (
                                 ""
@@ -240,6 +245,7 @@ function PostPage(): JSX.Element {
                         )}
 
                         <div className="flex items-center justify-center w-full h-fit my-10">
+                            {/* Make separate page at some point */}
                             {editing ? (
                                 <>
                                     <textarea

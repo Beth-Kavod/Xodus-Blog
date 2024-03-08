@@ -18,7 +18,6 @@ export const GET = async (request, { params }) => {
     
     await result.populate('comments')
 
-    console.log(result)
     if (!result) {
       return NextResponse.json({
         success: false,

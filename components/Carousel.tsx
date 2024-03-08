@@ -6,7 +6,7 @@ interface CarouselProps {
   params: {
     imagePreviews: string[];
     images?: ImagePreview[];
-    setImages: React.Dispatch<React.SetStateAction<ImagePreview[] | undefined>>;
+    setImages?: React.Dispatch<React.SetStateAction<ImagePreview[] | undefined>>;
     edit?: boolean;
   };
 }
@@ -48,7 +48,7 @@ const Carousel: React.FC<CarouselProps> = ({ params }) => {
       {images?.[currentIndex] && (
         <Image 
           src={images[currentIndex].preview || "/images/image_not_found.png"} 
-          alt={`Slide ${currentIndex}`} 
+          alt={images[currentIndex].preview} 
           width={700}  
           height={400}  
         />
