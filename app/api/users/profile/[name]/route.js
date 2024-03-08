@@ -13,7 +13,7 @@ export const GET = async (request, { params }) => {
     const searchParams = request.nextUrl.searchParams
     const name = params.name
     const userID = searchParams.get("userID")
-    console.log(params)
+    // console.log(params)
     let requestedUser
     if (!userID) {
       requestedUser = { username: "", id: "", admin: false} 
@@ -31,7 +31,7 @@ export const GET = async (request, { params }) => {
     }) 
     
     const { username, admin, avatar, createdAt, _id, email, tags } = foundUser
-    console.log(foundUser)
+    // console.log(foundUser)
 
     if (requestedUser.username === name || requestedUser.admin) {
       return NextResponse.json({

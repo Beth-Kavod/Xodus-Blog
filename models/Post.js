@@ -12,7 +12,8 @@ let postSchema = new Schema({
       },
       id: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        // This cant reference a user that is outside the collection
+        // ref: 'User',
         required: true
       },
     }, 
@@ -28,7 +29,8 @@ let postSchema = new Schema({
       type: [{
         date: Date,
         user: Schema.Types.ObjectId,
-        ref: 'User',
+        // This cant reference a user that is outside the collection
+        // ref: 'User',
         vote: Boolean
       }],
       required: false

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 import blogDB from '@/connections/blogDB'
+import userDB from '@/connections/userDB'
 import { countVotes } from '@/utils/routeMethods'
 const Schema = mongoose.Schema;
 
@@ -11,7 +12,8 @@ let commentSchema = new Schema({
       },
       id: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        // This cant reference a user that is outside the collection
+        // ref: 'User',
         required: true
       },
     }, 

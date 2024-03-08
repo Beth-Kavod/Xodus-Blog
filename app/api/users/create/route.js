@@ -19,8 +19,9 @@ export const POST = async (request) => {
 
     if (emailCheck.length > 0) {
       return NextResponse.json({
-        success: true,
-        message: `Email: ${email} is already in use`
+        success: false,
+        message: `Email: ${email} is already in use`,
+        errorMessage: "You already have an account"
       }, {
         status: 409
       })
