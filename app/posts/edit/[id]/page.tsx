@@ -5,7 +5,10 @@ import { useRouter } from  'next/navigation'
 import { useUser } from '@/components/UserContext'
 import Navbar from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { uploadImages } from '@/utils/routeMethods'
+
+import Image from '@/types/Image'
+//  Can't use yet
+// import { uploadImages } from '@/utils/routeMethods'
 
 import PostForm from '@/types/PostForm'
 
@@ -14,20 +17,20 @@ function EditPostPage(): JSX.Element {
     const router = useRouter()
   
     // Initialize the image file as null
-    const [images, setImages] = useState([])
+    const [images, setImages] = useState<Image[]>([])
     const [form, setForm] = useState<PostForm>({
       title: "",
       content: "",
-      author: user.username,
-      date: new Date(),
-      imageUrls: [""],
+      author: user,
+      imageUrls: [],
+      videoLinks: [],
+      addresses: [],
+      tags: []
     });
   
     const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
       event.preventDefault();
-  
-      setForm({ ...form, date: new Date() });
-  
+    
       try {
         let uploadedImages
         if (images.length) {
