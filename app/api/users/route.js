@@ -21,30 +21,29 @@ export const GET = async (request) => {
       user = await getUserWithID(userID)
     }
 
-    await User
-      .find()
-      .then(users => {
-        if (!user.admin) {
-          const usernames = users.map((user) => user.username);
-  
-          return NextResponse.json({
-            users: usernames,
-            message: `All ${usernames.length} users found`,
-            userCount: usernames.length,
-          }, {
-            status: 200
-          });
-        } else {
-          // If the user is an admin, include all user data in the response
-          return NextResponse.json({
-            users: users,
-            message: `All ${users.length} users found`,
-            userCount: users.length,
-          }, {
-            status: 200
-          });
-        }
-      })
+    const foundUsers = await User.find()
+
+    if (!user.admin) {
+      const usernames = foundUsers.map((user) => user.username);
+
+      return NextResponse.json({
+        users: usernames,
+        message: `All ${usernames.length} users found`,
+        userCount: usernames.length,
+      }, {
+        status: 200
+      });
+    }
+    
+    // If the user is an admin, include all user data in the response
+    return NextResponse.json({
+      users: foundUsers,
+      message: `All ${users.length} users found`,
+      userCount: foundUsers.length,
+    }, {
+      status: 200
+    });
+
   } catch (error) {
     return NextResponse.json({
       success: false,
