@@ -59,4 +59,4 @@ blogDB.once('open', () => {
   console.log('Connected to blogDB for Comments')
 })
 
-module.exports = Comment
+export default Comment

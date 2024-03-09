@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import mongoose from 'mongoose'
 import Post from '@/models/Post';
 import Comment from '@/models/Comment';
 import User from '@/models/User';
@@ -129,7 +130,7 @@ async function uploadImages(formData: FormData): Promise<any> {
   const imageUpload = await fetch(`/api/images/upload`, {
       method: 'POST',
       body: formData,
-      duplex: true
+      // duplex: true
   }); 
 
   if (!imageUpload.ok) {
@@ -161,7 +162,7 @@ async function deleteImages(imageArray: string[]): Promise<{ success: boolean, m
       message: "Deleted all images on event from Cloudinary",
       data: returnedData
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error occurred while deleting image:', error);
     throw new Error(error.message);
   }
