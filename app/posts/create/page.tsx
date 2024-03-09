@@ -2,6 +2,7 @@
 import "@/assets/css/output.css"
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { useUser } from '@/components/UserContext'
 
@@ -19,17 +20,26 @@ interface ImageInput {
 
 function CreatePostPage(): JSX.Element {
   const { user } = useUser() 
+  const router = useRouter()
+  
   const [images, setImages] = useState<Image[]>([])
   // Initialize the image file as null
   const [form, setForm] = useState<PostForm>({
     title: "",
     content: "",
-    author: user,
+    author: {
+      username: user.username,
+      id: user.id
+    },
     addresses: [],
     tags: [],
     imageUrls: [],
     videoLinks: []
   });  
+
+  if (!user.username) {
+    router.push("/accounts/login")
+  }
 
   return (
     <div className="w-full h-fit bg-dark-background">

@@ -52,7 +52,7 @@ export default function CreateComment (props: Props): JSX.Element {
 
     return (
         <form onSubmit={handleSubmit} className="w-3/4 mx-auto h-fit pb-12">
-            <div className="h-fit w-full my-5 rounded-md p-6 bg-white border border-light-border">
+            <div className="h-fit w-full my-5 rounded-md p-6 border border-light-border">
                 <h1 className="text-lg py-2"> Post Comment </h1>
                 <p className="text-xs"> Write comment here: </p>
                 <textarea onChange={handleInputChange} style={textareaStyles} className="text-sm w-full my-2 px-2 py-1 border border-light-border rounded-md outline-none focus:ring-1 focus:ring-green-500 resize-none" name="content" placeholder="eg. I love this post" required />

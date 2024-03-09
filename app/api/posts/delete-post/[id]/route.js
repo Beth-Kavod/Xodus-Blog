@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import cloudinary from 'cloudinary'
 
-import { getUserWithID, isValid_id } from '@/utils/routeMethods.js'
+import { getUserWithID, isValid_id } from '@/utils/routeMethods'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 

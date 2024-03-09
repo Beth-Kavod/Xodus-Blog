@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { isValid_id } from '@/utils/routeMethods.js'
+import { isValid_id } from '@/utils/routeMethods'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 

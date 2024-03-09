@@ -33,6 +33,7 @@ function Comment(props: Props): JSX.Element {
                     },
                 }
             );
+            // change this to use router and useSearchParams
             // window.location.href = window.location.href;
         } catch (err) {
             console.error(err);

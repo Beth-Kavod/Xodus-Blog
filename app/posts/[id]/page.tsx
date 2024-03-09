@@ -70,6 +70,8 @@ function PostPage(): JSX.Element {
     }, [id]);
 
     const addVote = async (isUpvote: boolean) => {
+        alert("voting temporally disabled")
+        return
         if (!user.id) {
             setError("You must be signed in to vote.");
             return;
@@ -242,7 +244,7 @@ function PostPage(): JSX.Element {
                         )}
 
                         {
-                            post.videoLinks.length && (
+                            post.videoLinks.length ? (
                                 post.videoLinks.map(videoLink => {
                                     return (
                                         <>
@@ -251,7 +253,7 @@ function PostPage(): JSX.Element {
                                         </>
                                     )
                                 })
-                            )
+                            ) : ""
                         }
 
                         <div className="flex items-center justify-center w-full h-fit my-10">

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose")
 import blogDB from '@/connections/blogDB'
-import userDB from '@/connections/userDB'
 import { countVotes } from '@/utils/routeMethods'
 const Schema = mongoose.Schema;
 
@@ -10,12 +9,13 @@ let commentSchema = new Schema({
         type: String,
         required: true
       },
-      id: {
+      // This doesn't work because of storing wrong values in localStorage, change later
+      /* id: {
         type: Schema.Types.ObjectId,
         // This cant reference a user that is outside the collection
         // ref: 'User',
         required: true
-      },
+      }, */
     }, 
     content: {
       type: String,

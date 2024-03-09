@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getUserWithID, countVotes, isValid_id, isDuplicate } from "@/utils/routeMethods.js"
+import { getUserWithID, countVotes, isValid_id, isDuplicate } from "@/utils/routeMethods"
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
@@ -13,15 +13,19 @@ export const POST = async (request, { params }) => {
     const searchParams = request.nextUrl.searchParams
     const userID = searchParams.get("userID")
 
-    console.log(request.json)
     const originalPost = await isValid_id(postID, Post)
 
-    /* if (await isDuplicate(postID, author)) return NextResponse.json({
+    // const { vote, user } = await request.json()
+    const { vote, user } = await request.body
+
+    const newVote = { vote, user }
+
+    if (await isDuplicate(postID, user)) return NextResponse.json({
       success: true,
       message: `Updated vote on post: ${postID}`
     }, {
       status: 200
-    }) */
+    })
     
     const isUser = await getUserWithID(userID);
     
@@ -33,7 +37,7 @@ export const POST = async (request, { params }) => {
         status: 403
       })
     }
-    const newVote =  { user, vote } = await request.json()
+
     if (!newVote) {
       return NextResponse.json({
         success: false,

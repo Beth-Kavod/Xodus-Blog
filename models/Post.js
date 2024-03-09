@@ -10,12 +10,13 @@ let postSchema = new Schema({
         type: String,
         required: true
       },
-      id: {
+      // This doesn't work because of storing wrong values in localStorage, change later
+      /* id: {
         type: Schema.Types.ObjectId,
         // This cant reference a user that is outside the collection
         // ref: 'User',
         required: true
-      },
+      }, */
     }, 
     title: {
       type: String,
@@ -83,4 +84,4 @@ blogDB.once('open', () => {
   console.log('Connected to blogDB for Posts')
 })
 
-module.exports = Post
+export default Post

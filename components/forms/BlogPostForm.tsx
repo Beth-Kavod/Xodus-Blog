@@ -1,6 +1,7 @@
 import React, { SyntheticEvent, useState, useEffect } from "react"
 import { useRouter } from  'next/navigation'
 import { useUser } from '@/components/UserContext'
+import { uploadImages } from '@/utils/routeMethods'
 
 import ImageUpload from '@/components/ImageUpload'
 import CarouselEditImages from '@/components/carousel/CarouselEditImages'
@@ -73,27 +74,32 @@ const BlogPostForm = ({ formInputs, imageInputs }: BlogPostParams) => {
 
   const { form, setForm } = formInputs
   const { images, setImages } = imageInputs
-  
-  let imagePreviews
-  if (images) {
-    imagePreviews = images.map(image => {
-      return image.preview
-    })
-  } else {
-    imagePreviews = [""] 
-  }
 
   const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
     event.preventDefault();
 
     try {
-      await fetch("/api/posts/create-post", {
+      const imageData = new FormData()
+      imageData.append("upload_preset", "Blog_Images")
+      images.map(image => {
+        imageData.append("file", image.file)
+      })
+
+      const uploadedImages = await uploadImages(imageData as FormData)
+
+      const response = await fetch("/api/posts/create-post", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(form), // Send the FormData object
+        body: JSON.stringify({
+          ...form,
+          images: uploadedImages.data
+        })
       });
+
+      const responseData = response.json()
+      console.log(responseData)
       
       router.push("/");
     } catch (err) {
@@ -127,7 +133,8 @@ const BlogPostForm = ({ formInputs, imageInputs }: BlogPostParams) => {
           <h1 className="text-lg py-2"> Post Description </h1>
           {/* <p className="text-xs"> Enter your posts details here </p> */}
           <textarea onChange={handleInputChange} style={textareaStyles} className="text-sm w-full my-2 px-2 py-1 border border-light-border rounded-md outline-none focus:ring-1 focus:ring-green-500 resize-none" name="content" placeholder="eg. Right off the bat, there are clear differences between Go and Rust. Go has a stronger focus on building web APIs and small services that can scale endlessly, especially with the power of Goroutines. The latter is also possible with Rust, but things are much harder from a developer experience point of view..." required />
-          <AddAddress />
+          {/* Fix this before uncommenting */}
+          {/* <AddAddress /> */}
       </div>
 
       <div className="h-fit w-full my-5 rounded-md p-6 bg-dark-background border border-light-border">
@@ -137,11 +144,11 @@ const BlogPostForm = ({ formInputs, imageInputs }: BlogPostParams) => {
             params={{ setImages }}
           />
           {
-            images && images.length && 
+            images && images.length ? 
             <CarouselEditImages 
               images={images}
               setImages={setImages}
-            />
+            /> : null
           }
       </div>
       <button type="submit" className="bg-light-theme-green text-white rounded-lg px-4 py-1.5 hover:bg-light-theme-green-active"> Create Post </button>

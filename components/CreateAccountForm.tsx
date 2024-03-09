@@ -2,6 +2,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import ErrorMessage from "./ErrorMessage";
+import { useRouter } from 'next/navigation'
 
 function CreateAccountForm () {
     const [username, setUsername] = useState("");
@@ -9,6 +10,8 @@ function CreateAccountForm () {
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
     const [error, setError] = useState<String | null>(null);
+
+    const router = useRouter()
 
     const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
@@ -61,7 +64,7 @@ function CreateAccountForm () {
                 const data = await response.json();
 
                 if (data.status === 201) {
-                    window.location.href = "/accounts/login";
+                    router.push("/accounts/login")
                 } else if (response.status === 409) {
                     setError(data.message)
                 } else {
@@ -83,31 +86,31 @@ function CreateAccountForm () {
                     />
                 )}
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create Account</h2>
+                    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight  text-white">Create Account</h2>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form className="space-y-6" onSubmit={handleFormSubmit}>
                         <div>
-                            <label className="block text-sm font-medium leading-6 text-gray-900">Username</label>
+                            <label className="block text-sm font-medium leading-6  text-white">Username</label>
                             <div className="mt-2">
-                                <input name="username" type="text" onChange={(e) => updateInput("u", e.target.value)} required className="outline-none p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-[#0f6313] sm:text-sm sm:leading-6" />
+                                <input name="username" type="text" onChange={(e) => updateInput("u", e.target.value)} required className="outline-none p-2 block w-full rounded-md border-0 py-1.5  text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-[#0f6313] sm:text-sm sm:leading-6" />
                             </div>
                         </div>
                         
                         <div>
-                            <label className="block text-sm font-medium leading-6 text-gray-900">Email</label>
+                            <label className="block text-sm font-medium leading-6  text-white">Email</label>
                             <div className="mt-2">
-                                <input name="email" type="text" onChange={(e) => updateInput("e", e.target.value)} required className="outline-none p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-[#0f6313] sm:text-sm sm:leading-6" />
+                                <input name="email" type="text" onChange={(e) => updateInput("e", e.target.value)} required className="outline-none p-2 block w-full rounded-md border-0 py-1.5  text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-[#0f6313] sm:text-sm sm:leading-6" />
                             </div>
                         </div>
                         
                         <div>
                             <div className="flex items-center justify-between">
-                                <label className="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                                <label className="block text-sm font-medium leading-6  text-white">Password</label>
                             </div>
                             <div className="mt-2">
-                                <input onChange={(e) => updateInput("p1", e.target.value)} name="password" type="password" required className="outline-none p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#0f6313] sm:text-sm sm:leading-6" />
+                                <input onChange={(e) => updateInput("p1", e.target.value)} name="password" type="password" required className="outline-none p-2 block w-full rounded-md border-0 py-1.5  text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#0f6313] sm:text-sm sm:leading-6" />
                             </div>
 
                             <p className="text-sm text-red-500 font-bold p-1"> Password must meet the following criteria </p>
@@ -122,10 +125,10 @@ function CreateAccountForm () {
 
                         <div>
                             <div className="flex items-center justify-between">
-                                <label className="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
+                                <label className="block text-sm font-medium leading-6  text-white">Confirm Password</label>
                             </div>
                             <div className="mt-2">
-                                <input onChange={(e) => updateInput("p2", e.target.value)} name="confirmPassword" type="password" required className="outline-none p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#0f6313] sm:text-sm sm:leading-6" />
+                                <input onChange={(e) => updateInput("p2", e.target.value)} name="confirmPassword" type="password" required className="outline-none p-2 block w-full rounded-md border-0 py-1.5  text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#0f6313] sm:text-sm sm:leading-6" />
                             </div>
                         </div>
 

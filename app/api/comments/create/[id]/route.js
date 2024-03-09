@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import filter from 'leo-profanity'
 
-import { isValid_id } from '@/utils/routeMethods.js'
+import { isValid_id } from '@/utils/routeMethods'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 

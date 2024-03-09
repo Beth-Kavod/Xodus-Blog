@@ -1,7 +1,7 @@
 import availableTags from '@/data/tags'
 import { NextResponse } from 'next/server'
 
-import { getUserWithID } from '@/utils/routeMethods.js'
+import { getUserWithID } from '@/utils/routeMethods'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 

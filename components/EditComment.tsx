@@ -34,8 +34,8 @@ function CreateComment(props: Props): JSX.Element {
     const handleSubmit = async (event: SyntheticEvent): Promise<void> => {
         event.preventDefault();
 
-        if (localStorage.getItem("user") == null) {
-            window.location.href = "/accounts/login";
+        if (!user.username) {
+            router.push("/accounts/login")
             return;
         }
 

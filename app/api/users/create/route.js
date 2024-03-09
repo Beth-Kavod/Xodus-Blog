@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { generateUserAuthID, hash } from '@/utils/routeMethods.js'
+import { generateUserAuthID, hash } from '@/utils/routeMethods'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 

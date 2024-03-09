@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import filter from 'leo-profanity'
 
-import { getUserWithID } from '@/utils/routeMethods.js'
+import { getUserWithID } from '@/utils/routeMethods'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 

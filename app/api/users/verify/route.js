@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-// import { hash } from '@/utils/routeMethods.js'
+// import { hash } from '@/utils/routeMethods'
 
 /* ----------------------------- MongoDB Schemas ---------------------------- */
 
@@ -15,7 +15,7 @@ export const POST = async (request) => {
     const { username, password } = await request.json()
 
     const foundUser = await User.findOne({ username: username })
-    if (!foundUser.password) throw new Error(`No user with name: ${username}`)
+    if (!foundUser) throw new Error(`No user with name: ${username}`)
 
     const passwordMatch = await bcrypt.compare(password, foundUser.password)
 
