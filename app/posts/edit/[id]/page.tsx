@@ -37,7 +37,7 @@ function EditPostPage(): JSX.Element {
           uploadedImages = await handleImageUpload()
         }
 
-        await fetch("/api/posts/edit-post", {
+        await fetch(`/api/posts/${}/edit-post`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

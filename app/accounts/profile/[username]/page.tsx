@@ -105,7 +105,7 @@ function ProfilePage(): JSX.Element {
         const fetchData = async () => {
             try {            
                 // Get user from mongo-db
-                const userResponse = await fetch(`/api/users/profile/${username}?userID=${user.id}`);
+                const userResponse = await fetch(`/api/users/${username}/profile?userID=${user.id}`);
                 const userData = await userResponse.json();
                 
                 // Make 404 error page
@@ -145,7 +145,7 @@ function ProfilePage(): JSX.Element {
             */
 
 
-            const response = await fetch(`/api/users/update-avatar?userID=${user.id}`, {
+            const response = await fetch(`/api/users/${username}/update-avatar?userID=${user.id}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username: user.username/* , image: imageUrl */}),

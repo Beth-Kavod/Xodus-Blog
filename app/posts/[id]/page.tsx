@@ -42,7 +42,7 @@ function PostPage(): JSX.Element {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const postResponse = await fetch(`/api/posts/get-post/${id}`);
+                const postResponse = await fetch(`/api/posts/${id}`);
                 // ! FIX THIS TO SEND NO POST TO CLIENT, PAGE WILL LOAD INDEFINITELY
                 if (postResponse.status === 404) {
                     throw new Error("No post found");
@@ -107,7 +107,7 @@ function PostPage(): JSX.Element {
 
     const deletePost = async () => {
         try {
-            const deletePost = await fetch(`/api/posts/delete-post/${id}?userID=${user.id}`, {
+            const deletePost = await fetch(`/api/posts/${id}/delete-post?userID=${user.id}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -130,7 +130,7 @@ function PostPage(): JSX.Element {
     const editPost = async () => {
         try {
             await fetch(
-                `/api/posts/edit-post/${id}?userID=${user.id}`,
+                `/api/posts/${id}/edit-post?userID=${user.id}`,
                 {
                     method: "POST",
                     headers: {
