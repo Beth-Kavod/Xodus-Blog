@@ -3,7 +3,7 @@ import "@/assets/css/output.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Post from "@/components/posts/Post";
 import Link from 'next/link'
 import Image from 'next/image'
@@ -75,35 +75,7 @@ function ProfilePage(): JSX.Element {
         }))
     }
 
-    // Fetch the users profile
-    useEffect(() => {
-        const fetchData = async () => {
-            try {            
-                // Get user from mongo-db
-                const userResponse = await fetch(`/api/users/profile/${username}?userID=${user.id}`);
-                const userData = await userResponse.json();
-                
-                // Make 404 error page
-                if (userResponse.status === 404) {
-                    console.log(userData.message)
-                    return false
-                }
-                
-                setUserProfile(userData.data as User);
-            } catch (error) {
-                console.error(error);
-
-            }
-        }
-        fetchData()
-    }, [username, user.id])
-
-    // Fetch the users posts
-    useEffect(() => {
-        fetchPosts()
-    }, [user.id, queryParams.page, queryParams.size, username, fetchPosts]);
-
-    async function fetchPosts() {
+    const fetchPosts = useCallback(async () => {
         try {
             // Get users' posts from mongo-db
             const postsResponse = await fetch(`/api/posts/user/${username}?size=${size}&page=${page}`);
@@ -126,10 +98,35 @@ function ProfilePage(): JSX.Element {
         } catch (error) {
             console.error(error);
         }
-    }
+    }, [page, size, username]);
 
-    // Update the users avatar display every time the user object is updated
-    useEffect(() => setAvatar(userProfile ? userProfile.avatar : ""), [userProfile]);
+    // Fetch the users profile
+    useEffect(() => {
+        const fetchData = async () => {
+            try {            
+                // Get user from mongo-db
+                const userResponse = await fetch(`/api/users/profile/${username}?userID=${user.id}`);
+                const userData = await userResponse.json();
+                
+                // Make 404 error page
+                if (userResponse.status === 404) {
+                    console.log(userData.message)
+                    return false
+                }
+                
+                setUserProfile(userData.data as User);
+            } catch (error) {
+                console.error(error);
+
+            }
+        }
+        fetchData()
+    }, [fetchPosts, username, user.id]);
+
+    // Fetch the users posts
+    useEffect(() => {
+        fetchPosts()
+    }, [fetchPosts, user.id, page, size, username]);
 
     const updateAvatar = async (event: any) => {
         try {

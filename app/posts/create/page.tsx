@@ -37,7 +37,7 @@ function CreatePostPage(): JSX.Element {
     videoLinks: []
   });  
 
-  if (!user.username) {
+  if (!user.id) {
     router.push("/accounts/login")
   }
 
