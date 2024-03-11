@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 import blogDB from '@/connections/blogDB'
 import { countVotes } from '@/utils/routeMethods'
-console.log(countVotes)
 const Schema = mongoose.Schema;
 
 let postSchema = new Schema({
