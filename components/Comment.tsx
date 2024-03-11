@@ -25,7 +25,7 @@ function Comment(props: Props): JSX.Element {
     const deleteComment = async () => {
         try {
             await fetch(
-                `/api/comments/delete/${props.comment._id}?userID=${user.id}`,
+                `/api/comments/${props.comment._id}/delete?userID=${user.id}`,
                 {
                     method: "POST",
                     headers: {

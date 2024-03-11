@@ -26,7 +26,7 @@ export default function CreateComment (props: Props): JSX.Element {
         if (!author) router.push("/accounts/login") 
 
         try {
-            await fetch(`/api/comments/create/${props.postID}`, {
+            await fetch(`/api/comments/${props.postID}/create`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

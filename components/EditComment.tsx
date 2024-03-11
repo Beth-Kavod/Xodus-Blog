@@ -40,7 +40,7 @@ function CreateComment(props: Props): JSX.Element {
         }
 
         try {
-            await fetch(`/api/comments/edit/${props.commentID}?userID=${props.userId}`, {
+            await fetch(`/api/comments/${props.commentID}/edit?userID=${props.userId}`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
